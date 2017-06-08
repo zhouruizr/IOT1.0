@@ -1,0 +1,725 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>数据字典</title>
+    <link href="../../Scripts/bootStrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="../../Scripts/bootStrap/css/bootstrap-switch.min.css" rel="stylesheet" />
+    <link href="../../CSS/bootstrapExtend.css" rel="stylesheet" />
+    <link href="../../Scripts/Flexigrid/css/flexigrid.css" rel="stylesheet" />
+    <link href="../../CSS/sco.message.css" rel="stylesheet" />
+    <link href="../../CSS/jquery.treegrid.css" rel="stylesheet">
+    <style>
+        body {
+            font-size: 14px;
+            background-color:white;
+        }
+        .table {
+            margin: 0px;
+            width: 100%;
+            background: #FFFFFF;
+            margin: 0px 0px 0px 0px;
+            padding: 0px 0px 0px 0px;
+        }
+        .table tbody > tr >td {
+                padding: 0px 0px 0px 0px;
+                height: 35px;
+                vertical-align: middle;
+            }
+       .table-bordered {
+          border: 0px solid #ddd;
+        }
+        #panel {
+            padding: 8px 8px 8px 8px;
+            cursor:pointer;
+        }
+        span {
+            padding-left:8px;
+        }
+    </style>
+    <script src="../../Scripts/jquery-1.9.1.min.js"></script>
+    <script src="../../Scripts/knockout/knockout-3.0.0.js"></script>
+    <script src="../../Scripts/knockout/knockout.mapping.js"></script>
+    <script src="../../Scripts/bootStrap/js/bootstrap.min.js"></script>
+    <script src="../../Scripts/bootStrap/js/bootstrap-switch.min.js"></script>
+    <script src="../../Scripts/CCSH.UI/combox.js"></script>
+    <script src="../../Scripts/Flexigrid/js/flexigrid.js"></script>
+    <script src="../../Scripts/bootbox.min.js"></script>
+    <script src="../../Scripts/datetimepicker/js/bootstrap-datetimepicker.js"></script>
+    <script src="../../Scripts/datetimepicker/js/bootstrap-datetimepicker-extend.js"></script>
+    <script src="../../Scripts/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+    
+    <!--<script src="../../Scripts/bootstrap-validator/validator.js"></script>-->
+    <script src="../../Scripts/base.js"></script>
+    <script src="../../Scripts/CCSH.ToolBar.js"></script>
+    <script src="../../Scripts/CCSH.UI/jquery.ComboBox.js"></script>
+    <script src="../../Scripts/common.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var contentHeight = $("#panel").height()+1000;
+            top.$('#content').css('height', contentHeight);
+            $('[data-toggle="tooltip"]').tooltip();
+            //定义url
+            var BaseUrl = 'DataDic/';
+            var Url = {
+                CategoryURL: BaseUrl + 'GetCategoryJson',
+                CategoryGet: BaseUrl + 'CategoryGet',
+                CategoryAdd: BaseUrl + 'CategoryAdd',
+                CategoryEdit: BaseUrl + 'CategoryUpdate',
+                CategoryDelete: BaseUrl + 'CategoryDelete',
+                CategoryValAttribute: BaseUrl + 'CategoryValAttribute',
+
+                GridURL: CCSHmobi.website + BaseUrl + 'GetJson',
+                Get: BaseUrl + 'Get',
+                Add: BaseUrl + 'Add',
+                Edit: BaseUrl + 'Update',
+                Delete: BaseUrl + 'Delete',
+                ValAttribute: BaseUrl + 'ValAttribute',
+            }
+
+            var SetCheckBox = function (value) {
+                var d = Boolean(value);
+                
+                if (d) {
+                    //$(value).text('').addClass('info glyphicon glyphicon-ok');
+                    return '默认';
+                } else {
+                    //$(value).text('').addClass('info glyphicon glyphicon-remove');
+                    return '';
+                }
+            }
+            var Grid = $("#GridQuery");
+            //flexgrid模型
+            var _gridquery = Grid.flexigrid({
+                url: false,
+                dataType: 'json',
+                singleSelect: true,//单选
+                method: 'POST',
+                colModel: [
+                    {
+                        display: 'ID ',
+                        name: 'Dics_Code',
+                        sortable: true,
+                        align: 'center',
+                        process: function (item) {
+                            //$(item).text($(item).text().replace('T', ' ').substr(0, 19));
+                        }
+                    }, {
+                        display: '名称 ',
+                        name: 'Title',
+                        sortable: true,
+                        align: 'center'
+                    }, {
+                        display: '编码 ',
+                        name: 'Code',
+                        sortable: true,
+                        align: 'center'
+                    }, {
+                        display: '排序',
+                        name: 'Sortnum',
+                        sortable: true,
+                        align: 'center'
+                    }, {
+                        display: '状态 ',
+                        name: 'Status',
+                        sortable: true,
+                        align: 'center'
+                    }, {
+                        display: '默认值',
+                        name: 'IsDefault',
+                        align: 'center',
+                        //process: function (value, i) {
+                        //    $(value).text(SetCheckBox($(value).text()));
+                        //},
+                    }, {
+                        display: '允许修改',
+                        name: 'IsAllowModify',
+                        align: 'center',
+                        hide: true,
+                       
+                    }, {
+                        display: '允许删除',
+                        name: 'IsAllowDelete',
+                        align: 'center',
+                        hide: true,
+                    }, {
+                        display: '说明',
+                        name: 'Remark',
+                        align: 'center',
+                    }
+                ],
+                showTableToggleBtn: true, //glyphicon glyphicon-remove
+                rp: 50,
+                usepager: true,
+                useRp: true,
+                width: 'auto',
+                height: 'auto'
+            });
+
+            //数据字典分类模型
+            var _EModel = function () {
+                var _EModel = this;
+                _EModel.DicCategory_Code = ko.observable('0');//编号
+                _EModel.Title = ko.observable('');//标题
+                _EModel.Code = ko.observable('');//编码
+                _EModel.Sortnum = ko.observable(0);//排序
+                _EModel.Remark = ko.observable('');//说明
+                _EModel.Attrib = ko.observable('');//只读属性
+
+                _EModel.GridStat = ko.observable(false);//记录grid状态，当grid为flase时，不允许新增。只有执行了查询功能以后，才允许新增。
+
+                this.CategoryBlur = function () {
+                    postWebJson(Url.CategoryValAttribute, ko.toJS(_EModel), function (data) {
+                        if (data == "0") {
+                            msg.info("名称不可重复！");
+                        }
+                    });
+                }
+                this.CategoryAdd = function (fn_onSucess, fn_onErr) {
+                    postWebJson(Url.CategoryAdd, ko.toJS(_EModel), function (data) {
+                        if (fn_onSucess) {
+                            msg.info(data);
+                            fn_onSucess();
+                        }
+                    });
+                }
+                this.CategoryEdit = function (fn_onSucess, fn_onErr) {
+                    postWebJson(Url.CategoryEdit, ko.toJS(_EModel), function (data) {
+                        if (fn_onSucess) {
+                            msg.info(data);
+                            fn_onSucess();
+                        }
+                    });
+                }
+                this.CategoryGet = function (fn_onSucess, fn_onErr) {
+                    postWebJson(Url.CategoryGet, ko.toJS(_EModel), function (data) {
+                        ko.mapping.fromJS(data, {}, _EModel);
+                    });
+                }
+                this.CategoryDelete = function (fn_onSucess, fn_onErr) {
+                    postWebJson(Url.CategoryDelete, ko.toJS(_EModel), function (data) {
+                        if (fn_onSucess) {
+                            msg.info(data);
+                            fn_onSucess();
+                        }
+                    });
+                }
+            }
+            //数据字典内容模型
+            var _EModelDic = function () {
+                var _EModelDic = this;
+                _EModelDic.Dics_Code = ko.observable('');//编号
+                _EModelDic.Title = ko.observable('');//名称
+                _EModelDic.Code = ko.observable('');//编码
+                _EModelDic.Sortnum = ko.observable(0);//排序
+                _EModelDic.ParentId = ko.observable(0);//父级
+                _EModelDic.CategoryId = ko.observable(0);//类别
+                _EModelDic.Remark = ko.observable('');//说明
+                _EModelDic.Status = ko.observable(0);//状态
+                _EModelDic.IsDefault = ko.observable(0);//默认值
+                _EModelDic.IsAllowModify = ko.observable(0);//是否允许修改
+                _EModelDic.IsAllowDelete = ko.observable(0);//是否允许删除
+
+                //属性离开事件
+                this.Blur = function () {
+                    postWebJson(Url.ValAttribute, ko.toJS(_EModelDic), function (data) {
+                        if (data == "0") {
+                            msg.info("名称不可重复！");
+                        }
+                    });
+                }
+                this.Add = function (fn_onSucess, fn_onErr) {
+                    postWebJson(Url.Add, ko.toJS(_EModelDic), function (data) {
+                        if (fn_onSucess) {
+                            msg.info(data);
+                            fn_onSucess();
+                        }
+                    });
+                }
+                this.Edit = function (fn_onSucess, fn_onErr) {
+                    postWebJson(Url.Edit, ko.toJS(_EModelDic), function (data) {
+                        if (fn_onSucess) {
+                            msg.info(data);
+                            fn_onSucess();
+                        }
+                    });
+                }
+                this.Get = function (fn_onSucess, fn_onErr) {
+                    postWebJson(Url.Get, ko.toJS(_EModelDic), function (data) {
+                        ko.mapping.fromJS(data, {}, _EModelDic);
+                    });
+                }
+                this.Delete = function (fn_onSucess, fn_onErr) {
+                    postWebJson(Url.Delete, ko.toJS(_EModelDic), function (data) {
+                        if (fn_onSucess) {
+                            msg.info(data);
+                            fn_onSucess();
+                        }
+                    });
+                }
+            }
+
+            var KObj = new function () {
+                var self = this;
+                //查询界面数据
+                //self.FT_Name = ko.observable("");
+                //self.FT_Name_En = ko.observable("");
+             
+                self._EModel = new _EModel();//实例化
+                self._EModelDic = new _EModelDic();//实例化
+
+                self.FunctionModel = ko.observable("");//页面的模式，比如新增add，修改edit，删除del
+                self.EditModel = ko.observable("");
+                self.EditCategoryModal = ko.observable("保存");
+               
+                //新增类别操作
+                self.OpenCategoryModal = function () {
+                    if (runCount != 0) {
+                        $("#CategoryModal").modal("show");
+                    }
+                }
+                //关闭类别窗口
+                self.CloseCategoryModal = function () {
+                    $("#CategoryModal").modal("hide");
+                    self.SearchQueryDicCategory();
+                }
+                //数据字典分类--点击ToolBar事件，必须确定功能模式
+                self.ExcuteCategoryBtn = function (mode) {
+                    if (runCount === 0) { return; }
+                    self.FunctionModel(mode)
+                    if (self.FunctionModel() == 'ADD') {
+                        cleanData("CategoryModal");
+                        self.OpenCategoryModal();
+                    }
+                    else {
+                        //取值
+                        try {
+                            if (rowID === '' || null || undefined) {
+                                msg.info("请先选中操作的行！");
+                                return;
+                            }
+                        } catch (e) {
+
+                        }
+                        self._EModel.DicCategory_Code(rowID);
+                        self._EModel.CategoryGet();
+                        self.OpenCategoryModal();
+                    }
+                    //确定编辑模式
+                    if (self.FunctionModel() == 'ADD' || self.FunctionModel() == 'EDIT') {
+                        self.EditModel("保存");
+                    } else {
+                        self.EditModel("删除");
+                    }
+
+                }
+                //分类处理Modal函数
+                self.ExcuteCategoryModal = function () {
+                    if (self.FunctionModel() == 'EDIT') {
+                        self._EModel.CategoryEdit(self.CloseCategoryModal);
+
+                    } else if (self.FunctionModel() == 'DELETE') {
+                        self._EModel.CategoryDelete(self.CloseCategoryModal);
+
+                    } else if (self.FunctionModel() == 'ADD') {
+                        self._EModel.CategoryAdd(self.CloseCategoryModal);
+                    }
+                }
+
+                //新增按钮操作
+                self.OpenModal = function () {
+                    $("#BtnModal").modal("show");
+                }
+                //关闭窗口
+                self.CloseModal = function () {
+                    $("#BtnModal").modal("hide");
+                    self.SearchQuery(rowID);
+                }
+
+                //数据字典内容--点击ToolBar事件，必须确定功能模式
+                self.ExcuteBtn = function (mode) {
+                    if (runCount === 0) { return; }
+                    if (rowID === '' || rowID === null || rowID === undefined) {
+                        msg.info("请先选中数据字典类别！");
+                        return;
+                    }
+                    self.FunctionModel(mode)
+                    if (self.FunctionModel() == 'ADD') {
+                        cleanDataSmall("BtnModal");
+
+                        self._EModel.Title(rowTitle);//数据字典分类标题
+                        self._EModelDic.CategoryId(rowID);//数据字典分类id
+
+                        self.OpenModal();
+                    }
+                    else {
+                        var gridRowCode = Grid.selectedItem()[0].Dics_Code;
+                        //取值
+                        try {
+                            if (gridRowCode === '' || null || undefined) {
+                                msg.info("请先选中操作的行！");
+                                return;
+                            }
+                        } catch (e) {
+
+                        }
+                        self._EModelDic.Dics_Code(gridRowCode);
+                        self._EModelDic.Get();
+                        self.OpenModal();
+                    }
+                    //确定编辑模式
+                    if (self.FunctionModel() == 'ADD' || self.FunctionModel() == 'EDIT') {
+                        self.EditModel("保存");
+                    } else {
+                        self.EditModel("删除");
+                    }
+                }
+
+                //数据字典Modal函数
+                self.ExcuteModal = function () {
+                    if (self.FunctionModel() == 'EDIT') {
+                        self._EModelDic.Edit(self.CloseModal);
+
+                    } else if (self.FunctionModel() == 'DELETE') {
+                        self._EModelDic.Delete(self.CloseModal);
+
+                    } else if (self.FunctionModel() == 'ADD') {
+                        self._EModelDic.Add(self.CloseModal);
+                    }
+                }
+
+                //加载
+                var runCount = 0;//默认启动时会响应click事件，在此加状态判断。
+                var rowID = '';//保存当前选中分类行的数据
+                var rowTitle = ''; //保存当前选中分类行的标题
+                var userInfo = localStorage.getItem("ERP_UserInfo");//登陆信息
+                self.category = ko.mapping.fromJSON('');//数据字典类别
+                self.dic = ko.mapping.fromJSON('');//数据字典
+
+
+                //从服务器获取信息--数据字典分类
+                self.SearchQueryDicCategory = function () {
+                    var params = [];
+                    postWebJson(Url.CategoryURL, params, function (data) {
+                        ko.mapping.fromJSON(data, self.category);
+                        runCount++;
+                    })
+                    //return arguments.callee;
+                };
+                self.SearchQueryDicCategory();
+
+                //flexgrid查询函数--数据字典
+                self.SearchQuery = function (data) {
+                    //var btn = $("#startQuery");
+                    //btn.button("loading");
+                    self._EModel.GridStat('true');
+                    Grid.flexOptions({
+                        url: Url.GridURL,
+                        params: [{ name: "CategoryId", value: data }],
+                        newp: 1,
+                        onError: function (XMLHttpRequest, textStatus, errorThrown) {
+                            msg.info("请求超时，可能是因为数据量过大，请填写适当的筛选条件后重试");
+                            $("#grid").flexAddData();
+                        }
+                    }).flexReload();
+                    //btn.button("reset");
+                }
+                //类别记住颜色
+                self.ChangeColor = function (id,title) {
+                    if (runCount != 0) {
+                        //取出先前保存的行对象，并修改颜色为空
+                        $('#' + rowID).removeClass().addClass('text-center');
+                        //设置现在选中的行，设置颜色
+                        $('#' + id).removeClass().addClass('info text-center');
+                        rowID = id;
+                        //加载数据字典
+                        self.SearchQuery(id);
+                        rowTitle = title;
+                        
+                    } else {
+                        rowID = null;
+                    }
+                }
+            }();
+
+            ko.applyBindings(KObj);
+        })
+    </script>
+</head>
+<body>
+    <!--查询界面-->
+    <div id="QueryDiv" hidden>
+        <form role="form" class="form form-horizontal requirement_search" style="top: 50px">
+            <div class="alert alert-success" role="alert">
+                <label class="label label-default">编辑功能：</label>
+                <button class="btn glyphicon glyphicon-plus btn-primary" type="button" data-bind="click: function () { ExcuteBtn('ADD') }"  data-toggle="tooltip" data-placement="top" title="新增"><em class="icon-align-left"></em></button>
+                <button class="btn glyphicon glyphicon-pencil btn-info" type="button" data-bind="click: function () { ExcuteBtn('EDIT') }"  data-toggle="tooltip" data-placement="top" title="修改"><em class="icon-align-right"></em></button>
+                <button class="btn glyphicon glyphicon-remove btn-warning" type="button" data-bind ="click: function () { ExcuteBtn('DELETE') }" data-toggle="tooltip" data-placement="top" title="删除"><em class="icon-align-center"></em></button>
+              <!--  <button class="btn glyphicon glyphicon-search btn-success" type="button" data-bind="click: function () { ExcuteBtn('EDIT') }"><em class="icon-align-justify"></em></button>-->
+            </div>
+            <hr />
+            <div class="row form-group">
+                <div class="col-sm-1 col-xs-12"><label class="control-label">名称</label></div>
+                <div class="col-sm-3 col-xs-12"><!--<input type="text" class="form-control"  data-bind="value: _EModelDic.Title"/>--></div>
+                <div class="col-sm-1 col-xs-12">&nbsp</div>
+                <div class="col-sm-2 col-xs-12">
+                    <button id="startQuery" class="form-control btn btn-primary" data-loading-text="查询中..." data-bind="click: function () { SearchQuery() }">查询</button>
+                </div>
+            </div>
+            <br />
+            <div class="row form-group">
+                <div class="col-xs-8"></div>
+            </div>
+        </form>
+    </div>
+    <!--查询界面-->
+
+    <!--数据字典界面-->
+    <div id="panel">
+        <div class="row">
+            <!--类别-->
+            <div class="col-sm-2 col-xs-12" style="padding-right: 0px">
+                <div class="panel panel-default">
+                    <!-- Default panel contents -->
+                    <div class="panel-heading"><span class="glyphicon glyphicon-book">&nbsp字典类别</span></div>
+                    <div class="panel-body">
+                        <div class="col-sm-12">
+                            <!--<label for="gat"></label>-->
+                            <div class="btn-group btn-group-justified" role="group" aria-label="...">
+                                <div class="btn-group" role="group">
+                                    <button type="button" class="btn btn-info" data-bind="click: $root.ExcuteCategoryBtn('ADD')">添加</button>
+                                </div>
+                                <div class="btn-group" role="group">
+                                    <button type="button" class="btn btn-default" data-bind="click: $root.ExcuteCategoryBtn('EDIT')">编辑</button>
+                                </div>
+                                <div class="btn-group" role="group">
+                                    <button type="button" class="btn btn-default" data-bind="click: $root.ExcuteCategoryBtn('DELETE')">删除</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <table class="row table table-bordered table-hover">
+                        <tbody data-bind="foreach: { data: category, as: 'P' }">
+                            <tr>
+                                <td class="text-center" data-bind="attr: { 'id': P.DicCategory_Code().toString() }, text: P.Title() + '&nbsp['+P.Code()+']', click: $root.ChangeColor(P.DicCategory_Code().toString(),P.Title())"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+            <!--数据字典内容-->
+            <div class="col-sm-10 col-xs-12" style="padding-left: 8px">
+                <div class="panel panel-default">
+                    <!-- Default panel contents -->
+                    <div class="panel-heading"><span class="glyphicon glyphicon-book">&nbsp数据字典</span></div>
+                    <div class="panel-body" style="padding-left: 0px; padding-right: 0px;">
+                        <div class="col-sm-12">
+                            <!--<label for="gat"></label>-->
+                            <div class="btn-group btn-group-justified" role="group" aria-label="...">
+                                <div class="btn-group" role="group">
+                                    <button type="button" class="btn btn-info" data-bind="click: $root.ExcuteBtn('ADD')">添加</button>
+                                </div>
+                                <div class="btn-group" role="group">
+                                    <button type="button" class="btn btn-default" data-bind="click: $root.ExcuteBtn('EDIT')">编辑</button>
+                                </div>
+                                <div class="btn-group" role="group">
+                                    <button type="button" class="btn btn-default" data-bind="click: $root.ExcuteBtn('DELETE')">删除</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12">
+                            <div>
+                                <table id="GridQuery" class="table table-condensed"></table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--自定义grid界面-->
+
+     <!--Modal界面,数据字典分类-->
+    <div id="CategoryModal" class="modal fade" data-keyboard="false" data-backdrop="static" role="dialog" tabindex="-1" aria-hidden="true" data-toggle="validator">
+        <div class="modal-dialog" style="width: 30%">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="H2" style="text-align: center"><b>数据字典类别</b></h4>
+                </div>
+                <div class="modal-body">
+                    <form data-bind="submit: ExcuteCategoryModal">
+                        <div class="control-group">
+                            <!-- Text input-->
+                            <div>
+                                <label class="control-label" for="input01">类别名称：</label>
+                            </div>
+                            <div>
+                                <input type="text" placeholder="类别名称" class="form-control" data-bind="value: _EModel.Title, event: { 'blur': _EModel.CategoryBlur }, enable: FunctionModel() != 'DELETE'" required>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="control-group">
+                            <!-- Text input-->
+                            <div>
+                                <label class="control-label" for="input01">类别编码：</label>
+                            </div>
+                            <div>
+                                <input type="text" placeholder="类别编码" class="form-control" data-bind="value: _EModel.Code, event: { 'blur': _EModel.CategoryBlur }, enable: FunctionModel() != 'DELETE'" required />
+
+                            </div>
+                        </div>
+                        <br />
+
+                        <div class="control-group">
+                            <!-- Text input-->
+                            <div>
+                                <label class="control-label" for="input01">排序</label>
+                            </div>
+                            <div>
+                                <input type="number" placeholder="排序" class="form-control" data-bind="value: _EModel.Sortnum, enable: FunctionModel() != 'DELETE'" required />
+                            </div>
+                        </div>
+                        <br />
+
+                        <div class="control-group">
+                            <!-- Text input-->
+                            <div>
+                                <label class="control-label" for="input01">备注</label>
+                            </div>
+                            <div>
+                                <input type="text" placeholder="备注" class="form-control" data-bind="value: _EModel.Remark, enable: FunctionModel() != 'DELETE'"/>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row form-group">
+                            <div class="col-xs-2"></div>
+                            <div class="col-xs-4">
+                                <button class="btn btn-default form-control" data-bind="click: CloseCategoryModal">关闭</button>
+                            </div>
+                            <div class="col-xs-4">
+                                <button class="btn btn-success form-control" type="submit" data-bind="text: EditModel"></button>
+                            </div>
+                        </div>
+                        <br />
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Modal界面-->
+
+    <!--Modal界面-数据字典内容-->
+    <div id="BtnModal" class="modal fade" data-keyboard="false" data-backdrop="static" role="dialog" tabindex="-1" aria-hidden="true"  data-toggle="validator" >
+       <div class="modal-dialog" style="width: 30%">
+           <div class="modal-content">
+              <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="H1" style="text-align: center"><b>数据字典</b></h4>
+              </div>
+               <div class ="modal-body">
+                   <form data-bind="submit: ExcuteModal">
+                   <div class="control-group">
+                      <!-- Text input-->
+                      <div>
+                          <label class="control-label" for="input01">名称</label>
+                      </div>
+                      <div>
+                        <input type="text" placeholder="名称" class="form-control" data-bind ="value: _EModelDic.Title, event: { 'blur': _EModelDic.Blur }, enable: FunctionModel() != 'DELETE'"required>
+                      
+                      </div>
+                   </div>
+                   <br />
+                   <div class="control-group">
+                      <!-- Text input-->
+                      <div>
+                           <label class="control-label" for="input01">编码</label>
+                      </div>
+                      <div>
+                        <input type="text" placeholder="编码" class="form-control" data-bind ="value: _EModelDic.Code, event: { 'blur': _EModelDic.Blur }, enable: FunctionModel() != 'DELETE'" required />
+                      
+                    </div>
+                   </div>
+                   <br />
+                   <div class="control-group">
+                      <!-- Text input-->
+                      <div>
+                           <label class="control-label" for="input01">字典类别</label>
+                      </div>
+                      <div>
+                        <input type="text" placeholder="类别id" class="form-control" data-bind ="value: _EModelDic.CategoryId, event: { 'blur': _EModelDic.Blur }, enable: FunctionModel() != 'DELETE', visible: false"/>
+                        <input readonly="true" type="text" placeholder="类别" class="form-control" data-bind ="value: _EModel.Title, event: { 'blur': _EModel.Blur }, enable: FunctionModel() != 'DELETE'" required />
+                      </div>
+                   </div>
+                   <br />
+                  <!-- <div class="control-group">
+                      
+                      <div>
+                           <label class="control-label" for="input01">上级</label>
+                      </div>
+                      <div>
+                          <input type="number" placeholder ="上级" class="form-control"  data-bind ="value: _EModel.OrderIndex, enable: FunctionModel() != 'DELETE'" required />
+                      </div>
+                    </div>
+                   <br />-->
+                   <div class="control-group">
+                      <!-- Text input-->
+                      <div>
+                           <label class="control-label" for="input01">排序</label>
+                      </div>
+                      <div>
+                        <input type="number" placeholder ="排序" class="form-control"  data-bind ="value: _EModelDic.Sortnum, enable: FunctionModel() != 'DELETE'" required />
+                      </div>
+                    </div>
+                   <br />
+                   <div class="control-group">
+                      <!-- Text input-->
+                      <div>
+                           <label class="control-label" for="input01">状态</label>
+                      </div>
+                      <div>
+                         <input type="checkbox" data-on-label="正常" data-off-label="停用" data-bind ="checked: _EModelDic.Status"/>                        
+                      </div>
+                   </div>
+                   <br />
+                   <div class="control-group">
+                      <!-- Text input-->
+                      <div>
+                           <label class="control-label" for="input01">默认值</label>
+                      </div>
+                      <div>
+                        <input type="checkbox" data-bind ="checked: _EModelDic.IsDefault" checked/>
+                      </div>
+                   </div>
+                   <br />
+                   <div class="control-group">
+                       <!-- Text input-->
+                       <div>
+                         <label class="control-label" for="input01">说明</label>
+                       </div>
+                       <div>
+                         <input type="text" placeholder ="排序" class="form-control"  data-bind ="value: _EModelDic.Remark, enable: FunctionModel() != 'DELETE'"/>
+                       </div>
+                   </div>
+                   <br />
+                   <div class="row form-group">
+                      <div class="col-xs-2"></div>
+                      <div class="col-xs-4">
+                          <button class="btn btn-default form-control" data-bind="click: CloseModal ">关闭</button>
+                      </div>
+                      <div class="col-xs-4">
+                        <button class="btn btn-success form-control" type="submit" data-bind="text: EditModel" ></button>
+                      </div>
+                    </div>
+                   <br />
+                   
+                   </form>
+                </div>
+            </div>
+        </div>
+</div>
+    <!--Modal界面-->
+</body>
+</html>

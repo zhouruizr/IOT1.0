@@ -1,0 +1,539 @@
+﻿@using DataProvider.Models
+@using DataProvider.Paging
+@{
+    ViewBag.Title = "报名列表";
+}
+@model ButtonListViewModel
+<style>
+    .layui-layer-page .layui-layer-content {
+        overflow:visible
+    }
+</style>
+<div class="wrapper wrapper-content  animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+                <!-- 数据显示区 -->
+                <div class="ibox-content">
+                    <!-- 功能操作区 -->
+                    @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "frmQuery", @class = "form-horizontal form-horizontal" }))
+                    {
+                       
+                        
+                        <div class="form-group">
+                            <div class="col-sm-2">
+                                <label class="control-label">班级名称：</label>
+                            </div>
+
+                            <div class="col-sm-3">
+                                <input type="text" class="form-control input-sm">
+                            </div>
+                            <div class="col-sm-2">
+                                <label class="control-label">上课时间:</label>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="input-daterange input-group" id="datepicker">
+                                    <input type="text" class="input-sm form-control" name="start" value="2014-11-11">
+                                    <span class="input-group-addon">到</span>
+                                    <input type="text" class="input-sm form-control" name="end" value="2014-11-17">
+                                </div>
+
+                            </div> 
+                        </div>
+
+                      
+
+                                   
+                        <div class="form-group">
+                            <div class="col-sm-4">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-white btn-sm"><i class="fa fa-refresh"></i> 刷新</button>
+
+                                    @*<button class="btn btn-primary btn-sm" type="button"><i class="fa fa-plus-square"></i> 新增</button>*@
+
+
+                                </div>
+                            </div>
+                            <div class="col-sm-8 project-actions">
+                                <button type="button" class="btn btn-w-m btn-primary btn-sm">查&nbsp;&nbsp;&nbsp;&nbsp;询</button>
+                            </div>
+                        </div>
+                    }
+                    <!-- 数据列表 -->
+                    <table class="table table-striped table-bordered table-hover dataTables-example">
+                        <thead>
+                            <tr>
+                                <th rowspan="2">班级</th>
+                                <th rowspan="2">课程日期</th>
+                                <th rowspan="2">星期</th>
+                                <th rowspan="2">时段</th>
+                                <th rowspan="2">教室</th>
+                                <th rowspan="2">老师</th>
+                                <th colspan="4" scope="col">学员人数</th>
+                                <th rowspan="2">操作</th>
+                            </tr>
+                            <tr>
+                                <th>应到</th> 
+                                <th>已到</th>
+                                <th>未到</th> 
+                                <th>已评价</th> 
+                            </tr>
+                        </thead>
+                        <!-- 循环数据 -->
+                        <tbody>
+                            <!-- 测试数据 -->
+                            <tr>
+                                <td class="jz">绘画</td>
+                                <td>2017-05-19 </td>
+                                <td>星期五</td>
+                                <td>10:00-12:00</td>
+                                <td>教室201</td>
+                                <td>王老师</td>
+                                <td>10</td>
+                                <td>10</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>
+                                    <a href="javascript:" class="btn btn-primary btn-xs" type="button" onclick="javascript:attendance();"><i class=" fa fa-edit"></i> 考勤</a>
+                                    <a href="javascript:" class="btn btn-primary btn-xs" type="button" onclick="javascript:appraise();"><i class="fa fa-edit"></i> 评价</a>
+                                    <a href="javascript:" class="btn btn-primary btn-xs" type="button" onclick="javascript:publishJob();"><i class="fa fa-edit"></i> 作业</a>
+                                    <a href="javascript:" class="btn btn-primary btn-xs" type="button" onclick="javascript:modify(1);"><i class="fa fa-edit"></i> 调课</a>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td class="jz">绘画</td>
+                                <td>2017-05-18 </td>
+                                <td>星期四</td>
+                                <td>10:00-12:00</td>
+                                <td>教室202</td>
+                                <td>王老师</td>
+                                <td>10</td>
+                                <td>10</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>
+                                    <a href="javascript:" class="btn btn-primary btn-xs" type="button" onclick="javascript:attendance();"><i class=" fa fa-edit"></i> 考勤</a>
+                                    <a href="javascript:" class="btn btn-primary btn-xs" type="button" onclick="javascript:appraise();"><i class="fa fa-edit"></i> 评价</a>
+                                    <a href="javascript:" class="btn btn-primary btn-xs" type="button" onclick="javascript:publishJob();"><i class="fa fa-edit"></i> 作业</a>
+                                    <a href="javascript:" class="btn btn-primary btn-xs" type="button" onclick="javascript:modify();"><i class="fa fa-edit"></i> 调课</a>
+                                </td>
+                            </tr>
+
+
+                            <tr>
+                                <td class="jz">绘画</td>
+                                <td>2017-05-29 </td>
+                                <td>星期六</td>
+                                <td>10:00-12:00</td>
+                                <td>教室301</td>
+                                <td>王老师</td>
+                                <td>10</td>
+                                <td>10</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>
+                                    <a href="javascript:" class="btn btn-primary btn-xs" type="button" onclick="javascript:attendance();"><i class="fa fa-edit"></i> 考勤</a>
+                                    <a href="javascript:" class="btn btn-primary btn-xs" type="button" onclick="javascript:appraise();"><i class="fa fa-edit"></i> 评价</a>
+                                    <a href="javascript:" class="btn btn-primary btn-xs" type="button" onclick="javascript:publishJob();"><i class="fa fa-edit"></i> 作业</a>
+                                    <a href="javascript:" class="btn btn-primary btn-xs" type="button" onclick="javascript:modify();"><i class="fa fa-edit"></i> 调课</a>
+                                </td>
+                            </tr>
+                           
+                            <!-- 测试数据 -->
+                            @if (Model != null && Model.buttonlist.Count() > 0)
+                            {
+                                foreach (var m in Model.buttonlist)
+                                {
+                                    <tr>
+                                        <td class="jz">@m.BTN_Id</td>
+                                        <td>@m.BTN_Name</td> @*按钮名称*@
+                                        <td>@m.BTN_OrderIndex</td>
+                                        <td>@m.BTN_Mark</td>
+                                        <td>
+                                            <a href="javascript:;" class="btn btn-primary btn-xs" type="button"><i class="fa fa-edit"></i> 编辑</a>
+
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                @*<tr><td colspan="7" style="text-align:center; color:red;">未查询到数据,请更换查询条件试试!</td></tr>*@
+                            }
+                        </tbody>
+                        @*<tfoot>
+                                <tr>
+                                    <th>渲染引擎</th>
+                                    <th>浏览器</th>
+                                    <th>平台</th>
+                                    <th>引擎版本</th>
+                                    <th>CSS等级</th>
+                                </tr>
+                            </tfoot>*@
+                    </table>
+                    @if (Model != null && Model.buttonlist.TotalPageCount > 0)
+                    {
+                        <div class="row">
+                            <div class="dataTables_info col-sm-6">每页显示 @Model.search.PageSize 条，共<span>@Model.buttonlist.TotalItemCount</span>条数据</div>
+                            <div class="col-sm-6">
+
+                                @Html.Pager(Model.buttonlist, new PagerOptions(), "", new RouteValueDictionary {
+                                   { "pageindex",  Model.search.CurrentPage },
+                                   { "pagesize", ViewBag.PageSize }
+                               }, null)
+                            </div>
+
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script type="text/javascript">
+
+    //判断页面是否有回车操作
+    window.document.onkeydown = function (e) {
+        e = e || window.event;
+        if (e.keyCode == 13 || e.keyCode == 108) {
+            document.getElementById('frmQuery').submit();
+        }
+    }
+    //点击列表的调课,调课操作
+    function modify(id) {
+        cleanData("buttoninfo");
+        layer.open({
+            type: 1,
+            title: "<h5 class='ibox-title'>调课</h3>",
+            area: ['680px', '420px'],
+            content: $('#buttoninfo'),
+            btn: ['保存', '取消'],
+            yes: function (index) {
+                //save(id);
+                //alert($("#BTN_Name_En").val() + "-" + $(".class_date_picker").val() + " - " + $("#class-time").val() + "-" + $("#class-time").find("option:selected").text());
+               // layer.closeAll();
+            },
+            cancel: function (index) {
+                layer.close(index);
+              
+            }
+        });
+        if (id) {//提供存着ID就是修改，则加载数据，不然打开空页面
+            var loadindex = layer.load();
+            loaddetail(id, loadindex)
+        }
+        $(".chosen-select").chosen({
+            no_results_text: "未找到此选项!",
+            search_contains: true
+        });
+    }
+    // 发布作业
+    function publishJob(id) {
+        cleanData("job");//清空数据
+        layer.open({
+            type: 1,
+            title: "<h5 class='ibox-title'>发布作业</h3>",
+            area: ['680px', '400px'],
+            content: $('#job'),
+            btn: ['保存', '取消'],
+            yes: function () {
+
+            },
+            cancel: function (index) {
+                layer.close(index);
+            }
+        });
+        $("#file-1").fileinput({
+            uploadUrl: '#', // you must set a valid URL here else you will get an error
+            allowedFileExtensions: ['jpg', 'png', 'gif'],//接收的文件后缀
+            //overwriteInitial: false,
+            maxFileSize: 1000,
+            maxFilesNum: 10,
+            allowedFileTypes: ['image'],
+            msgFilesTooMany: "选择上传的文件数量({n}) 超过允许的最大数值{m}！",
+            slugCallback: function (filename) {
+                return filename.replace('(', '_').replace(']', '_');
+            }
+        });
+    }
+
+    //评价
+    function appraise(id) {
+        cleanData("appraise");//清空数据
+        layer.open({
+            type: 1,
+            title: "<h5 class='ibox-title'>评价学生</h3>",
+            area: ['780px', '400px'],
+            content: $('#appraise'),
+            btn: ['保存', '取消'],
+            yes: function () {
+
+            },
+            cancel: function (index) {
+                layer.close(index);
+            }
+        });
+
+    }
+    //考勤 appraise
+    function attendance(id) {
+        cleanData("follow");//清空数据
+        layer.open({
+            type: 1,
+            title: "<h5 class='ibox-title'>考勤管理</h3>",
+            area: ['780px', '700px'],
+            content: $('#follow'),
+            btn: ['保存', '取消'],
+            yes: function () {
+                
+            },
+            cancel: function (index) {
+                layer.close(index);
+            }
+        });
+       
+    }
+    //考勤点名-选择所有学生
+    function checkAllStudent(id) {
+        if ($("#btn_all_student").is(':checked'))
+            $("[name = chkItem]:checkbox").each(function () {
+                
+                if ($(this).is(':checked') == false) {
+                    $(this).prop("checked", true);
+                }
+            });
+            
+    }
+
+
+    //激活日期控件
+    $('.input-group.date').datepicker({
+        todayBtn: "linked",
+        keyboardNavigation: false,
+        forceParse: false,
+        calendarWeeks: true,
+        autoclose: true
+    });
+
+</script>
+@*弹出层，新增报名*@
+<div class="ibox float-e-margins" id="buttoninfo" style="display:none">
+   
+    <div class="ibox-content">
+        <form class="form-horizontal">
+            <div class="form-group">
+                <label class="col-sm-3 control-label">课程名称:</label>
+                <div class="col-sm-8">
+                    <label   class="form-control" id="BTN_Name">绘画</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">教室名称：</label>
+                <div class="col-sm-8">
+                    <input type="text" placeholder="教室名称" class="form-control" id="BTN_Name_En">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">上课日期：</label>
+                <div class="col-sm-8">
+                    <input type="text" placeholder="上课日期" class="form-control" id="class_date_picker" data-date-format="yyyy-mm-dd">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">上课时段：</label>
+                <div class="col-sm-8">
+                    <select class="selectpicker  form-control" id="class-time" data-live-search="true">
+                        <option value="1">9:00-10:00</option>
+                        <option value="2">10:00-11:00</option>
+                        <option value="3">13:00-14:00</option>
+                        <option value="4">14:00-15:00</option>
+                        <option value="5">15:00-16:00</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">老师：</label>
+                <div class="col-sm-8">
+                    <select data-placeholder="选择教师..." class="chosen-select" style="width:100%;" tabindex="2">
+                        <option value="">请选择</option>
+                        <option value="老师A" hassubinfo="true">老师A</option>
+                        <option value="老师B" hassubinfo="true">老师B</option>
+                        <option value="老师C" hassubinfo="true">老师C</option>
+                        <option value="老师D" hassubinfo="true">老师D</option>
+                    </select>
+                </div>
+            </div>
+            @*<div class="form-group">
+                <label class="col-sm-3 control-label">是否停用：</label>
+                <div class="checkbox i-checks col-sm-8">
+                    <label>
+                        <input type="checkbox" value="" id="BTN_IsSuspended"> <i></i> 停用
+                    </label>
+                </div>
+            </div>*@
+        </form>
+    </div>
+</div>
+
+@*弹出层，考勤管理*@
+<div class="ibox float-e-margins" id="follow" style="display:none">
+    <div class="ibox-content">
+        <form class="form-horizontal">
+            <table class="table table-striped table-bordered table-hover dataTables-example">
+              
+                <tbody>
+                    <tr><td>班级:绘画，课时:1.0</td></tr>
+                    <tr><td>上课时间:2017-05-18 10:00-11:00 应到:<font color="#000000">10</font>  已到:<font color="#0033CC	">0</font>  未到:<font color="#FF0000">0</font></td></tr>
+                </tbody>
+                </table>
+                <div class="">
+                    <table class="table table-striped table-bordered table-hover dataTables-example">
+                        <thead>
+                         <tr>
+                                <th>学员姓名</th>
+                                <th>学员电话</th>
+                                <th>出勤 <input type="checkbox" class="checkbox i-checks" value="" id="btn_all_student" onclick="javascript:checkAllStudent();"></th>
+                                <th>剩余课时</th>
+                                <th>缺勤原因</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>王遗风</td>
+                            <td>13812345678</td>
+                            <th>出勤 <input type="checkbox" class="checkbox i-checks" name="chkItem" value="" id="btn_all_student"></th>
+                            <td>剩余20.0 </td>
+                            <td>
+                                <select class="selectpicker  form-control" id="class-time" data-live-search="true">
+                                    <option selected value="">请选择缺勤原因</option>
+                                    <option value="1">其他课程的课</option>
+                                    <option value="2">迟到</option>
+                                    <option value="3">请假</option>
+                                    <option value="4">事假</option>
+                                    <option value="5">旷课</option>
+                                </select>
+                            </td>
+                        </tr>   
+                            <tr>
+                                <td>王二小</td>
+                                <td>15812445678</td>
+                                <th>出勤 <input type="checkbox" class="checkbox i-checks" name="chkItem" value="" id="btn_all_student"></th>
+                                <td>剩余20.0</td>
+                                <td>
+                                    <select class="selectpicker  form-control" id="class-time" data-live-search="true">
+                                        <option selected value="">请选择缺勤原因</option>
+                                        <option value="1">其他课程的课</option>
+                                        <option value="2">迟到</option>
+                                        <option value="3">请假</option>
+                                        <option value="4">事假</option>
+                                        <option value="5">旷课</option>
+                                    </select>
+                                </td>
+                            </tr>   
+                            <tr>
+                                <td>小二蛋</td>
+                                <td>15557445678</td>
+                                <th>出勤 <input type="checkbox" class="checkbox i-checks" name="chkItem" value="" id="btn_all_student"></th>
+                                <td>剩余20.0 </td>
+                                <td>
+                                    <select class="selectpicker  form-control" id="class-time" data-live-search="true">
+                                        <option selected value="">请选择缺勤原因</option>
+                                        <option value="1">其他课程的课</option>
+                                        <option value="2">迟到</option>
+                                        <option value="3">请假</option>
+                                        <option value="4">事假</option>
+                                        <option value="5">旷课</option>
+                                    </select>
+                                </td>
+                            </tr>   
+                        </tbody>
+                    </table>
+                </div>
+
+
+
+</form>
+    </div>
+</div>
+
+@*弹出层，评价*@
+
+<div class="ibox float-e-margins" id="appraise" style="display:none">
+    <div class="ibox-content">
+        <form class="form-horizontal">
+
+            <div class="">
+                <table class="table table-striped table-bordered table-hover dataTables-example">
+                    <thead>
+                        <tr>
+                            <th>学员姓名</th>
+                            <th>学员电话</th>
+                            <th>评价</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>王遗风</td>
+                            <td>13812345678</td>
+
+                            <td>
+                                <input type="text" placeholder="学生评价" class="form-control input-sm" id="BTN_Name_En">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>王二小</td>
+                            <td>15812445678</td>
+                            <td>
+                                <input type="text" placeholder="学生评价" class="form-control  input-sm" id="BTN_Name_En">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>小二蛋</td>
+                            <td>15557445678</td>
+                            <td>
+                                <input type="text" placeholder="学生评价" class="form-control input-sm" id="BTN_Name_En">
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+
+
+        </form>
+    </div>
+</div>
+
+@*弹出层，发布作业*@
+<div class="ibox float-e-margins" id="job" style="display:none">
+    <div class="ibox-content">
+        <form class="form-horizontal">
+         
+            <div class="form-group">
+                <label class="col-sm-3 control-label">作业标题：</label>
+                <div class="col-sm-8">
+                    <input type="text" placeholder="作业标题" class="form-control" id="BTN_Name_En">
+                </div>
+            </div>
+           
+            
+            
+            <div class="form-group">
+                <label class="col-sm-3 control-label">文件上传：</label>
+                <div class="col-sm-8">
+                   
+                    <input id="file-1" type="file" multiple class="file" accept="image/jpg,image/png,image/gif" data-overwrite-initial="false" data-min-file-count="2">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label">作业内容：</label>
+                <div class="col-sm-8">
+                    <textarea placeholder="作业内容" class="form-control" rows="3" ></textarea>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

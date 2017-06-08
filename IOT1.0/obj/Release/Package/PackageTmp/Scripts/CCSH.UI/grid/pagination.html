@@ -1,0 +1,11 @@
+﻿<ul class="pagination">
+    <li><a class="bt" href="#" data-bind="css: { 'enable': isFirstPage }, click: gotoFirstPage"><span class="glyphicon glyphicon-fast-backward"></span></a></li>
+    <li><a class="bt" href="#" data-bind="css: { 'enable': isFirstPage }, click: gotoPreviousPage"><span class="glyphicon glyphicon-backward"></span></a></li>
+    <li><a href="#" data-bind="visible: isFirstGroupPage(), click: gotoPrePageGroup">…</a></li>
+    <!-- ko foreach : pageItems -->
+    <li data-bind=" css: { 'active': $root.pageIndex() == $data }"><a href="#" data-bind="    text: $data, click: $root.gotoPage"></a></li>
+    <!-- /ko -->
+    <li><a href="#" data-bind="visible: isLastGroupPage(), click: gotoNextPageGroup">…</a></li>
+    <li><a class="bt" href="#" data-bind="css: { 'enable': isLastPage }, click: gotoNextPage"><span class="glyphicon glyphicon-forward"></span></a></li>
+    <li><a class="bt" href="#" data-bind="css: { 'enable': isLastPage }, click: gotoLastPage"><span class="glyphicon glyphicon-fast-forward"></span></a></li>
+</ul>

@@ -1,0 +1,11 @@
+D:\zr\IOT\IOT1.0\IDataProvider\bin\Debug\IDataProvider.dll
+D:\zr\IOT\IOT1.0\IDataProvider\bin\Debug\IDataProvider.pdb
+D:\zr\IOT\IOT1.0\IDataProvider\bin\Debug\Newtonsoft.Json.dll
+D:\zr\IOT\IOT1.0\IDataProvider\obj\Debug\IDataProvider.dll
+D:\zr\IOT\IOT1.0\IDataProvider\obj\Debug\IDataProvider.pdb
+D:\zr\IOT\IOT1.0\IDataProvider\obj\Debug\IDataProvider.csprojResolveAssemblyReference.cache
+D:\zr\old\IOT\IOT1.0\IDataProvider\bin\Debug\IDataProvider.dll
+D:\zr\old\IOT\IOT1.0\IDataProvider\bin\Debug\IDataProvider.pdb
+D:\zr\old\IOT\IOT1.0\IDataProvider\bin\Debug\Newtonsoft.Json.dll
+D:\zr\old\IOT\IOT1.0\IDataProvider\obj\Debug\IDataProvider.dll
+D:\zr\old\IOT\IOT1.0\IDataProvider\obj\Debug\IDataProvider.pdb

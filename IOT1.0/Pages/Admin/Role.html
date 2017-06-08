@@ -1,0 +1,589 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>角色管理</title>
+    <link href="../../Scripts/bootStrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="../../CSS/bootstrapExtend.css" rel="stylesheet" />
+    <link href="../../Scripts/Flexigrid/css/flexigrid.css" rel="stylesheet" />
+    <link href="../../CSS/sco.message.css" rel="stylesheet" />
+    <link href="../../CSS/IChecked/flat/red.css" rel="stylesheet" />
+    <script src="../../Scripts/jquery-1.9.1.min.js"></script>
+    <script src="../../Scripts/knockout/knockout-3.0.0.js"></script>
+    <script src="../../Scripts/knockout/knockout.mapping.js"></script>
+    <script src="../../Scripts/bootStrap/js/bootstrap.min.js"></script>
+    <script src="../../Scripts/CCSH.UI/combox.js"></script>
+    <script src="../../Scripts/Flexigrid/js/flexigrid.js"></script>
+    <script src="../../Scripts/sco.message.js"></script>
+    <script src="../../Scripts/bootbox.min.js"></script>
+    <script src="../../Scripts/icheck.js"></script>
+ <!--   <script src="../../Scripts/bootstrap-validator/validator.js"></script>-->
+    <script src="../../Scripts/base.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var userInfo = localStorage.getItem("ERP_UserInfo");
+            $('[data-toggle="tooltip"]').tooltip()
+            //flexgrid模型
+            var _gridquery = $("#GridQuery").flexigrid({
+                url: false,
+                dataType: 'json',
+                singleSelect: true,//单选
+                method: 'POST',
+                colModel: [
+                    {
+                        display: '角色ID',
+                        name: 'ROLE_Id',
+                        sortable: true,
+                        align: 'center',
+                        process: function (item) {
+                            $(item).text($(item).text().replace('T', ' ').substr(0, 19));
+                        }
+                    }, {
+                        display: '角色名',
+                        name: 'ROLE_Name',
+                        sortable: true,
+                        align: 'center'
+                    }, {
+                        display: '角色英文名',
+                        name: 'ROLE_Name_En',
+                        sortable: true,
+                        align: 'center'
+                    }, {
+                        display: '角色等级',
+                        name: 'ROLE_Level',
+                        sortable: true,
+                        align: 'center'
+                    }
+                    , {
+                        display: '标记',
+                        name: 'ROLE_Mark',
+                        sortable: true,
+                        align: 'center'
+                    }, {
+                        display: '角色描述',
+                        name: 'ROLE_Desc',
+                        align: 'center',
+                        hide: true
+                    }
+                ],
+                showTableToggleBtn: true,
+                rp: 50,
+                usepager: true,
+                useRp: true,
+                width: 'auto',
+                height: 'auto'
+            });
+
+             
+            //按钮组模型
+            var Role = function () {
+                var _Role = this;
+                _Role.ROLE_Id = ko.observable(0);
+                _Role.ROLE_Name = ko.observable("");
+                _Role.ROLE_Name_En = ko.observable("");
+                _Role.ROLE_Level = ko.observable(0);
+                _Role.ROLE_Desc = ko.observable("");
+                _Role.ROLE_OrderIndex = ko.observable(0);
+                _Role.ROLE_Mark = ko.observable("");
+
+                //属性离开事件
+                this.Blur = function () {
+                    postWebJson("Role/ValRolAttribute", ko.toJS(_Role), function (data) {
+                        if (data == "1") {
+                            msg.info("该账号已经存在！");
+                            _Role.ACC_Role("");
+                        }
+                    });
+                }
+
+                this.Add = function (fn_onSucess, fn_onErr) {
+                    postWebJson("Role/Add", ko.toJS(_Role), function (data) {
+                        if (fn_onSucess) {
+                            msg.info("新增成功！");
+                            fn_onSucess();
+
+                        }
+                    });
+                }
+                this.Edit = function (fn_onSucess, fn_onErr) {
+                    postWebJson("Role/Edit", ko.toJS(_Role), function (data) {
+                        if (fn_onSucess) {
+                            msg.info("保存成功！");
+                            fn_onSucess();
+                        }
+                    });
+                }
+                this.Get = function (fn_onSucess, fn_onErr) {
+                    postWebJson("Role/Get", ko.toJS(_Role), function (data) {
+                        ko.mapping.fromJS(data, {}, _Role);
+                        if (KObj.FunctionModel() == "EDIT") {
+                        }
+                    });
+                }
+                this.Delete = function (fn_onSucess, fn_onErr) {
+                    postWebJson("Role/Delete", ko.toJS(_Role), function (data) {
+                        if (fn_onSucess) {
+                            msg.info("删除成功！");
+                            fn_onSucess();
+                        }
+                    });
+                }
+            }
+
+            var KObj = new function () {
+                var self = this;
+                //查询界面数据
+                self.FunctionModel = ko.observable("");
+                self.EditModel = ko.observable("");
+                self.ROLE_Name = ko.observable("");
+                self.ROLE_Level = ko.observable("");
+                self.ROLE_Desc = ko.observable("");
+                self.ROLE_ID = ko.observable();
+              
+                //存放按钮组的数组（所有数据）
+                self.BtnGroupArray = ko.observableArray([]);
+
+                //存放按钮的数组
+                self.BtnArray = ko.observableArray([]);
+
+                //勾选的数组栏目
+                self.SelectRoleArray = ko.observableArray([]);
+
+                ////用来存放菜单的按钮数组
+                //self.RoleMenuArry = ko.observable([]);
+                ////用来存放选中权限的数组
+                //self.RolePremissArry = ko.observable([]);
+                self.menu = ko.mapping.fromJS([]);
+                $("body").data("last", []);
+
+                //被勾选所有的列
+                self.CheckTheLineValueArray = ko.observableArray([]);
+                //上次勾选的列
+                self.LastCheckTheLineValueArray = ko.observableArray([]);
+
+
+                //整行勾选，整行移除：
+                self.CheckTheLineValueArray.subscribe(function (item) {
+                    var last = [];
+                    if ($("body").data("last")!="") {
+                        last = $("body").data("last").split(",");
+                    }
+                    var groupId = self.CheckTheLineValueArray()[self.CheckTheLineValueArray().length - 1];
+                    if (self.CheckTheLineValueArray().length >= last.length) {//大于上一次数组长度说明是新的选中
+                        for (var i = 0; i < self.BtnGroupArray().length; i++) {
+                            if (self.BtnGroupArray()[i].FI_ButtonGroupId == groupId) {//判断选中的是哪一行。
+                                //删除这行已有的数据：
+                                for (var k = 0; k < self.SelectRoleArray().length; k++) {
+                                    for (var m = 0; m < self.BtnGroupArray()[i].SYS_Button.length; m++) {//每个按钮
+                                        var checkStr1 = self.BtnGroupArray()[i].SYS_Button[m].FI_ButtonGroupId + 'B' + self.BtnGroupArray()[i].SYS_Button[m].FI_ButtonId;//循环选中一行的数据准备塞入。
+                                        if (checkStr1 == self.SelectRoleArray()[k]) {
+                                            self.SelectRoleArray.remove(checkStr1);
+                                        }
+                                    }
+                                }
+                                //把选中行的数据添加进去
+                                for (var j = 0; j < self.BtnGroupArray()[i].SYS_Button.length; j++) {
+                                    var checkStr2 = self.BtnGroupArray()[i].SYS_Button[j].FI_ButtonGroupId + 'B' + self.BtnGroupArray()[i].SYS_Button[j].FI_ButtonId;//循环选中一行的数据准备塞入。
+                                    self.SelectRoleArray.push(checkStr2);
+                                }
+                            }
+                        }
+                    } else {//清空一行的操作
+                        //获取id的一部分：
+                        var id = "";
+                        if (self.CheckTheLineValueArray().length == 0) {
+                            id = last[0];
+                        } else {
+                            id = self.subArray(last, self.CheckTheLineValueArray());
+                        }
+                        //清空所有的类似的带有此id的checkbox
+                            for (var m = 0; m < self.BtnArray().length; m++) {//每个按钮
+                                var strArry = id + 'B' + self.BtnArray()[m].BTN_Id;
+                                for (var i = 0; i < self.SelectRoleArray().length; i++) {
+                                    if (self.SelectRoleArray()[i] == strArry) {
+                                        self.SelectRoleArray.remove(strArry);
+                                    }
+                                }
+                            }
+                      
+                     }
+                    //用来比较两次数组的差距
+                    var array = self.CheckTheLineValueArray().toString();
+                    $("body").data("last", array);
+                });
+           
+
+                //数组求差集(返回一个数字)
+                self.subArray = function (array1,array2) {
+                    for (var i = 0; i < array1.length; i++) {
+                        for (var j = 0; j < array2.length; j++) {
+                            if (array1.length > array2.length) {
+                                if (array1.length == 1) {
+                                    return array1[0];
+                                } else if (array1[i] == array2[j]) {
+                                    continue;
+                                } else {
+                                    return array1[i];
+                                }
+                            } else {
+                                if (array2.length == 1) {
+                                     return array2[0];
+                                } else if (array1[i] == array2[j]) {
+                                     continue;
+                                } else {
+                                    return array2[j];
+                                }
+                            }
+                        }
+                    }
+                }
+
+
+                //全页面选择：
+
+                self.DDList = function (item) {
+                    if (item.Childs().length > 0) {
+                        $('#C' + item.ID()).toggle();
+                    }
+                }
+
+                self.Role = new Role();
+                //flexgrid查询函数
+                self.SearchQuery = function () {
+                    var btn = $("#startQuery");
+                    btn.button("loading");
+                    $("#GridQuery").flexOptions({
+                        url: CCSHmobi.website + 'Role/GetJson',
+                        params: [
+                            { name: "ACC_Role", value: self.ROLE_Name() },
+                            { name: "ACC_Email", value: self.ROLE_Level() },
+                            { name: "ACC_MobilePhone", value: self.ROLE_Desc() }
+                        ],
+                        newp: 1,
+                        onError: function (XMLHttpRequest, textStatus, errorThrown) {
+                            msg.info("请求超时，可能是因为数据量过大，请填写适当的筛选条件后重试");
+                            $("#grid").flexAddData();
+                        }
+                    }).flexReload();
+                    btn.button("reset");
+                }
+
+                //新增按钮组操作
+                self.OpenModal = function () {
+                    if (self.FunctionModel() != "PERMISSION") {
+                        $("#BtnModal").modal("show");
+                    }
+                    if (self.FunctionModel() == "PERMISSION") {
+                        $("#RoleBtn").modal("show");
+                    }
+                }
+
+                //关闭窗口
+                self.CloseModal = function () {
+                    if (self.FunctionModel() != "PERMISSION") {
+                        $("#BtnModal").modal("hide");
+                    }
+                    if (self.FunctionModel() == "PERMISSION") {
+                        $("#RoleBtn").modal("hide");
+                        self.ACC_Person("");
+                    }
+                }
+
+
+                //点击ToolBar事件，必须确定功能模式
+                self.ExcuteBtn = function (mode) {
+                    self.FunctionModel(mode)
+                    //获取选中行的主键值
+
+                    //状态判断
+                    if (self.FunctionModel() == 'ADD') {
+                        cleanData("BtnModal");
+                        self.OpenModal();
+                    }
+                    else if (self.FunctionModel() == 'PERMISSION') {
+                        //cleanData("FCModal");
+                        try {
+                            var selectedId = $("#GridQuery").selectedItem()[0].ROLE_Id;
+                        } catch (e) {
+                            msg.info("请先选中操作的行！");
+                            return;
+                        }
+                        self.ROLE_ID(selectedId);
+
+                        //获取菜单列表
+                        getWebJson("Login/GetMenuWap", "staffId=" + userInfo, function (data) {
+                            ko.mapping.fromJS(data, self.menu);
+                            self.OpenModal();
+                        });
+                    }
+                    else {
+                        try {
+                            var selectedId = $("#GridQuery").selectedItem()[0].ROLE_Id;
+                            self.ROLE_ID(selectedId);
+                        } catch (e) {
+                            msg.info("请先选中操作的行！");
+                            return;
+                        }
+                        self.Account.ROLE_ID(selectedId);
+                        self.Account.Get();
+
+                        self.OpenModal();
+                    }
+                    //确定编辑模式
+                    if (self.FunctionModel() == 'ADD' || self.FunctionModel() == 'EDIT') {
+                        self.EditModel("保存");
+                    }
+                    if (self.FunctionModel() == 'DELETE') {
+                        self.EditModel("停用");
+                    }
+                    if (self.FunctionModel() == 'PERMISSION') {
+                        self.EditModel("权限分配");
+                    }
+                }
+
+                //------------------------------按钮组按钮的分配----------------------------------------
+                //单个菜单选中按选中获取二级菜单
+                self.GetMenuId = function (item) {
+                    //获取当前分配的id
+                    //后台传值
+                    getWebJson("Button/GetBtnForTB?roleId=" + item.ID(), null, function (item) {
+                        self.BtnArray(item[0]);
+                        self.BtnGroupArray(item[1]);
+                        $("#BtnAndBtnGroup").modal("show");
+                    });
+                }
+                ////------------------------------权限分配代码模块---------------------------------------
+ 
+                //主处理Modal函数
+                self.ExcuteModal = function () {
+                    if (self.FunctionModel() == 'EDIT') {
+                        self.Role.Edit(self.CloseModal);
+                    } else if (self.FunctionModel() == 'DELETE') {
+                        self.Role.Delete(self.CloseModal);
+
+                    } else if (self.FunctionModel() == 'ADD') {
+                        self.Role.Add(self.CloseModal);
+                    }
+                }
+
+                ///-----------------------------提交权限保存到数据库-------------------------------------------------
+                self.SubMitRights = function (item) {
+                    postWebJson("Button/SaveAlltheRights", ko.toJS(item), function () {
+                        self.SelectRoleArray();
+                    
+                    });
+                }
+        
+                }();
+                ko.applyBindings(KObj); 
+        })
+    </script>
+</head>
+<body>
+    <!--查询界面-->
+    <div id="QueryDiv">
+        <form role="form" class="form form-horizontal requirement_search" style="top: 50px">
+            <div class="alert alert-success" role="alert">
+                <label class="label label-default">编辑功能：</label>
+                <button class="btn glyphicon glyphicon-plus btn-primary" type="button" data-bind="click: function () { ExcuteBtn('ADD') }"  data-toggle="tooltip" data-placement="top" title="新增"><em class="icon-align-left"></em></button>
+                <button class="btn glyphicon glyphicon-pencil btn-info" type="button" data-bind="click: function () { ExcuteBtn('EDIT') }"  data-toggle="tooltip" data-placement="top" title="修改"><em class="icon-align-right"></em></button>
+                <button class="btn glyphicon glyphicon-remove  btn-warning" type="button" data-bind ="click: function () { ExcuteBtn('DELETE') }" data-toggle="tooltip" data-placement="top" title="删除"><em class="icon-align-center"></em></button>
+                <button class="btn glyphicon glyphicon-home  btn-success" type="button" data-bind ="click: function () { ExcuteBtn('PERMISSION') }" data-toggle="tooltip" data-placement="top" title="功能配置"><em class="icon-align-center"></em></button>
+            </div>
+            <hr />
+            <div class="row form-group">
+                <div class="col-sm-2"><label class="control-label">角色名称</label></div>
+                <div class="col-sm-4"><input type="text" class="form-control"  data-bind="value: ROLE_Name"/></div>
+                <div class="col-sm-2"><label class="control-label">角色等级</label></div>
+                <div class="col-sm-4"><input type="text" class="form-control"  data-bind="value: ROLE_Level"/></div>
+            </div>
+            <div class="row form-group">
+                <div class="col-sm-2"><label class="control-label">角色描述</label></div>
+                <div class="col-sm-4"><input type="text" class="form-control"  data-bind="value: ROLE_Desc"/></div>
+                <div class ="col-sm-3"></div>
+                <div class="col-sm-3">
+                    <button id="startQuery" class="form-control btn btn-primary" data-loading-text="查询中..." data-bind="click: function () { SearchQuery() }">查询</button>
+                </div>
+            </div>
+            <br />
+            <div class="row form-group">
+                <div class="col-xs-8"></div>
+            </div>
+        </form>
+        <div style="padding: 0 5px;">
+            <table id="GridQuery" class="table table-condensed"></table>
+        </div>
+    </div>
+    <!--查询界面-->
+
+       <!--Modal界面-->
+       <div id="BtnModal" class="modal fade" data-keyboard="false" data-backdrop="static" role="dialog" tabindex="-1" aria-hidden="true"  data-toggle="validator" >
+       <div class="modal-dialog" style="width: 30%">
+           <div class="modal-content">
+              <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="H1" style="text-align: center"><b>角色管理</b></h4>
+              </div>
+               <div class ="modal-body">
+                   <form data-bind="submit: ExcuteModal">
+                  <div class="control-group">
+                      <!-- Text input-->
+                      <div>
+                          <label class="control-label" for="input01">角色名称</label>
+                      </div>
+                      <div>
+                        <input type="text" class="form-control" data-bind ="value: Role.ROLE_Name, event: { 'blur': Role.Blur }, enable: FunctionModel() != 'DELETE', visible: FunctionModel() == 'ADD'" data-minlength="5" data-error="账号不可小于5位"  required>
+                         <input type="text" class="form-control" data-bind ="value: Role.ROLE_Name, enable: FunctionModel() != 'DELETE', visible: FunctionModel() != 'ADD'" data-minlength="5" data-error="账号不可小于5位"  required>
+                      </div>
+                   </div>
+                   <br />
+                      <div class="control-group">
+                          <!-- Text input-->
+                          <div>
+                               <label class="control-label" for="input01">英文名称</label>
+                          </div>
+                          <div>
+                            <input type="text"placeholder ="英文名称" class="form-control" data-bind ="value: Role.ROLE_Name_En, enable: FunctionModel() != 'DELETE'" data-minlength="6" data-error="账号不可小于6位" required />
+                        </div>
+                       <br />
+                     </div>
+                     <div class="control-group">
+                      <!-- Text input-->
+                      <div>
+                           <label class="control-label" for="input01">角色等级</label>
+                      </div>
+                      <div>
+                        <input type="number" placeholder ="序号" class="form-control"  data-bind ="value: Role.ROLE_Level, enable: FunctionModel() != 'DELETE'" required />
+                      </div>
+                    </div>
+                   <br />
+                       <div class="control-group">
+                      <!-- Text input-->
+                      <div>
+                           <label class="control-label" for="input01">排序</label>
+                      </div>
+                      <div>
+                          <input type="text" placeholder="排序" class="form-control" data-bind ="value: Role.ROLE_OrderIndex ,enable: FunctionModel() != 'DELETE'" required />
+                      </div>
+                    </div>
+                   <br />
+                      <div class="control-group">
+                      <!-- Textarea -->
+                      <label class="control-label">详细描述</label>
+                      <div class="controls">
+                        <div class="textarea">
+                           <textarea class="form-control"  data-bind ="value: Role.ROLE_Desc, enable: FunctionModel() != 'DELETE'"> </textarea>
+                        </div>
+                      </div>
+                    </div>
+                   <br />
+                   <div class="row form-group">
+                      <div class="col-xs-2"></div>
+                      <div class="col-xs-4">
+                          <button class="btn btn-default form-control" data-bind="click: CloseModal ">关闭</button>
+                      </div>
+                      <div class="col-xs-4">
+                        <button class="btn btn-success form-control" type="submit" data-bind="text: EditModel" ></button>
+                      </div>
+                    </div>
+                   </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--角色按钮分配-->
+     <div id="RoleBtn" class="modal fade" data-keyboard="false" data-backdrop="static" role="dialog" tabindex="-1" aria-hidden="true"  data-toggle="validator" >
+       <div class="modal-dialog" style="width:90%">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="H2" style="text-align: center"><b>菜单选项</b></h4>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-bordered">
+                        <thead>  
+                            <tr class="active">
+                                <th class="col-xs-1">操作</th>
+                                <th class="col-xs-2">菜单ID</th>
+                                <th class="col-xs-3">菜单名称</th>
+                                <th class="col-xs-3">菜单链接</th>
+                                <th class="col-xs-3">菜单状态</th>
+                            </tr>
+                        </thead>
+                        <tbody data-bind ="foreach: { data: menu,as: 'P' }">
+                            <tr>
+                                <td class="col-xs-1"><span class = "glyphicon glyphicon-chevron-right" data-bind="click: $root.DDList, visible: P.Childs().length"></span></td>
+                                <td class="col-xs-2"><span data-bind ="text: ID"/></td>
+                                <td class="col-xs-3"><span data-bind ="text: Name"/></td>
+                                <td class="col-xs-3"><span data-bind ="text: URL"/></td>
+                                <td class="col-xs-3"><span data-bind ="text: IsSuspended"/></td>
+                            </tr>
+                            <!--嵌套二级子表-->
+                            <tr>
+                                <td colspan="12" data-bind="attr: { id: 'C' + P.ID() }, visible: P.Childs().length > 0">
+                                    <table class="table table-bordered" style="margin-bottom: 0px">
+                                        <tbody data-bind ="foreach: { data: P.Childs, as: 'C' }">
+                                             <tr>
+                                                <td class="col-xs-1">&nbsp<button class = "btn btn-primary glyphicon glyphicon-hand-right" data-bind="click: $root.GetMenuId"></button></td>
+                                                <td class="col-xs-2"><span data-bind ="text: ID"/></td>
+                                                <td class="col-xs-3"><span data-bind ="text: Name"/></td>
+                                                <td class="col-xs-3"><span data-bind ="text: URL"/></td>
+                                                <td class="col-xs-3"><span data-bind ="text: IsSuspended"/></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                             <!--嵌套二级子表-->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--角色权限分配-->
+
+    <!--按钮组和按钮分配-->
+     <div id="BtnAndBtnGroup" class="modal fade" data-keyboard="false" data-backdrop="static" role="dialog" tabindex="-1" aria-hidden="true"  data-toggle="validator" >
+       <div class="modal-dialog" style="width:95%">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="H3" style="text-align: center"><b>分配按钮组和按钮</b></h4>
+                </div>
+                <div class="modal-body table-responsive">
+                <!--    <div style="overflow-x:scroll">-->
+                        <table class="table table-bordered">
+                          <!--  <thead>  
+                                <tr class="active">
+                                    <th style="width:6%">按钮组</th>
+                                    <th style="width:94.5%" data-bind="foreach: BtnArray"><label style="width:4.5%" data-bind=" text: BTN_Name"></label></th>
+                                </tr>
+                            </thead>-->
+                            <tbody data-bind ="foreach: { data: BtnGroupArray, as: 'P' }">
+                                <tr>    
+                                    <td style="width:10%"><label data-bind="text: P.BG_Name"/></td>
+                                    <td style="width:80%" data-bind="foreach: P.SYS_Button, as: 'B'" colspan="12"><input style="width:3%" type="checkbox" data-bind="    checked: $root.SelectRoleArray, value: FI_ButtonGroupId + 'B' + FI_ButtonId, attr: { id: FI_ButtonGroupId + 'B' + FI_ButtonId }"/><span data-bind="    text: BTN_Name"></span>&nbsp&nbsp&nbsp&nbsp</td>
+                                    <td style="width:10%"><input type="checkbox" data-bind="checked: $root.CheckTheLineValueArray,value: FI_ButtonGroupId, attr: { 'id': FI_ButtonGroupId }"/><span>勾选整行</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                   <!-- </div>-->
+                </div>
+                <div class="modal-footer">
+                    <div class="row form-group">
+                        <div class="col-xs-8"></div>
+                        <div class ="col-xs-4">
+                            <button class="btn btn-primary form-control" data-bind="click:SubMitRights">保存</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--按钮组和按钮分配-->
+    <!--Modal界面-->
+</body>
+</html>
+ 

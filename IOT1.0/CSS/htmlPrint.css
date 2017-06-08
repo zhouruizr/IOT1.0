@@ -1,0 +1,81 @@
+﻿div.divRptContent
+{
+    background-color: #ffffff;
+    width: 95%;
+    height: auto;
+    /*padding-top: 20px;*/
+    /*padding-bottom: 20px;*/
+    padding-left: 20px;
+    padding-right: 20px;
+    font-size: 15px;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+}
+
+div.divRptHeader
+{
+    text-align: center;
+    font-size: 27px;
+    font-weight: bold;
+    font: 700 27px "Microsoft YaHei",SimHei,arial;
+}
+
+div.divRptFoot
+{
+    page-break-after: always;
+}
+
+td.tdFieldName
+{
+    /*font-weight: bold;*/
+    /*padding-top: 6px;*/
+    /*vertical-align: top;*/
+    /*font-family: 'Adobe Fan Heiti Std';*/
+    padding-left: 30px;
+    width: 25%;
+    font: 700 15px/24px "Microsoft YaHei",SimHei,arial;
+}
+
+td.tdFieldContent
+{
+    width: 25%;
+}
+
+td.Title
+{
+    padding-left: 10px;
+    font: 700 15px/24px "Microsoft YaHei",SimHei,arial;
+}
+
+table.tablePrint
+{
+    width: 100%;
+    border: 2px solid;
+    border-collapse: collapse;
+    page-break-inside: avoid;
+}
+
+table.tablePrint td
+{
+    height: 20px;
+    padding-left: 10px;
+    border: 1px solid;
+}
+
+table.tablePrint th
+{
+    height: 20px;
+    border: 1px solid;
+    text-align: center;
+}
+
+table.tablePrint textarea
+{
+    height: 64px;
+    width: 99%;
+    overflow: hidden;
+    resize: none;
+    border: none;
+    font-size: 15px;
+}

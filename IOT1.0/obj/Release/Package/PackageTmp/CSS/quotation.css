@@ -1,0 +1,343 @@
+body{
+	background-color: #fff;
+}
+#quotation{
+	padding-top: 2.6875rem;
+}
+#quotation input::webkit-input-placeholder{
+	color: #bdbdbd;
+}
+#quotation input{
+	font-size: 0.75rem;
+}
+#quotation .messages{
+	font-size: 0.75rem;
+	color: #333333;
+	background-color: #f6f5fa;
+}
+#quotation .messages .inner{
+	width: 93.75%;
+	margin: 0 auto;
+	background: url(http://m.525j.com.cn/images/quotation/horn.png) center left no-repeat;
+	background-size: 3.5%;
+	padding:0.8rem 0 0.8rem 5%;
+}
+#quotation .messages .inner span{
+	color: #e62f17;
+}
+
+#quotation .baojia{
+	padding-bottom: 1.5rem;
+}
+#quotation .baojia .getBtn{
+	display: block;
+	width: 93.75%;
+	margin: 1.5rem auto 0;
+	color: #fff;
+	background-color: #e62f17;
+	text-align: center;
+	border-radius: 4px;
+	font-size: 0.9375rem;
+	padding: 0.5rem 0;
+	border: none;
+}
+#quotation .getprice{
+	display: none;
+}
+#quotation .getprice .price{
+	font-size: 0.75rem;
+	color: #999999;
+	text-align: center;
+	margin-top: 1.15625rem;
+	margin-bottom: 1.40625rem;
+}
+#quotation .getprice .price .p2{
+	font-size: 1.875rem;
+	color: #e62f17;
+}
+#quotation .getprice .subscribe{
+	width: 93.75%;
+	margin: 0 auto;
+	padding-bottom: 1.1875rem;
+}
+#quotation .getprice .subscribe p{
+	color: #999999;
+	text-align: left;
+	font-size: 0.75rem;
+}
+#quotation .getprice .subscribe p.p1{
+	font-size: 0.875rem;
+}
+#quotation .getprice .subscribe p.p2{
+	font-size: 0.75rem;
+}
+#quotation .getprice .subscribe p.p2 span{
+	font-size: 0.875rem;
+	color: #e62f17;
+}
+#quotation .getprice .subscribe p.p3 a{
+	display: block;
+	color: #e62f17;
+	font-size: 0.75rem;
+}
+#quotation .getprice .subscribe p.p4{
+	margin-top: 1.5rem;
+	margin-bottom: 0.5rem;
+}
+#quotation .getprice .subscribe .yyBtn{
+	display: block;
+	color: #fff;
+	background-color: #e62f17;
+	text-align: center;
+	border-radius: 4px;
+	font-size: 0.9375rem;
+	padding: 0.5rem 0;
+}
+#quotation .getprice .line{
+	height: 0.625rem;
+	background-color: #f6f5fa; 
+}
+#quotation .getprice .recommend{
+	width: 93.75%;
+	margin: 0 auto;
+	padding: 1rem 0 1.3125rem 0;
+}
+#quotation .getprice .recommend p{
+	font-size: 0.75rem;
+	color: #999999;
+	margin-bottom: 1rem;
+}
+#quotation .getprice .recommend .tc li{
+	width: 31.6%;
+	float: left;
+	margin-right: 2.6%;
+}
+#quotation .getprice .recommend .tc li:nth-child(3){
+	margin-right: 0;
+}
+#quotation .getprice .recommend .tc li a{
+	display: block;
+	width: 100%;
+}
+#quotation .shadow2{
+	position: fixed;
+	z-index: 100%;
+	top: 2.6875rem;
+	left: 0;
+	width: 100%;
+	bottom: 0;
+	background: rgba(0,0,0,0.5);
+	display: none;
+	background: rgba(0,0,0,0.5) url(http://m.525j.com.cn/images/load.gif) center center no-repeat;
+	background-size: 20px 20px;
+}
+#quotation .shadow{
+	position: fixed;
+	z-index: 100;
+	top: 2.6875rem;
+	left: 0;
+	width: 100%;
+	bottom: 0;
+	background: rgba(0,0,0,0.5);
+	display: none;
+}
+.alert{
+    display: none;
+    position: fixed;
+    z-index: 500;
+    background-color: #fff;
+    width: 70%;
+    margin: 0 auto;
+    border-radius: 8px;
+    left: 0;
+    right: 0;
+    top: 50%;
+    -webkit-transform: translateY(-70%);
+    transform: translateY(-70%);
+}
+.alert p{
+    text-align: center;
+    color: #656262;
+    font-size:12px;
+    padding: 12px 0;
+}
+.alert a{
+    display: block;
+    width: 100%;
+    font-size: 12px;
+    text-align: center;
+    color: #656262;
+    border-top: 1px solid #989793;
+    padding: 6px 0;
+    font-size: 14px;
+}
+.calculatecon .line{ 
+	border-bottom: 1px solid #ececec;
+	height: 2.5rem;
+	line-height: 2.5rem;
+}
+.calculatecon .line .l_box{
+	width: 93.75%;
+	margin: 0 auto;
+	position: relative;
+}
+.calculatecon .line label{
+	display: block;
+    float: left;
+    width: 22.5%;
+    font-size: 0.75rem;
+    color: #999999;
+    text-align: left;
+}
+.calculatecon .line span{
+	position: absolute;
+    right: 0;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%);
+    font-size: 0.75rem;
+    width: 20%;
+    color: #bdbdbd;
+    text-align: right;
+}
+.calculatecon .line input{
+	position: absolute;
+	left: 22.5%;
+	top: 50%;
+	width: 77%;
+	padding: 0.2rem 0;
+	color: #999999;
+    font-size: 0.75rem;
+    border: none;
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
+.calculatecon .area input{
+	width: 57.5%;
+}
+.calculatecon .line select{
+  position: relative;
+  opacity: 0;
+  width: 100%;
+  display: block;
+  height: 2.5rem;
+  line-height: 2.5rem;
+  font-size: 0.75rem;
+  color: #999999;
+  text-align: left;
+  vertical-align: top;
+  border: 0;
+  background: transparent;
+  -webkit-appearance: none;
+  padding: 0;
+  z-index: 100;
+}
+.calculatecon .line select option{
+	padding: 0;
+}
+.calculatecon .line .selectBox{
+  position: relative;
+  float: left;
+  width: 37%;
+  background: url(http://m.525j.com.cn/20160627test/images/arrow.png) right center no-repeat;
+  background-size: 0.6875rem 0.40625rem;
+}
+.calculatecon .line .selectBox:nth-child(2){
+  float: right;
+}
+.calculatecon .level{
+	position: relative;
+}
+.calculatecon .level .l_box{
+  background: url(http://m.525j.com.cn/20160627test/images/arrow.png) right center no-repeat;
+  background-size: 0.6875rem 0.40625rem;
+}
+.calculatecon .level label{
+}
+.calculatecon .level .selectBox{
+	width:25%;
+	margin-left:10%;
+}
+.calculatecon .level .selectBox:nth-child(3){
+	float:right;
+}
+.calculatecon .level select{
+	opacity: 1;
+}
+.layermcont{
+	color: #666;
+}
+.layermbtn span{
+	color: #666;
+}
+.calculatecon .line .selectBox label{
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 2.5rem;
+	line-height: 2.5rem;
+	background: transparent;
+}
+
+.apply{
+	background: #efefef;
+	color:#333;
+	text-align: center;
+	padding:0.625rem;
+	margin-bottom: 1rem;
+}
+.apply h2{
+	font-size: 1.125rem;
+	font-weight: normal;
+}
+.apply p{
+	font-size: 0.75rem;
+	line-height: 1.5rem;
+}
+
+.apply .budget h2{
+	background: url(http://m.525j.com.cn/freeprice/images/a-title.png) no-repeat center center; 
+	background-size: contain;
+	height:2.8125rem;
+	width:100%;
+	line-height: 2.8125rem;
+}
+
+.budget_list{
+	width:110%;
+	margin:1.25rem 0 1.75rem;
+}
+.budget_list li{
+	border:1px solid #d1d0d0;
+	background:#fff;
+	width:5.6875rem;
+	height:6.40625rem;
+	float:left;
+	margin-right:0.21875rem;
+}
+.budget_list li i{
+	background: url(http://m.525j.com.cn/freeprice/images/apply_icon.png) no-repeat center center; 
+	background-size: cover;
+	width:2.5625rem;
+	height: 2.5625rem;
+	display: block;
+	margin:1rem auto 0.625rem;
+}
+.budget_list li:nth-child(1) i{
+	background-position: 0 0;
+}
+.budget_list li:nth-child(2) i{
+	background-position: 0 -2.5625rem;
+}
+.budget_list li:nth-child(3) i{
+	background-position: 0 -5.125rem;
+}
+.budget_list li p{
+	color:#b22b1a; 
+	font-size: 0.9375rem
+}
+.apply .code img{
+	width: 7.625rem;
+	margin:0.625rem auto 0;
+}

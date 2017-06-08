@@ -1,0 +1,58 @@
+﻿@{
+    ViewBag.Title = "main";
+}
+<style>
+    .widget a{
+        color:#ffffff
+    }
+</style>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <div class="col-sm-4">
+        </div>
+        <div class="col-sm-2">
+            <div class="widget navy-bg p-lg text-center">
+                <a href="@Url.Action("PaymentList", "Weixin")">
+                    <div class="m-b-md">
+                        <i class="fa fa-shield fa-4x"></i>
+                        <h1 class="font-bold">交易中心</h1>
+                        <small>查看你的交易记录</small>
+                    </div>
+                 </a>
+                </div>
+            <div class="widget red-bg p-lg text-center">
+                <a href="@Url.Action("Reservation", "Weixin")">
+                    <div class="m-b-md">
+                        <i class="fa fa-bell fa-4x"></i>
+                        <h1 class="font-bold">在线报名</h1>
+                        <small>了解课程，网上报名</small>
+                    </div>
+                </a>
+                </div>
+        </div>
+        <div class="col-sm-2">
+            <div class="widget yellow-bg p-lg text-center">
+                <a href="@Url.Action("UserProgress", "Weixin")">
+                    <div class="m-b-md">
+                        <i class="fa fa-thumbs-up fa-4x"></i>
+                        <h1 class="font-bold">课程中心</h1>
+                        <small>查看剩余课时</small>
+                    </div>
+                    </a>
+            </div>
+            <div class="widget lazur-bg p-lg text-center">
+                <a href="@Url.Action("FSConnectionlist", "Weixin")">
+                    <div class="m-b-md">
+                        <i class="fa fa-warning fa-4x"></i>
+                        <h1 class="font-bold">
+                            家校联系
+                        </h1>
+                        <small>查看课后作业和老师评语</small>
+                    </div>
+                </a>
+             </div>
+        </div>
+        <div class="col-sm-4">
+        </div>
+    </div>
+</div>

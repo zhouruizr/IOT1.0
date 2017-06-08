@@ -1,0 +1,405 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="PRXModel" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityContainer Name="Entities" p1:LazyLoadingEnabled="true">
+    <EntitySet Name="SYS_Account" EntityType="PRXModel.SYS_Account" />
+    <EntitySet Name="SYS_AccountRole" EntityType="PRXModel.SYS_AccountRole" />
+    <EntitySet Name="SYS_Button" EntityType="PRXModel.SYS_Button" />
+    <EntitySet Name="SYS_ButtonGroup" EntityType="PRXModel.SYS_ButtonGroup" />
+    <EntitySet Name="SYS_Company" EntityType="PRXModel.SYS_Company" />
+    <EntitySet Name="SYS_DicCategory" EntityType="PRXModel.SYS_DicCategory" />
+    <EntitySet Name="SYS_Dics" EntityType="PRXModel.SYS_Dics" />
+    <EntitySet Name="SYS_FunctionItem" EntityType="PRXModel.SYS_FunctionItem" />
+    <EntitySet Name="SYS_FunctionTree" EntityType="PRXModel.SYS_FunctionTree" />
+    <EntitySet Name="SYS_RoleFunction" EntityType="PRXModel.SYS_RoleFunction" />
+    <EntitySet Name="SYS_SystemRole" EntityType="PRXModel.SYS_SystemRole" />
+    <EntitySet Name="vw_AccountRole" EntityType="PRXModel.vw_AccountRole" />
+    <EntitySet Name="vw_Authority" EntityType="PRXModel.vw_Authority" />
+    <EntitySet Name="vw_Dics" EntityType="PRXModel.vw_Dics" />
+    <AssociationSet Name="FK_SYS_AccountRole_SYS_Account" Association="PRXModel.FK_SYS_AccountRole_SYS_Account">
+      <End Role="SYS_Account" EntitySet="SYS_Account" />
+      <End Role="SYS_AccountRole" EntitySet="SYS_AccountRole" />
+    </AssociationSet>
+    <AssociationSet Name="FK_SYS_AccountRole_SYS_SystemRole" Association="PRXModel.FK_SYS_AccountRole_SYS_SystemRole">
+      <End Role="SYS_SystemRole" EntitySet="SYS_SystemRole" />
+      <End Role="SYS_AccountRole" EntitySet="SYS_AccountRole" />
+    </AssociationSet>
+    <AssociationSet Name="FK_SYS_FunctionItem_SYS_Button" Association="PRXModel.FK_SYS_FunctionItem_SYS_Button">
+      <End Role="SYS_Button" EntitySet="SYS_Button" />
+      <End Role="SYS_FunctionItem" EntitySet="SYS_FunctionItem" />
+    </AssociationSet>
+    <AssociationSet Name="FK_SYS_FunctionItem_SYS_ButtonGroup" Association="PRXModel.FK_SYS_FunctionItem_SYS_ButtonGroup">
+      <End Role="SYS_ButtonGroup" EntitySet="SYS_ButtonGroup" />
+      <End Role="SYS_FunctionItem" EntitySet="SYS_FunctionItem" />
+    </AssociationSet>
+    <AssociationSet Name="FK_SYS_FunctionItem_SYS_FunctionTree" Association="PRXModel.FK_SYS_FunctionItem_SYS_FunctionTree">
+      <End Role="SYS_FunctionTree" EntitySet="SYS_FunctionTree" />
+      <End Role="SYS_FunctionItem" EntitySet="SYS_FunctionItem" />
+    </AssociationSet>
+    <AssociationSet Name="FK_SYS_RoleFunction_SYS_FunctionItem" Association="PRXModel.FK_SYS_RoleFunction_SYS_FunctionItem">
+      <End Role="SYS_FunctionItem" EntitySet="SYS_FunctionItem" />
+      <End Role="SYS_RoleFunction" EntitySet="SYS_RoleFunction" />
+    </AssociationSet>
+    <AssociationSet Name="FK_SYS_FunctionTree_SYS_FunctionTree" Association="PRXModel.FK_SYS_FunctionTree_SYS_FunctionTree">
+      <End Role="SYS_FunctionTree" EntitySet="SYS_FunctionTree" />
+      <End Role="SYS_FunctionTree1" EntitySet="SYS_FunctionTree" />
+    </AssociationSet>
+    <AssociationSet Name="FK_SYS_RoleFunction_SYS_SystemRole" Association="PRXModel.FK_SYS_RoleFunction_SYS_SystemRole">
+      <End Role="SYS_SystemRole" EntitySet="SYS_SystemRole" />
+      <End Role="SYS_RoleFunction" EntitySet="SYS_RoleFunction" />
+    </AssociationSet>
+    <FunctionImport Name="sp_Authority">
+      <Parameter Name="StaffId" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="sp_AuthorityWap" ReturnType="Collection(PRXModel.sp_AuthorityWap_Result)">
+      <Parameter Name="StaffId" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="sp_CreatePassword">
+      <Parameter Name="User" Mode="In" Type="String" />
+      <Parameter Name="originalPwd" Mode="In" Type="String" />
+      <Parameter Name="RecordCount" Mode="InOut" Type="Int32" />
+    </FunctionImport>
+  </EntityContainer>
+  <EntityType Name="SYS_Account">
+    <Key>
+      <PropertyRef Name="ACC_Id" />
+    </Key>
+    <Property Name="ACC_Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+    <Property Name="ACC_Account" Type="String" Nullable="false" MaxLength="30" Unicode="false" FixedLength="false" />
+    <Property Name="ACC_Password" Type="String" MaxLength="1000" Unicode="false" FixedLength="false" />
+    <Property Name="ACC_BinaryPassword" Type="Binary" MaxLength="Max" FixedLength="false" />
+    <Property Name="ACC_Email" Type="String" MaxLength="1000" Unicode="false" FixedLength="false" />
+    <Property Name="ACC_MobilePhone" Type="String" MaxLength="80" Unicode="false" FixedLength="false" />
+    <Property Name="ACC_ActiveStatus" Type="String" MaxLength="80" Unicode="false" FixedLength="false" />
+    <Property Name="ACC_ActiveCode" Type="String" MaxLength="1000" Unicode="false" FixedLength="false" />
+    <Property Name="ACC_ActiveDateTime" Type="DateTime" Precision="3" />
+    <Property Name="ACC_LastLoginTime" Type="DateTime" Precision="3" />
+    <Property Name="ACC_LastUpdatePwdTime" Type="DateTime" Precision="3" />
+    <Property Name="ACC_UserKey1" Type="Int32" />
+    <Property Name="ACC_UserKey2" Type="String" MaxLength="30" Unicode="false" FixedLength="false" />
+    <Property Name="ACC_IsSuspended" Type="Boolean" Nullable="false" />
+    <Property Name="ACC_Mark" Type="String" MaxLength="80" Unicode="false" FixedLength="false" />
+    <Property Name="ACC_CreatedBy" Type="String" Nullable="false" MaxLength="100" Unicode="false" FixedLength="false" />
+    <Property Name="ACC_CreatedOn" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="ACC_LastUpdBy" Type="String" MaxLength="100" Unicode="false" FixedLength="false" />
+    <Property Name="ACC_LastUpdOn" Type="DateTime" Precision="3" />
+    <Property Name="ACC_RowVersion" Type="Binary" Nullable="false" MaxLength="8" FixedLength="true" p1:StoreGeneratedPattern="Computed" />
+    <Property Name="USRP_UserCode" Type="String" MaxLength="30" Unicode="false" FixedLength="false" />
+    <NavigationProperty Name="SYS_AccountRole" Relationship="PRXModel.FK_SYS_AccountRole_SYS_Account" FromRole="SYS_Account" ToRole="SYS_AccountRole" />
+  </EntityType>
+  <EntityType Name="SYS_AccountRole">
+    <Key>
+      <PropertyRef Name="AR_Id" />
+    </Key>
+    <Property Name="AR_Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+    <Property Name="AR_AccountId" Type="Int32" Nullable="false" />
+    <Property Name="AR_SystemRoleId" Type="Int32" Nullable="false" />
+    <Property Name="AR_RowVersion" Type="Binary" Nullable="false" MaxLength="8" FixedLength="true" p1:StoreGeneratedPattern="Computed" />
+    <NavigationProperty Name="SYS_Account" Relationship="PRXModel.FK_SYS_AccountRole_SYS_Account" FromRole="SYS_AccountRole" ToRole="SYS_Account" />
+    <NavigationProperty Name="SYS_SystemRole" Relationship="PRXModel.FK_SYS_AccountRole_SYS_SystemRole" FromRole="SYS_AccountRole" ToRole="SYS_SystemRole" />
+  </EntityType>
+  <EntityType Name="SYS_Button">
+    <Key>
+      <PropertyRef Name="BTN_Id" />
+    </Key>
+    <Property Name="BTN_Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+    <Property Name="BTN_Name" Type="String" Nullable="false" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="BTN_Name_En" Type="String" MaxLength="80" Unicode="false" FixedLength="false" />
+    <Property Name="BTN_Desc" Type="String" MaxLength="200" Unicode="true" FixedLength="false" />
+    <Property Name="BTN_OrderIndex" Type="Int32" Nullable="false" />
+    <Property Name="BTN_IsSuspended" Type="Boolean" Nullable="false" />
+    <Property Name="BTN_Mark" Type="String" Nullable="false" MaxLength="80" Unicode="false" FixedLength="false" />
+    <Property Name="BTN_CreatedBy" Type="String" Nullable="false" MaxLength="30" Unicode="false" FixedLength="false" />
+    <Property Name="BTN_CreatedOn" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="BTN_LastUpdBy" Type="String" MaxLength="30" Unicode="false" FixedLength="false" />
+    <Property Name="BTN_LastUpdOn" Type="DateTime" Precision="3" />
+    <Property Name="BTN_RowVersion" Type="Binary" Nullable="false" MaxLength="8" FixedLength="true" p1:StoreGeneratedPattern="Computed" />
+    <NavigationProperty Name="SYS_FunctionItem" Relationship="PRXModel.FK_SYS_FunctionItem_SYS_Button" FromRole="SYS_Button" ToRole="SYS_FunctionItem" />
+  </EntityType>
+  <EntityType Name="SYS_ButtonGroup">
+    <Key>
+      <PropertyRef Name="BG_Id" />
+    </Key>
+    <Property Name="BG_Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+    <Property Name="BG_Name" Type="String" Nullable="false" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="BG_Name_En" Type="String" Nullable="false" MaxLength="80" Unicode="false" FixedLength="false" />
+    <Property Name="BG_Desc" Type="String" MaxLength="200" Unicode="true" FixedLength="false" />
+    <Property Name="BG_OrderIndex" Type="Int32" />
+    <Property Name="BG_IsSuspended" Type="Boolean" />
+    <Property Name="BG_Mark" Type="String" MaxLength="80" Unicode="false" FixedLength="false" />
+    <Property Name="BG_CreatedBy" Type="String" MaxLength="30" Unicode="false" FixedLength="false" />
+    <Property Name="BG_CreatedOn" Type="DateTime" Precision="3" />
+    <Property Name="BG_LastUpdBy" Type="String" MaxLength="30" Unicode="false" FixedLength="false" />
+    <Property Name="BG_LastUpdOn" Type="DateTime" Precision="3" />
+    <Property Name="BG_RowVersion" Type="Binary" Nullable="false" MaxLength="8" FixedLength="true" p1:StoreGeneratedPattern="Computed" />
+    <NavigationProperty Name="SYS_FunctionItem" Relationship="PRXModel.FK_SYS_FunctionItem_SYS_ButtonGroup" FromRole="SYS_ButtonGroup" ToRole="SYS_FunctionItem" />
+  </EntityType>
+  <EntityType Name="SYS_Company">
+    <Key>
+      <PropertyRef Name="COMP_Code" />
+    </Key>
+    <Property Name="COMP_Code" Type="String" Nullable="false" MaxLength="30" Unicode="false" FixedLength="false" />
+    <Property Name="COMP_Name_1" Type="String" Nullable="false" MaxLength="60" Unicode="true" FixedLength="false" />
+    <Property Name="COMP_Name_2" Type="String" Nullable="false" MaxLength="60" Unicode="true" FixedLength="false" />
+    <Property Name="COMP_Name_3" Type="String" Nullable="false" MaxLength="60" Unicode="true" FixedLength="false" />
+    <Property Name="COMP_Address_1" Type="String" Nullable="false" MaxLength="200" Unicode="true" FixedLength="false" />
+    <Property Name="COMP_Address_2" Type="String" Nullable="false" MaxLength="200" Unicode="true" FixedLength="false" />
+    <Property Name="COMP_Address_3" Type="String" Nullable="false" MaxLength="200" Unicode="true" FixedLength="false" />
+    <Property Name="COMP_DeliveryName_1" Type="String" Nullable="false" MaxLength="60" Unicode="true" FixedLength="false" />
+    <Property Name="COMP_DeliveryName_2" Type="String" Nullable="false" MaxLength="60" Unicode="true" FixedLength="false" />
+    <Property Name="COMP_DeliveryName_3" Type="String" Nullable="false" MaxLength="60" Unicode="true" FixedLength="false" />
+    <Property Name="COMP_DeliveryAddress_1" Type="String" Nullable="false" MaxLength="200" Unicode="true" FixedLength="false" />
+    <Property Name="COMP_DeliveryAddress_2" Type="String" Nullable="false" MaxLength="200" Unicode="true" FixedLength="false" />
+    <Property Name="COMP_DeliveryAddress_3" Type="String" Nullable="false" MaxLength="200" Unicode="true" FixedLength="false" />
+    <Property Name="COMP_TaxCode" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="COMP_BankName" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="COMP_BankAccount" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="COMP_Tel" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="COMP_Fax" Type="String" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="COMP_FiscalMonStart" Type="Byte" Nullable="false" />
+    <Property Name="COMP_FiscalMonEnd" Type="Byte" Nullable="false" />
+    <Property Name="COMP_LastCalCostYear" Type="Int16" />
+    <Property Name="COMP_LastCalCostMonth" Type="Byte" />
+    <Property Name="COMP_RowVersion" Type="Binary" Nullable="false" MaxLength="8" FixedLength="true" p1:StoreGeneratedPattern="Computed" />
+  </EntityType>
+  <EntityType Name="SYS_DicCategory">
+    <Key>
+      <PropertyRef Name="DicCategory_Code" />
+    </Key>
+    <Property Name="DicCategory_Code" Type="String" Nullable="false" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="Title" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+    <Property Name="Code" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+    <Property Name="Sortnum" Type="Int32" />
+    <Property Name="Remark" Type="String" MaxLength="500" Unicode="true" FixedLength="false" />
+    <Property Name="Attrib" Type="String" MaxLength="5" Unicode="true" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="SYS_Dics">
+    <Key>
+      <PropertyRef Name="Dics_Code" />
+    </Key>
+    <Property Name="Dics_Code" Type="String" Nullable="false" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="Title" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+    <Property Name="Code" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+    <Property Name="Sortnum" Type="Int32" />
+    <Property Name="ParentId" Type="Int32" />
+    <Property Name="CategoryId" Type="Int32" />
+    <Property Name="Remark" Type="String" MaxLength="500" Unicode="true" FixedLength="false" />
+    <Property Name="Status" Type="Int32" />
+    <Property Name="IsDefault" Type="Int32" />
+    <Property Name="IsAllowModify" Type="Boolean" />
+    <Property Name="IsAllowDelete" Type="Boolean" />
+  </EntityType>
+  <EntityType Name="SYS_FunctionItem">
+    <Key>
+      <PropertyRef Name="FI_Id" />
+    </Key>
+    <Property Name="FI_Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+    <Property Name="FI_TreeId" Type="Int32" Nullable="false" />
+    <Property Name="FI_ButtonGroupId" Type="Int32" />
+    <Property Name="FI_ButtonId" Type="Int32" />
+    <Property Name="FI_ButtonGroupOrderIndex" Type="Int32" />
+    <Property Name="FI_ButtonOrderIndex" Type="Int32" />
+    <Property Name="FI_Desc" Type="String" MaxLength="200" Unicode="true" FixedLength="false" />
+    <Property Name="FI_IsSuspended" Type="Boolean" Nullable="false" />
+    <Property Name="FI_Mark" Type="String" MaxLength="80" Unicode="false" FixedLength="false" />
+    <Property Name="FI_CreatedBy" Type="String" Nullable="false" MaxLength="30" Unicode="false" FixedLength="false" />
+    <Property Name="FI_CreatedOn" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="FI_LastUpdBy" Type="String" MaxLength="30" Unicode="false" FixedLength="false" />
+    <Property Name="FI_LastUpdOn" Type="DateTime" Precision="3" />
+    <Property Name="FI_RowVersion" Type="Binary" Nullable="false" MaxLength="8" FixedLength="true" p1:StoreGeneratedPattern="Computed" />
+    <NavigationProperty Name="SYS_Button" Relationship="PRXModel.FK_SYS_FunctionItem_SYS_Button" FromRole="SYS_FunctionItem" ToRole="SYS_Button" />
+    <NavigationProperty Name="SYS_ButtonGroup" Relationship="PRXModel.FK_SYS_FunctionItem_SYS_ButtonGroup" FromRole="SYS_FunctionItem" ToRole="SYS_ButtonGroup" />
+    <NavigationProperty Name="SYS_FunctionTree" Relationship="PRXModel.FK_SYS_FunctionItem_SYS_FunctionTree" FromRole="SYS_FunctionItem" ToRole="SYS_FunctionTree" />
+    <NavigationProperty Name="SYS_RoleFunction" Relationship="PRXModel.FK_SYS_RoleFunction_SYS_FunctionItem" FromRole="SYS_FunctionItem" ToRole="SYS_RoleFunction" />
+  </EntityType>
+  <EntityType Name="SYS_FunctionTree">
+    <Key>
+      <PropertyRef Name="FT_Id" />
+    </Key>
+    <Property Name="FT_Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+    <Property Name="FT_Name" Type="String" Nullable="false" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="FT_Name_En" Type="String" MaxLength="80" Unicode="false" FixedLength="false" />
+    <Property Name="FT_Desc" Type="String" MaxLength="200" Unicode="true" FixedLength="false" />
+    <Property Name="FT_OrderIndex" Type="Int32" Nullable="false" />
+    <Property Name="FT_FormNameOrUrl" Type="String" MaxLength="1000" Unicode="true" FixedLength="false" />
+    <Property Name="FT_IsSuspended" Type="Boolean" Nullable="false" />
+    <Property Name="FT_ParentId" Type="Int32" />
+    <Property Name="FT_Mark" Type="String" MaxLength="80" Unicode="false" FixedLength="false" />
+    <Property Name="FT_CreatedBy" Type="String" Nullable="false" MaxLength="30" Unicode="false" FixedLength="false" />
+    <Property Name="FT_CreatedOn" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="FT_LastUpdBy" Type="String" MaxLength="30" Unicode="false" FixedLength="false" />
+    <Property Name="FT_LastUpdOn" Type="DateTime" Precision="3" />
+    <Property Name="FT_RowVersion" Type="Binary" Nullable="false" MaxLength="8" FixedLength="true" p1:StoreGeneratedPattern="Computed" />
+    <Property Name="FT_Type" Type="String" MaxLength="10" Unicode="false" FixedLength="false" />
+    <NavigationProperty Name="SYS_FunctionItem" Relationship="PRXModel.FK_SYS_FunctionItem_SYS_FunctionTree" FromRole="SYS_FunctionTree" ToRole="SYS_FunctionItem" />
+    <NavigationProperty Name="SYS_FunctionTree1" Relationship="PRXModel.FK_SYS_FunctionTree_SYS_FunctionTree" FromRole="SYS_FunctionTree" ToRole="SYS_FunctionTree1" />
+    <NavigationProperty Name="SYS_FunctionTree2" Relationship="PRXModel.FK_SYS_FunctionTree_SYS_FunctionTree" FromRole="SYS_FunctionTree1" ToRole="SYS_FunctionTree" />
+  </EntityType>
+  <EntityType Name="SYS_RoleFunction">
+    <Key>
+      <PropertyRef Name="RF_Id" />
+    </Key>
+    <Property Name="RF_Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+    <Property Name="RF_SystemRoleId" Type="Int32" Nullable="false" />
+    <Property Name="RF_FunctionItemId" Type="Int32" Nullable="false" />
+    <Property Name="RF_RowVersion" Type="Binary" Nullable="false" MaxLength="8" FixedLength="true" p1:StoreGeneratedPattern="Computed" />
+    <NavigationProperty Name="SYS_FunctionItem" Relationship="PRXModel.FK_SYS_RoleFunction_SYS_FunctionItem" FromRole="SYS_RoleFunction" ToRole="SYS_FunctionItem" />
+    <NavigationProperty Name="SYS_SystemRole" Relationship="PRXModel.FK_SYS_RoleFunction_SYS_SystemRole" FromRole="SYS_RoleFunction" ToRole="SYS_SystemRole" />
+  </EntityType>
+  <EntityType Name="SYS_SystemRole">
+    <Key>
+      <PropertyRef Name="ROLE_Id" />
+    </Key>
+    <Property Name="ROLE_Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+    <Property Name="ROLE_Name" Type="String" Nullable="false" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="ROLE_Name_En" Type="String" MaxLength="80" Unicode="false" FixedLength="false" />
+    <Property Name="ROLE_Level" Type="Int32" Nullable="false" />
+    <Property Name="ROLE_Desc" Type="String" MaxLength="200" Unicode="true" FixedLength="false" />
+    <Property Name="ROLE_OrderIndex" Type="Int32" Nullable="false" />
+    <Property Name="ROLE_IsSuspended" Type="Boolean" Nullable="false" />
+    <Property Name="ROLE_Mark" Type="String" MaxLength="80" Unicode="false" FixedLength="false" />
+    <Property Name="ROLE_CreatedBy" Type="String" Nullable="false" MaxLength="30" Unicode="false" FixedLength="false" />
+    <Property Name="ROLE_CreatedOn" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="ROLE_LastUpdBy" Type="String" MaxLength="30" Unicode="false" FixedLength="false" />
+    <Property Name="ROLE_LastUpdOn" Type="DateTime" Precision="3" />
+    <Property Name="ROLE_RowVersion" Type="Binary" Nullable="false" MaxLength="8" FixedLength="true" p1:StoreGeneratedPattern="Computed" />
+    <NavigationProperty Name="SYS_AccountRole" Relationship="PRXModel.FK_SYS_AccountRole_SYS_SystemRole" FromRole="SYS_SystemRole" ToRole="SYS_AccountRole" />
+    <NavigationProperty Name="SYS_RoleFunction" Relationship="PRXModel.FK_SYS_RoleFunction_SYS_SystemRole" FromRole="SYS_SystemRole" ToRole="SYS_RoleFunction" />
+  </EntityType>
+  <EntityType Name="vw_AccountRole">
+    <Key>
+      <PropertyRef Name="staffid" />
+      <PropertyRef Name="issuspend" />
+      <PropertyRef Name="ROLE_Id" />
+      <PropertyRef Name="ROLE_Name" />
+      <PropertyRef Name="ROLE_Level" />
+    </Key>
+    <Property Name="staffid" Type="String" Nullable="false" MaxLength="30" Unicode="false" FixedLength="false" />
+    <Property Name="status" Type="String" MaxLength="80" Unicode="false" FixedLength="false" />
+    <Property Name="issuspend" Type="Boolean" Nullable="false" />
+    <Property Name="ROLE_Id" Type="Int32" Nullable="false" />
+    <Property Name="ROLE_Name" Type="String" Nullable="false" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="ROLE_Name_En" Type="String" MaxLength="80" Unicode="false" FixedLength="false" />
+    <Property Name="ROLE_Level" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="vw_Authority">
+    <Key>
+      <PropertyRef Name="StaffId" />
+      <PropertyRef Name="FI_TreeId" />
+    </Key>
+    <Property Name="StaffId" Type="String" Nullable="false" MaxLength="30" Unicode="false" FixedLength="false" />
+    <Property Name="FI_TreeId" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="vw_Dics">
+    <Key>
+      <PropertyRef Name="Dics_Code" />
+    </Key>
+    <Property Name="Dics_Code" Type="String" Nullable="false" MaxLength="30" Unicode="true" FixedLength="false" />
+    <Property Name="Title" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+    <Property Name="Sortnum" Type="Int32" />
+    <Property Name="IsDefault" Type="Int32" />
+    <Property Name="Code" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+  </EntityType>
+  <Association Name="FK_SYS_AccountRole_SYS_Account">
+    <End Role="SYS_Account" Type="PRXModel.SYS_Account" Multiplicity="1" />
+    <End Role="SYS_AccountRole" Type="PRXModel.SYS_AccountRole" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SYS_Account">
+        <PropertyRef Name="ACC_Id" />
+      </Principal>
+      <Dependent Role="SYS_AccountRole">
+        <PropertyRef Name="AR_AccountId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_SYS_AccountRole_SYS_SystemRole">
+    <End Role="SYS_SystemRole" Type="PRXModel.SYS_SystemRole" Multiplicity="1" />
+    <End Role="SYS_AccountRole" Type="PRXModel.SYS_AccountRole" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SYS_SystemRole">
+        <PropertyRef Name="ROLE_Id" />
+      </Principal>
+      <Dependent Role="SYS_AccountRole">
+        <PropertyRef Name="AR_SystemRoleId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_SYS_FunctionItem_SYS_Button">
+    <End Role="SYS_Button" Type="PRXModel.SYS_Button" Multiplicity="0..1" />
+    <End Role="SYS_FunctionItem" Type="PRXModel.SYS_FunctionItem" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SYS_Button">
+        <PropertyRef Name="BTN_Id" />
+      </Principal>
+      <Dependent Role="SYS_FunctionItem">
+        <PropertyRef Name="FI_ButtonId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_SYS_FunctionItem_SYS_ButtonGroup">
+    <End Role="SYS_ButtonGroup" Type="PRXModel.SYS_ButtonGroup" Multiplicity="0..1" />
+    <End Role="SYS_FunctionItem" Type="PRXModel.SYS_FunctionItem" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SYS_ButtonGroup">
+        <PropertyRef Name="BG_Id" />
+      </Principal>
+      <Dependent Role="SYS_FunctionItem">
+        <PropertyRef Name="FI_ButtonGroupId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_SYS_FunctionItem_SYS_FunctionTree">
+    <End Role="SYS_FunctionTree" Type="PRXModel.SYS_FunctionTree" Multiplicity="1" />
+    <End Role="SYS_FunctionItem" Type="PRXModel.SYS_FunctionItem" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SYS_FunctionTree">
+        <PropertyRef Name="FT_Id" />
+      </Principal>
+      <Dependent Role="SYS_FunctionItem">
+        <PropertyRef Name="FI_TreeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_SYS_RoleFunction_SYS_FunctionItem">
+    <End Role="SYS_FunctionItem" Type="PRXModel.SYS_FunctionItem" Multiplicity="1" />
+    <End Role="SYS_RoleFunction" Type="PRXModel.SYS_RoleFunction" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SYS_FunctionItem">
+        <PropertyRef Name="FI_Id" />
+      </Principal>
+      <Dependent Role="SYS_RoleFunction">
+        <PropertyRef Name="RF_FunctionItemId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_SYS_FunctionTree_SYS_FunctionTree">
+    <End Role="SYS_FunctionTree" Type="PRXModel.SYS_FunctionTree" Multiplicity="0..1" />
+    <End Role="SYS_FunctionTree1" Type="PRXModel.SYS_FunctionTree" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SYS_FunctionTree">
+        <PropertyRef Name="FT_Id" />
+      </Principal>
+      <Dependent Role="SYS_FunctionTree1">
+        <PropertyRef Name="FT_ParentId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_SYS_RoleFunction_SYS_SystemRole">
+    <End Role="SYS_SystemRole" Type="PRXModel.SYS_SystemRole" Multiplicity="1" />
+    <End Role="SYS_RoleFunction" Type="PRXModel.SYS_RoleFunction" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SYS_SystemRole">
+        <PropertyRef Name="ROLE_Id" />
+      </Principal>
+      <Dependent Role="SYS_RoleFunction">
+        <PropertyRef Name="RF_SystemRoleId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <ComplexType Name="sp_AuthorityWap_Result">
+    <Property Type="Int32" Name="ID" Nullable="false" />
+    <Property Type="String" Name="Name" Nullable="false" MaxLength="30" />
+    <Property Type="String" Name="URL" Nullable="true" MaxLength="1000" />
+    <Property Type="Int32" Name="ParentId" Nullable="true" />
+    <Property Type="String" Name="WapType" Nullable="true" MaxLength="10" />
+  </ComplexType>
+</Schema>

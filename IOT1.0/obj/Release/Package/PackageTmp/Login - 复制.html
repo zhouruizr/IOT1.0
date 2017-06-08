@@ -1,0 +1,84 @@
+﻿<!DOCTYPE html>
+<html lang="zh-cn" class="no-js">
+<head>
+     <meta charset="utf-8">
+     <title>中华商务WEBERP</title>
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+     <!-- CSS -->
+     <link rel="stylesheet" href="CSS/mobile_reset.css">
+     <link rel="stylesheet" href="CSS/mobile_supersized.css">
+     <link rel="stylesheet" href="CSS/mobile_style.css">
+     <!-- Javascript -->
+     <script src="Scripts/jquery-1.9.1.min.js"></script>
+     <script src="Scripts/Mobile/supersized.3.2.7.min.js"></script>
+     <script src="Scripts/Mobile/supersized-init.js"></script>
+     <script src="Scripts/Mobile/scripts.js"></script>
+     <script src="Scripts/bootStrap/js/bootstrap.min.js"></script>
+     <script src="Scripts/CCSH.UI/jquery.Loading.js"></script>
+     <script src="Scripts/base.js"></script>
+
+     <script>
+        $(document).ready(function () {
+            if (!navigator.geolocation) // 判断浏览器是否支持HTML5特性
+            {
+                alert("请安装最新版本的浏览器");
+                return;
+            }
+
+            $("#btnSubmit").click(function () {
+                var btn = $(this);
+
+                var param = {};
+                param.userName = $("#txtUserName").val();
+                param.password = $("#txtPassword").val();
+                if (param.userName == "" || param.password == "") {
+                    if (param.userName == "") {
+                        $("#txtUserName").parent().addClass("has-error");
+                    }
+                    if (param.password == "") {
+                        $("#txtPassword").parent().addClass("has-error");
+                    }
+                    return false;
+                }
+                btn.button("loading");
+                postWebJson("Login/Login", param, function (data) {
+                    if (data == -1) {   //用户名或密码不能为空
+                        $('#msg').show();
+                    } else if (data == -2) {//用户名或密码错误
+                        $('#msg').show();
+                        btn.button("reset");
+                    } else { 
+                        localStorage.setItem("ERP_UserInfo", param.userName);
+                        getWebJson("Login/GetVersion", null, function (data) {
+                            localStorage.setItem("version", data);
+                            location.href = "Pages/Admin/Main2.html?version=" + data;//加入版本号之间清缓存
+                            //btn.button("reset");
+                        });
+                    }
+                }, function (data) {
+                    alert(data);
+                    btn.button("reset");
+                });
+                return false;
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <div class="page-container">
+        <h1>青浦启联教育培训中心管理系统</h1>
+        <form>
+            <input id="txtUserName" type="text"  name="username" class="username" placeholder="用户名">
+            <input id="txtPassword" type="password" name="password" class="password" placeholder="密码">
+            <!--<span><img id="valiCode" style="cursor: pointer;" class="col-md-2 control-label" src="api/Login/getCode" alt="验证码" /></span>-->
+            <button id="btnSubmit" type="submit">提交</button>
+            <div class="error"><span>+</span></div>
+        </form>
+        <div hidden id="msg" class="alert alert-warning alert-dismissible" role="alert">
+            <br /><h1>用户名或密码错误!</h1>
+        </div>
+    </div>
+</body>
+</html>

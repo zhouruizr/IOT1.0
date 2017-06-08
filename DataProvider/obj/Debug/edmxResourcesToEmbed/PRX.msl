@@ -1,0 +1,251 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="PRXModelStoreContainer" CdmEntityContainer="Entities">
+    <EntitySetMapping Name="SYS_Account">
+      <EntityTypeMapping TypeName="PRXModel.SYS_Account">
+        <MappingFragment StoreEntitySet="SYS_Account">
+          <ScalarProperty Name="ACC_Id" ColumnName="ACC_Id" />
+          <ScalarProperty Name="ACC_Account" ColumnName="ACC_Account" />
+          <ScalarProperty Name="ACC_Password" ColumnName="ACC_Password" />
+          <ScalarProperty Name="ACC_BinaryPassword" ColumnName="ACC_BinaryPassword" />
+          <ScalarProperty Name="ACC_Email" ColumnName="ACC_Email" />
+          <ScalarProperty Name="ACC_MobilePhone" ColumnName="ACC_MobilePhone" />
+          <ScalarProperty Name="ACC_ActiveStatus" ColumnName="ACC_ActiveStatus" />
+          <ScalarProperty Name="ACC_ActiveCode" ColumnName="ACC_ActiveCode" />
+          <ScalarProperty Name="ACC_ActiveDateTime" ColumnName="ACC_ActiveDateTime" />
+          <ScalarProperty Name="ACC_LastLoginTime" ColumnName="ACC_LastLoginTime" />
+          <ScalarProperty Name="ACC_LastUpdatePwdTime" ColumnName="ACC_LastUpdatePwdTime" />
+          <ScalarProperty Name="ACC_UserKey1" ColumnName="ACC_UserKey1" />
+          <ScalarProperty Name="ACC_UserKey2" ColumnName="ACC_UserKey2" />
+          <ScalarProperty Name="ACC_IsSuspended" ColumnName="ACC_IsSuspended" />
+          <ScalarProperty Name="ACC_Mark" ColumnName="ACC_Mark" />
+          <ScalarProperty Name="ACC_CreatedBy" ColumnName="ACC_CreatedBy" />
+          <ScalarProperty Name="ACC_CreatedOn" ColumnName="ACC_CreatedOn" />
+          <ScalarProperty Name="ACC_LastUpdBy" ColumnName="ACC_LastUpdBy" />
+          <ScalarProperty Name="ACC_LastUpdOn" ColumnName="ACC_LastUpdOn" />
+          <ScalarProperty Name="ACC_RowVersion" ColumnName="ACC_RowVersion" />
+          <ScalarProperty Name="USRP_UserCode" ColumnName="USRP_UserCode" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SYS_AccountRole">
+      <EntityTypeMapping TypeName="PRXModel.SYS_AccountRole">
+        <MappingFragment StoreEntitySet="SYS_AccountRole">
+          <ScalarProperty Name="AR_Id" ColumnName="AR_Id" />
+          <ScalarProperty Name="AR_AccountId" ColumnName="AR_AccountId" />
+          <ScalarProperty Name="AR_SystemRoleId" ColumnName="AR_SystemRoleId" />
+          <ScalarProperty Name="AR_RowVersion" ColumnName="AR_RowVersion" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SYS_Button">
+      <EntityTypeMapping TypeName="PRXModel.SYS_Button">
+        <MappingFragment StoreEntitySet="SYS_Button">
+          <ScalarProperty Name="BTN_Id" ColumnName="BTN_Id" />
+          <ScalarProperty Name="BTN_Name" ColumnName="BTN_Name" />
+          <ScalarProperty Name="BTN_Name_En" ColumnName="BTN_Name_En" />
+          <ScalarProperty Name="BTN_Desc" ColumnName="BTN_Desc" />
+          <ScalarProperty Name="BTN_OrderIndex" ColumnName="BTN_OrderIndex" />
+          <ScalarProperty Name="BTN_IsSuspended" ColumnName="BTN_IsSuspended" />
+          <ScalarProperty Name="BTN_Mark" ColumnName="BTN_Mark" />
+          <ScalarProperty Name="BTN_CreatedBy" ColumnName="BTN_CreatedBy" />
+          <ScalarProperty Name="BTN_CreatedOn" ColumnName="BTN_CreatedOn" />
+          <ScalarProperty Name="BTN_LastUpdBy" ColumnName="BTN_LastUpdBy" />
+          <ScalarProperty Name="BTN_LastUpdOn" ColumnName="BTN_LastUpdOn" />
+          <ScalarProperty Name="BTN_RowVersion" ColumnName="BTN_RowVersion" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SYS_ButtonGroup">
+      <EntityTypeMapping TypeName="PRXModel.SYS_ButtonGroup">
+        <MappingFragment StoreEntitySet="SYS_ButtonGroup">
+          <ScalarProperty Name="BG_Id" ColumnName="BG_Id" />
+          <ScalarProperty Name="BG_Name" ColumnName="BG_Name" />
+          <ScalarProperty Name="BG_Name_En" ColumnName="BG_Name_En" />
+          <ScalarProperty Name="BG_Desc" ColumnName="BG_Desc" />
+          <ScalarProperty Name="BG_OrderIndex" ColumnName="BG_OrderIndex" />
+          <ScalarProperty Name="BG_IsSuspended" ColumnName="BG_IsSuspended" />
+          <ScalarProperty Name="BG_Mark" ColumnName="BG_Mark" />
+          <ScalarProperty Name="BG_CreatedBy" ColumnName="BG_CreatedBy" />
+          <ScalarProperty Name="BG_CreatedOn" ColumnName="BG_CreatedOn" />
+          <ScalarProperty Name="BG_LastUpdBy" ColumnName="BG_LastUpdBy" />
+          <ScalarProperty Name="BG_LastUpdOn" ColumnName="BG_LastUpdOn" />
+          <ScalarProperty Name="BG_RowVersion" ColumnName="BG_RowVersion" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SYS_Company">
+      <EntityTypeMapping TypeName="PRXModel.SYS_Company">
+        <MappingFragment StoreEntitySet="SYS_Company">
+          <ScalarProperty Name="COMP_Code" ColumnName="COMP_Code" />
+          <ScalarProperty Name="COMP_Name_1" ColumnName="COMP_Name_1" />
+          <ScalarProperty Name="COMP_Name_2" ColumnName="COMP_Name_2" />
+          <ScalarProperty Name="COMP_Name_3" ColumnName="COMP_Name_3" />
+          <ScalarProperty Name="COMP_Address_1" ColumnName="COMP_Address_1" />
+          <ScalarProperty Name="COMP_Address_2" ColumnName="COMP_Address_2" />
+          <ScalarProperty Name="COMP_Address_3" ColumnName="COMP_Address_3" />
+          <ScalarProperty Name="COMP_DeliveryName_1" ColumnName="COMP_DeliveryName_1" />
+          <ScalarProperty Name="COMP_DeliveryName_2" ColumnName="COMP_DeliveryName_2" />
+          <ScalarProperty Name="COMP_DeliveryName_3" ColumnName="COMP_DeliveryName_3" />
+          <ScalarProperty Name="COMP_DeliveryAddress_1" ColumnName="COMP_DeliveryAddress_1" />
+          <ScalarProperty Name="COMP_DeliveryAddress_2" ColumnName="COMP_DeliveryAddress_2" />
+          <ScalarProperty Name="COMP_DeliveryAddress_3" ColumnName="COMP_DeliveryAddress_3" />
+          <ScalarProperty Name="COMP_TaxCode" ColumnName="COMP_TaxCode" />
+          <ScalarProperty Name="COMP_BankName" ColumnName="COMP_BankName" />
+          <ScalarProperty Name="COMP_BankAccount" ColumnName="COMP_BankAccount" />
+          <ScalarProperty Name="COMP_Tel" ColumnName="COMP_Tel" />
+          <ScalarProperty Name="COMP_Fax" ColumnName="COMP_Fax" />
+          <ScalarProperty Name="COMP_FiscalMonStart" ColumnName="COMP_FiscalMonStart" />
+          <ScalarProperty Name="COMP_FiscalMonEnd" ColumnName="COMP_FiscalMonEnd" />
+          <ScalarProperty Name="COMP_LastCalCostYear" ColumnName="COMP_LastCalCostYear" />
+          <ScalarProperty Name="COMP_LastCalCostMonth" ColumnName="COMP_LastCalCostMonth" />
+          <ScalarProperty Name="COMP_RowVersion" ColumnName="COMP_RowVersion" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SYS_DicCategory">
+      <EntityTypeMapping TypeName="PRXModel.SYS_DicCategory">
+        <MappingFragment StoreEntitySet="SYS_DicCategory">
+          <ScalarProperty Name="DicCategory_Code" ColumnName="DicCategory_Code" />
+          <ScalarProperty Name="Title" ColumnName="Title" />
+          <ScalarProperty Name="Code" ColumnName="Code" />
+          <ScalarProperty Name="Sortnum" ColumnName="Sortnum" />
+          <ScalarProperty Name="Remark" ColumnName="Remark" />
+          <ScalarProperty Name="Attrib" ColumnName="Attrib" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SYS_Dics">
+      <EntityTypeMapping TypeName="PRXModel.SYS_Dics">
+        <MappingFragment StoreEntitySet="SYS_Dics">
+          <ScalarProperty Name="Dics_Code" ColumnName="Dics_Code" />
+          <ScalarProperty Name="Title" ColumnName="Title" />
+          <ScalarProperty Name="Code" ColumnName="Code" />
+          <ScalarProperty Name="Sortnum" ColumnName="Sortnum" />
+          <ScalarProperty Name="ParentId" ColumnName="ParentId" />
+          <ScalarProperty Name="CategoryId" ColumnName="CategoryId" />
+          <ScalarProperty Name="Remark" ColumnName="Remark" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="IsDefault" ColumnName="IsDefault" />
+          <ScalarProperty Name="IsAllowModify" ColumnName="IsAllowModify" />
+          <ScalarProperty Name="IsAllowDelete" ColumnName="IsAllowDelete" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SYS_FunctionItem">
+      <EntityTypeMapping TypeName="PRXModel.SYS_FunctionItem">
+        <MappingFragment StoreEntitySet="SYS_FunctionItem">
+          <ScalarProperty Name="FI_Id" ColumnName="FI_Id" />
+          <ScalarProperty Name="FI_TreeId" ColumnName="FI_TreeId" />
+          <ScalarProperty Name="FI_ButtonGroupId" ColumnName="FI_ButtonGroupId" />
+          <ScalarProperty Name="FI_ButtonId" ColumnName="FI_ButtonId" />
+          <ScalarProperty Name="FI_ButtonGroupOrderIndex" ColumnName="FI_ButtonGroupOrderIndex" />
+          <ScalarProperty Name="FI_ButtonOrderIndex" ColumnName="FI_ButtonOrderIndex" />
+          <ScalarProperty Name="FI_Desc" ColumnName="FI_Desc" />
+          <ScalarProperty Name="FI_IsSuspended" ColumnName="FI_IsSuspended" />
+          <ScalarProperty Name="FI_Mark" ColumnName="FI_Mark" />
+          <ScalarProperty Name="FI_CreatedBy" ColumnName="FI_CreatedBy" />
+          <ScalarProperty Name="FI_CreatedOn" ColumnName="FI_CreatedOn" />
+          <ScalarProperty Name="FI_LastUpdBy" ColumnName="FI_LastUpdBy" />
+          <ScalarProperty Name="FI_LastUpdOn" ColumnName="FI_LastUpdOn" />
+          <ScalarProperty Name="FI_RowVersion" ColumnName="FI_RowVersion" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SYS_FunctionTree">
+      <EntityTypeMapping TypeName="PRXModel.SYS_FunctionTree">
+        <MappingFragment StoreEntitySet="SYS_FunctionTree">
+          <ScalarProperty Name="FT_Id" ColumnName="FT_Id" />
+          <ScalarProperty Name="FT_Name" ColumnName="FT_Name" />
+          <ScalarProperty Name="FT_Name_En" ColumnName="FT_Name_En" />
+          <ScalarProperty Name="FT_Desc" ColumnName="FT_Desc" />
+          <ScalarProperty Name="FT_OrderIndex" ColumnName="FT_OrderIndex" />
+          <ScalarProperty Name="FT_FormNameOrUrl" ColumnName="FT_FormNameOrUrl" />
+          <ScalarProperty Name="FT_IsSuspended" ColumnName="FT_IsSuspended" />
+          <ScalarProperty Name="FT_ParentId" ColumnName="FT_ParentId" />
+          <ScalarProperty Name="FT_Mark" ColumnName="FT_Mark" />
+          <ScalarProperty Name="FT_CreatedBy" ColumnName="FT_CreatedBy" />
+          <ScalarProperty Name="FT_CreatedOn" ColumnName="FT_CreatedOn" />
+          <ScalarProperty Name="FT_LastUpdBy" ColumnName="FT_LastUpdBy" />
+          <ScalarProperty Name="FT_LastUpdOn" ColumnName="FT_LastUpdOn" />
+          <ScalarProperty Name="FT_RowVersion" ColumnName="FT_RowVersion" />
+          <ScalarProperty Name="FT_Type" ColumnName="FT_Type" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SYS_RoleFunction">
+      <EntityTypeMapping TypeName="PRXModel.SYS_RoleFunction">
+        <MappingFragment StoreEntitySet="SYS_RoleFunction">
+          <ScalarProperty Name="RF_Id" ColumnName="RF_Id" />
+          <ScalarProperty Name="RF_SystemRoleId" ColumnName="RF_SystemRoleId" />
+          <ScalarProperty Name="RF_FunctionItemId" ColumnName="RF_FunctionItemId" />
+          <ScalarProperty Name="RF_RowVersion" ColumnName="RF_RowVersion" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SYS_SystemRole">
+      <EntityTypeMapping TypeName="PRXModel.SYS_SystemRole">
+        <MappingFragment StoreEntitySet="SYS_SystemRole">
+          <ScalarProperty Name="ROLE_Id" ColumnName="ROLE_Id" />
+          <ScalarProperty Name="ROLE_Name" ColumnName="ROLE_Name" />
+          <ScalarProperty Name="ROLE_Name_En" ColumnName="ROLE_Name_En" />
+          <ScalarProperty Name="ROLE_Level" ColumnName="ROLE_Level" />
+          <ScalarProperty Name="ROLE_Desc" ColumnName="ROLE_Desc" />
+          <ScalarProperty Name="ROLE_OrderIndex" ColumnName="ROLE_OrderIndex" />
+          <ScalarProperty Name="ROLE_IsSuspended" ColumnName="ROLE_IsSuspended" />
+          <ScalarProperty Name="ROLE_Mark" ColumnName="ROLE_Mark" />
+          <ScalarProperty Name="ROLE_CreatedBy" ColumnName="ROLE_CreatedBy" />
+          <ScalarProperty Name="ROLE_CreatedOn" ColumnName="ROLE_CreatedOn" />
+          <ScalarProperty Name="ROLE_LastUpdBy" ColumnName="ROLE_LastUpdBy" />
+          <ScalarProperty Name="ROLE_LastUpdOn" ColumnName="ROLE_LastUpdOn" />
+          <ScalarProperty Name="ROLE_RowVersion" ColumnName="ROLE_RowVersion" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="vw_AccountRole">
+      <EntityTypeMapping TypeName="PRXModel.vw_AccountRole">
+        <MappingFragment StoreEntitySet="vw_AccountRole">
+          <ScalarProperty Name="staffid" ColumnName="staffid" />
+          <ScalarProperty Name="status" ColumnName="status" />
+          <ScalarProperty Name="issuspend" ColumnName="issuspend" />
+          <ScalarProperty Name="ROLE_Id" ColumnName="ROLE_Id" />
+          <ScalarProperty Name="ROLE_Name" ColumnName="ROLE_Name" />
+          <ScalarProperty Name="ROLE_Name_En" ColumnName="ROLE_Name_En" />
+          <ScalarProperty Name="ROLE_Level" ColumnName="ROLE_Level" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="vw_Authority">
+      <EntityTypeMapping TypeName="PRXModel.vw_Authority">
+        <MappingFragment StoreEntitySet="vw_Authority">
+          <ScalarProperty Name="StaffId" ColumnName="StaffId" />
+          <ScalarProperty Name="FI_TreeId" ColumnName="FI_TreeId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="vw_Dics">
+      <EntityTypeMapping TypeName="PRXModel.vw_Dics">
+        <MappingFragment StoreEntitySet="vw_Dics">
+          <ScalarProperty Name="Dics_Code" ColumnName="Dics_Code" />
+          <ScalarProperty Name="Title" ColumnName="Title" />
+          <ScalarProperty Name="Sortnum" ColumnName="Sortnum" />
+          <ScalarProperty Name="IsDefault" ColumnName="IsDefault" />
+          <ScalarProperty Name="Code" ColumnName="Code" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="sp_Authority" FunctionName="PRXModel.Store.sp_Authority" />
+    <FunctionImportMapping FunctionImportName="sp_AuthorityWap" FunctionName="PRXModel.Store.sp_AuthorityWap">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="PRXModel.sp_AuthorityWap_Result">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="URL" ColumnName="URL" />
+          <ScalarProperty Name="ParentId" ColumnName="ParentId" />
+          <ScalarProperty Name="WapType" ColumnName="WapType" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_CreatePassword" FunctionName="PRXModel.Store.sp_CreatePassword" />
+  </EntityContainerMapping>
+</Mapping>

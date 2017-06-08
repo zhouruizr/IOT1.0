@@ -1,0 +1,6 @@
+/*框架最大化 自己的CSS文件用于调整样式最后加载;*/
+#main_wrapper,#page_wrapper,#content {
+padding:0px;
+height:100%;
+margin:0px;
+}

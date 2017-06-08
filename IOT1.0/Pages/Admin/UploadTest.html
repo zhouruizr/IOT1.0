@@ -1,0 +1,54 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title></title>
+    <link href="/Scripts/uploadify/uploadify.css" rel="stylesheet" />
+    <script src="/Scripts/jquery-1.9.1.min.js"></script>
+    <script src="/Scripts/uploadify/jquery.uploadify.min.js"></script>
+</head>
+<body>
+    <form action="http://localhost:40315/UpLoad/Upload" method="post" enctype="multipart/form-data" id="up1">
+      <input type="file" name="FileUpload1" value="选择文件"/>
+      <input type="submit" name="Submit" id="Submit" value="上传文件" />
+    </form>
+
+    <form action="http://localhost:40315/UpLoad/Upload2" method="post" enctype="multipart/form-data" id="up2">
+      <input type="file" name="FileUpload2" />
+      <input type="submit" name="Submit" id="Submit1" value="上传文件" />
+    </form>
+    <span id="uploadify"></span>
+</body>
+</html>
+
+<script>
+    $('#uploadify').uploadify({
+        uploader: 'http://localhost:40315/UpLoad/Up',           // 服务器端处理地址
+        swf: '/Scripts/uploadify/uploadify.swf',    // 上传使用的 Flash
+
+        width: 60,                          // 按钮的宽度
+        height: 23,                         // 按钮的高度
+        buttonText: "上传",                 // 按钮上的文字
+        buttonCursor: 'hand',                // 按钮的鼠标图标
+
+        fileObjName: 'Filedata',            // 上传参数名称
+
+        // 两个配套使用
+        fileTypeExts: "*.jpg;*.png",             // 扩展名
+        fileTypeDesc: "请选择 jpg png 文件",     // 文件说明
+
+        auto: false,                // 选择之后，自动开始上传
+        multi: true,               // 是否支持同时上传多个文件
+        queueSizeLimit: 5,          // 允许多文件上传的时候，同时上传文件的个数
+        onUploadSuccess: function (file, data, response) {
+            //alert('aa');
+            var MyFile = file;
+            var MyResponse = response;
+            var MyData = data;
+            console.info('MyFile:' + MyFile);
+            console.info('MyResponse:'+MyResponse);
+            console.info('MyData:'+MyData);
+
+        },
+    });
+</script>

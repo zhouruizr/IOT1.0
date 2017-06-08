@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.40629.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IOT1.0", "IOT1.0\IOT1.0.csproj", "{DCAD6007-AE00-435F-90FF-531F8B51039C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataProvider", "DataProvider\DataProvider.csproj", "{AD2408F0-6489-4AA8-9637-36EA89B5D076}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DCAD6007-AE00-435F-90FF-531F8B51039C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DCAD6007-AE00-435F-90FF-531F8B51039C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DCAD6007-AE00-435F-90FF-531F8B51039C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DCAD6007-AE00-435F-90FF-531F8B51039C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD2408F0-6489-4AA8-9637-36EA89B5D076}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD2408F0-6489-4AA8-9637-36EA89B5D076}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD2408F0-6489-4AA8-9637-36EA89B5D076}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD2408F0-6489-4AA8-9637-36EA89B5D076}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,134 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <!-- bootstrap framework -->
+    <link href="../Scripts/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="../Scripts/bootstrap/css/bootstrapValidator.min.css" rel="stylesheet" media="screen">
+    <!-- icon sets -->
+    <!-- elegant icons -->
+    <link href="assets/icons/elegant/style.css" rel="stylesheet" media="screen">
+    <!-- elusive icons -->
+    <link href="assets/icons/elusive/css/elusive-webfont.css" rel="stylesheet" media="screen">
+    <!-- flags -->
+    <link rel="stylesheet" href="assets/icons/flags/flags.css">
+    <!-- scrollbar -->
+    <link rel="stylesheet" href="assets/lib/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.css">
+    <!-- main stylesheet -->
+    <link href="assets/css/main.min.css" rel="stylesheet" media="screen" id="mainCss">
+    <link href="../Scripts/datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />
+    <!-- moment.js (date library) -->
+    <script src="assets/js/moment-with-langs.min.js"></script>
+
+    <!-- jQuery -->
+    <script src="../Scripts/jquery-2.0.3.min.js"></script>
+    <!-- jQuery Cookie -->
+    <script src="../Scripts/jquery.cookie.js"></script>
+    <!-- Bootstrap Framework -->
+    <script src="../Scripts/bootstrap/js/bootstrap.min.js"></script>
+    <script src="../Scripts/datetimepicker/js/bootstrap-datetimepicker.js"></script>
+    <script src="../Scripts/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+    <script src="../Scripts/bootstrap-validator/bootstrapValidator.min.js"></script>
+    <script src="../Scripts/bootstrap-validator/language/zh_CN.js"></script>
+    <script src="../Scripts/bootstrap-validator/myValidator.js"></script>
+
+    <!-- retina images -->
+    <script src="assets/js/retina.min.js"></script>
+
+    <script src="../Scripts/knockout/knockout-3.0.0.js"></script>
+    <script src="../Scripts/knockout/knockout.mapping.js"></script>
+    <script src="../Scripts/bootbox.min.js"></script>
+    <script src="../Scripts/base.js"></script>
+    
+    <script src="../Scripts/sco.countdown.js"></script>
+
+    <!-- switchery -->
+    <script src="assets/lib/switchery/dist/switchery.min.js"></script><!--类似IOS的开关切换插件-->
+    <!-- typeahead -->
+    <script src="assets/lib/typeahead/typeahead.bundle.min.js"></script><!--的自动完成 AutoComplete-->
+    <!-- fastclick -->
+    <script src="assets/js/fastclick.min.js"></script><!--解决移动端触摸延迟问题-->
+    <!-- match height -->
+    <script src="assets/lib/jquery-match-height/jquery.matchHeight-min.js"></script><!--登高排列的插件-->
+    <!-- scrollbar -->
+    <script src="assets/lib/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js"></script><!--滚动条美化插件-->
+    <!-- Yukon Admin functions -->
+    <script src="assets/js/yukon_all.min.js"></script>
+    <!--ToolBar-->
+    <title></title>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row ">
+            <div class="col-md-5">
+                <h3 class="text-center text-primary">我的联系信息</h3>
+                <hr />
+                <form class="form-horizontal" id="info">
+                    <div class="form-group">
+                        <label for="Txt_Name" class="col-sm-2 control-label">姓名</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="Txt_Name" name="name" data-bind="value:RealName" placeholder="请输入您的姓名，不可为空">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="Txt_MobiePhone" class="col-sm-2 control-label">手机</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="Txt_MobiePhone" name="phone" data-bind="value:Contact" placeholder="请输入您的手机，不可为空">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="Txt_Phone" class="col-sm-2 control-label">固定电话</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="Txt_Phone" name="phone" data-bind="value:Mobile" placeholder="请输入您的固定电话">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="Txt_QQ" class="col-sm-2 control-label">QQ号码</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="Txt_QQ" name="qq" data-bind="value:QQNumber" placeholder="请输入您的QQ号码">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="Txt_Email" class="col-sm-2 control-label">电子邮箱</label>
+                        <div class="col-sm-10">
+                            <input type="email" class="form-control" id="Txt_Email" name='email' data-bind="value:Email" placeholder="请输入您的电子邮箱">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="Txt_Addr" class="col-sm-2 control-label">证件地址</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="Txt_Addr" name='addr' data-bind="value:Address" placeholder="请输入您的身份证地址">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="Txt_Addr2" class="col-sm-2 control-label">居住或办公地址</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" id="Txt_LiveAddress" name='addr' data-bind="value:LiveAddress" placeholder="请输入您的居住或办公地址">
+                        </div>
+                    </div>
+                    <br />
+                    <div class="form-group">
+                        <div class="col-sm-offset-5 col-sm-10">
+                            <button type="submit" class="btn btn-primary" id="Btn_change" data-loading-text="正在保存...">修改</button>&nbsp;&nbsp;
+                            <button type="button" class="btn btn-default" id="Btn_info">关闭</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!--<div class="col-md-4">
+                <h3 class="text-center text-info">填写说明</h3>
+                <hr />
+            </div>-->
+        </div>
+    </div>
+</body>
+</html>
+<script>
+    $(document).ready(function () {
+        //msg.ok();
+        $('#Btn_info').click(function () {
+            msg.info('测试测试')
+        });
+        formValidator.init(info);
+    });
+</script>

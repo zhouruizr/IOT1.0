@@ -1,0 +1,44 @@
+﻿@{
+    ViewBag.Title = "FSConnectionlist";
+}
+
+<div class="ibox float-e-margins">
+    <div class="ibox-title">
+        <div class="btn-group">
+            <button class="btn btn-primary" type="button">上一周</button>
+            <button class="btn btn-primary" type="button">下一周</button>
+        </div>
+    </div>
+    <div class="ibox-content">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>日期</th>
+                    <th>姓名</th>
+                    <th>课程</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>周二</td>
+                    <td>张三</td>
+                    <td>数学数据05</td>
+                    <td><i class="fa fa-angle-right"></i></td>
+                </tr>
+                <tr>
+                    <td>周三</td>
+                    <td>张三</td>
+                    <td>英语05</td>
+                    <td><i class="fa fa-angle-right"></i></td>
+                </tr>
+                <tr>
+                    <td>周六</td>
+                    <td>张三</td>
+                    <td>舞蹈</td>
+                    <td><a href="@Url.Action("FSConnectionInfo", "Weixin")" class=" btn-block"><i class="fa fa-angle-right"></i></a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

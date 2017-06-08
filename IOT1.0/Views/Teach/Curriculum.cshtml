@@ -1,0 +1,328 @@
+﻿@using DataProvider.Models
+@using DataProvider.Paging
+@{
+    ViewBag.Title = "课程维护";
+}
+@model ButtonListViewModel
+
+    <div class="wrapper wrapper-content  animated fadeInRight">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <!-- 数据显示区 -->
+                    <div class="ibox-content">
+                           <!-- 功能操作区 --> 
+                @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "frmQuery", @class = "form-horizontal" }))
+                 {
+                    
+                    
+                        <div class="form-group">
+                                <div class="col-sm-2">
+                                    <label class="control-label">课程名称:</label>
+                                </div>
+                                <div class="col-sm-4" >
+                                   @Html.TextBoxFor(t => t.search.BTN_Name, new { @class = "form-control input-sm", @type = "text", @placeholder = "请输入课程名称" })
+                                </div>
+                       @*       <div class="col-sm-2">
+                                    <label class="control-label">所属课程:</label>
+                                </div>
+                              <div class="col-sm-4" >
+                                   @Html.TextBoxFor(t => t.search.BTN_Name, new { @class = "form-control input-sm", @type = "text", @placeholder = "请输入所属课程" })
+                                </div>
+                           *@
+                        </div>@*
+                    
+                    <div class="form-group">
+                                <div class="col-sm-2">
+                                    <label class="control-label">当前讲师:</label>
+                                </div>
+                                <div class="col-sm-4" >
+                                   @Html.TextBoxFor(t => t.search.BTN_Name, new { @class = "form-control input-sm", @type = "text", @placeholder = "请输入当前讲师" })
+                                </div>
+                              <div class="col-sm-2">
+                                    <label class="control-label">所属课程:</label>
+                                </div>
+                              <div class="col-sm-4" >
+                                   @Html.TextBoxFor(t => t.search.BTN_Name, new { @class = "form-control input-sm", @type = "text", @placeholder = "请输入所属课程" })
+                                </div>
+                           
+                        </div>
+                    
+             
+                    
+                    
+                   *@<div class="form-group">
+                        <div class="col-sm-4">
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-white btn-sm"><i class="fa fa-refresh"></i> 刷新</button>
+
+                                <button class="btn btn-primary btn-sm" type="button" onclick="javascript:modify();"><i class="fa fa-plus-square"></i> 新增</button>
+
+                            </div>
+                        </div>
+                        <div class="col-sm-8 project-actions">
+                            <button type="button" class="btn btn-w-m btn-primary btn-sm">查&nbsp;&nbsp;&nbsp;&nbsp;询</button>
+                        </div>
+                    </div>
+                    
+                     
+                 } 
+                        <!-- 数据列表 -->
+                        <table class="table table-striped table-bordered table-hover dataTables-example">
+                            <thead>
+                                <tr>
+                                    <th>课程名称</th>
+                                    <th>课程类别</th>
+                                    <th>费用</th>
+                                    <th>课程状态</th> 
+                                    <th>课时</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <!-- 循环数据 -->
+                            <tbody>
+                                <!-- 测试数据 -->
+                                       <tr>
+                                            <td class="jz">数学</td>
+                                            <td>学科基础课</td> 
+                                            <td>2000</td>
+                                            <td>启用</td> 
+                                             <td>2</td>
+                                            <td><a href="javascript:modify()" class="btn btn-primary btn-xs" type="button"><i class="fa fa-edit"></i> 编辑</a> 
+                                            </td>
+                                        </tr>
+
+                                           <tr>
+                                            <td class="jz">语文</td>
+                                            <td>学科基础课</td> 
+                                            <td>2000</td>
+                                            <td>启用</td> 
+                                             <td>2</td>
+                                            <td><a href="javascript:modify()" class="btn btn-primary btn-xs" type="button"><i class="fa fa-edit"></i> 编辑</a> 
+                                            </td>
+                                        </tr>
+                                           <tr>
+                                            <td class="jz">英语</td>
+                                            <td>学科基础课</td> 
+                                            <td>2000</td>
+                                            <td>启用</td> 
+                                                 <td>3</td>
+                                            <td><a href="javascript:modify()" class="btn btn-primary btn-xs" type="button"><i class="fa fa-edit"></i> 编辑</a> 
+                                            </td>
+                                        </tr>
+                                     <tr>
+                                            <td class="jz">物理</td>
+                                            <td>学科基础课</td> 
+                                            <td>2000</td>
+                                            <td>启用</td> 
+                                           <td>5</td>
+                                            <td><a href="javascript:modify()" class="btn btn-primary btn-xs" type="button"><i class="fa fa-edit"></i> 编辑</a> 
+                                            </td>
+                                        </tr>
+                                <!-- 测试数据 -->
+                                @if (Model != null && Model.buttonlist.Count() > 0)
+                                {
+                                    foreach (var m in Model.buttonlist)
+                                    {
+                                        <tr>
+                                            <td class="jz">@m.BTN_Id</td>
+                                            <td>@m.BTN_Name</td> @*按钮名称*@
+                                            <td>@m.BTN_OrderIndex</td>
+                                            <td>@m.BTN_Mark</td>
+                                            <td><a href="javascript:modify(@m.BTN_Id);" class="btn btn-primary btn-sm" type="button"><i class="fa fa-edit"></i> 编辑</a>
+                 
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    @*<tr><td colspan="7" style="text-align:center; color:red;">未查询到数据,请更换查询条件试试!</td></tr>*@
+                                }
+                            </tbody>
+                            @*<tfoot>
+                                <tr>
+                                    <th>渲染引擎</th>
+                                    <th>浏览器</th>
+                                    <th>平台</th>
+                                    <th>引擎版本</th>
+                                    <th>CSS等级</th>
+                                </tr>
+                            </tfoot>*@
+                        </table>
+                        @if (Model != null && Model.buttonlist.TotalPageCount > 0)
+                        {
+                            <div class="row">
+                                <div class="dataTables_info col-sm-6">每页显示 @Model.search.PageSize 条，共<span>@Model.buttonlist.TotalItemCount</span>条数据</div>
+                                <div class="col-sm-6">
+
+                                    @Html.Pager(Model.buttonlist, new PagerOptions(), "", new RouteValueDictionary {
+                                   { "pageindex",  Model.search.CurrentPage },
+                                   { "pagesize", ViewBag.PageSize }
+                               }, null)
+                                </div>
+                                
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+  
+        </div>
+    </div>
+<script type="text/javascript">
+
+    //判断页面是否有回车操作
+    window.document.onkeydown = function (e) {
+        e = e || window.event;
+        if (e.keyCode == 13 || e.keyCode == 108) {
+            document.getElementById('frmQuery').submit();
+        }
+    }
+    //点击列表的编辑按钮，编辑操作
+    function modify(id) {
+        cleanData("buttoninfo");
+        layer.open({
+            type: 1,
+            title: "<h5 class='ibox-title'>编辑</h3>",
+            area: ['680px', '400px'],
+            content: $('#buttoninfo'),
+            btn: ['保存', '取消'],
+            yes: function () {
+                save(id);
+            },
+            cancel: function (index) {
+                layer.close(index);
+            }
+        });
+        
+        if (id) {//提供存着ID就是修改，则加载数据，不然打开空页面
+            var loadindex = layer.load();
+            loaddetail(id, loadindex)
+        }
+    }
+
+    function loaddetail(id, loadindex) {
+        $.ajax({
+            url: '@Url.Action("GetButtonByID", "Admin")',
+            type: "post",
+            data: { id: id },
+            success: function (json) {
+                if (json.status = 200) {//成功
+                    $("#BTN_Name").val(json.data.BTN_Name);
+                    $("#BTN_Name_En").val(json.data.BTN_Name_En);
+                    $("#BTN_Desc").val(json.data.BTN_Desc);
+                    $("#BTN_OrderIndex").val(json.data.BTN_OrderIndex);
+                    $("#BTN_Mark").val(json.data.BTN_Mark);
+
+                    if (json.data.BTN_IsSuspended)//如果停用true
+                    {
+                        $("#BTN_IsSuspended").iCheck('check');//设置选中，具体可以百度icheck插件
+                    }
+
+                    layer.close(loadindex);//关闭加载层
+                }
+            },
+            error: function (xmLHttpRequest, textStatus, errorThrown) {
+                layer.msg("系统异常，请重试<br/>错误信息：" + xmLHttpRequest.responseText);
+            }
+        });
+    }
+
+    //保存或者新增
+    function save(id) {
+        var obj = new Object;
+        if (id) {//有ID就是修改模式，没有就是新增模式
+            obj.BTN_Id = id;
+        }
+        obj.BTN_Name = $("#BTN_Name").val().trim();
+        if (!obj.BTN_Name) {
+            layer.msg("请输入按钮名称！");
+            return false;
+        }
+        obj.BTN_Name_En = $("#BTN_Name_En").val().trim();//赋值必须和数据库字段对应
+        obj.BTN_Desc = $("#BTN_Desc").val().trim();
+        obj.BTN_OrderIndex = $("#BTN_OrderIndex").val().trim();
+        obj.BTN_Mark = $("#BTN_Mark").val().trim();
+        if ($("#BTN_IsSuspended").is(':checked')) {//判断停用按钮是否选中
+            obj.BTN_IsSuspended = true;
+        }
+        else { obj.BTN_IsSuspended = false; }
+        var action = '';
+        if (id) {//有ID就是修改模式，没有就是新增模式
+            action = '@Url.Action("SaveButton", "Admin")';
+            }
+        else { action = '@Url.Action("AddButton", "Admin")' }
+            $.post(action, {
+                "data": JSON.stringify(obj)//序列化对象
+            }, function (json) {
+                if (json.status = 200) {//成功
+                    
+                    layer.msg(json.msg);//弹出服务器返回的消息
+                    setTimeout(function () {//操作
+                        layer.closeAll();//关闭所有层
+                        window.location.reload(); //刷新
+                    }, 3000);
+                }
+            },'json');
+        }
+
+        function exportForm() {
+            var $frm = $('#exportform');
+            var array = $('#frmQuery').serializeArray();
+
+            for (i = 0, length = array.length; i < length; i++) {
+                key = array[i].name;
+                value = array[i].value;
+                $frm.append($('<input name = "' + key + '" value = "' + value + '"  style="display:none"/>'));
+            }
+
+            $frm.submit();
+        }
+</script>
+@*弹出层，新增报名*@
+<div class="ibox float-e-margins" id="buttoninfo" style="display:none">
+    <div class="ibox-content">
+        <form class="form-horizontal">
+            <div class="form-group ">
+                <label class="col-sm-3 control-label">课程名称：</label>
+                <div class="col-sm-8">
+                    <input type="text" placeholder="课程名称" class="form-control input-sm" id="BTN_Name">
+                </div>
+            </div>
+            <div class="form-group ">
+                <label class="col-sm-3 control-label">课程类别：</label>
+                <div class="col-sm-8">
+                  
+                        <select data-placeholder="选择授课方式..." class=" form-control input-sm chosen-select" style="width:100%;height:100%;" tabindex="4">
+                                    <option value="">请选择授课方式</option>
+                                    <option value="110000" hassubinfo="true">一对一</option> 
+                                    <option value="370000" hassubinfo="true">一对多</option>   
+                                    <option value="370000" hassubinfo="true">集体课</option>   
+                                </select> 
+                </div>
+            </div>
+            <div class="form-group ">
+                <label class="col-sm-3 control-label">费用：</label>
+                <div class="col-sm-8">
+                    <input type="number" placeholder="费用" class="form-control input-sm" id="BTN_Mark">
+                </div>
+            </div>
+              <div class="form-group ">
+                <label class="col-sm-3 control-label">课时：</label>
+                <div class="col-sm-8">
+                    <input type="number" placeholder="课时" class="form-control input-sm" id="BTN_Mark">
+                </div>
+            </div>
+            
+            <div class="form-group ">
+                <label class="col-sm-3 control-label">是否停用：</label>
+                <div class="checkbox i-checks col-sm-8">
+                    <label>
+                        <input type="checkbox" value="" id="BTN_IsSuspended"> <i></i> 停用
+                    </label>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

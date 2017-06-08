@@ -1,0 +1,153 @@
+﻿<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <!--  <meta name="viewport" content="width=device-width,target-densitydpi=high-dpi,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />-->
+    <title>中华商务WEBERP</title>
+    <link href="Scripts/bootStrap/css/bootstrap.css" rel="stylesheet" />
+    <link href="CSS/bootstrapExtend.css" rel="stylesheet" />
+    <link href="Scripts/CCSH.UI/css/jquery.control.css" rel="stylesheet" />
+    <script src="Scripts/jquery-1.9.1.js"></script>
+    <script src="Scripts/bootStrap/js/bootstrap.js"></script>
+    <script src="Scripts/knockout/knockout-2.2.0.debug.js"></script>
+    <script src="Scripts/knockout/knockout.mapping.js"></script>
+    <script src="Scripts/CCSH.UI/jquery.Loading.js"></script>
+    <script src="Scripts/base.js"></script>
+    <script>
+        $(document).ready(function () {
+            var userInfo = localStorage.getItem("ERP_UserInfo");//登陆信息----------------------------------------------------------
+            console.debug(userInfo);
+            if (!userInfo) {
+                window.location.href = SiteRoot + 'Login.html';
+            }
+            var viewModel = function () {
+                var that = this;
+                this.menu = ko.mapping.fromJS([]);//菜单
+                //从服务器获取所有菜单信息
+                getWebJson("Authority/GetMenu", "staffId=" + userInfo, function (data) {
+                    ko.mapping.fromJS(data, that.menu);
+                    init(data);
+                },
+                 function () {
+                     location.href = "Login.html";
+                 }
+                );
+                this.user = userInfo;
+                this.logout = function () {//退出登录
+                    getWebJson("Authority/Logout", null, function () {
+                        localStorage.setItem("ERP_UserInfo", null);
+                        location.href = "Login.html";
+                    });
+                };
+                this.selectedSystem = ko.observable({});//被选中的子系统
+                this.selectSystem = function (item) {//选择子系统
+                    that.selectedSystem(ko.toJS(item));
+                };
+                this.selectedModel = ko.observable({});//被选中的模块
+                this.selectModel = function (item) {//选择模块
+                    that.selectedModel(ko.toJS(item));
+                };
+                this.selectedFun = ko.observable({});//被选中的功能
+                this.selectFun = function (item) {//选择功能
+                    that.selectedFun(ko.toJS(item));
+                    addPage(item);
+                };
+                this.pages = ko.observableArray([{ ID: "home", Name: "Home", URL: "javascript:void(0)" }]);//所有Tab页面
+                this.selectedPage = ko.observable("home");//当前选择的页面
+                var addPage = function (item) {//添加标签页
+                    var ishas = false;
+                    $(ko.toJS(that.pages)).each(function (index, ite) {
+                        if (item.ID == ite.ID) {
+                            ishas = true;
+                            return false;
+                        }
+                    });
+                    if (ishas == false) {
+                        if (item.URL.indexOf("?") >= 0) {
+                            item.URL += "&version=" + localStorage.getItem("version");
+                        } else {
+                            item.URL += "?version=" + localStorage.getItem("version");
+                        }
+                        that.pages.push(item);
+                    }
+                    that.selectedPage(item.ID);
+                };
+                this.closePage = function (item) {//关闭页面
+                    that.selectedPage("home");
+                    that.pages.remove(item);                    
+                };
+                var init = function (data) {//初始化时第一个被选择
+                    if (data.length > 0) {
+                        that.selectedSystem(data[0]);
+                        if (data[0].Childs.length > 0) {
+                            that.selectedModel(data[0].Childs[0]);
+                            //if (data[0].Childs[0].Childs.length > 0) {
+                            //    that.selectedFun(data[0].Childs[0].Childs[0])
+                            //}
+                        }
+                    }
+                };
+            };
+
+            ko.applyBindings(new viewModel());
+        });
+    </script>
+    <style>
+        body
+        {
+            background-color: #444444;
+            background-image: url('Images/black-Linen.png');
+        }
+    </style>
+</head>
+<body>
+    <header id="header">
+        <span>
+            <a>中华商务</a>
+        </span>
+    </header>
+    <nav id="user-nav" class="navbar navbar-inverse" role="navigation">
+        <ul class="nav navbar-nav" data-bind="foreach: menu">
+            <li data-bind="css: { 'active': $parent.selectedSystem().ID == ID() }">
+                <a data-bind="text: Name, attr: { href: URL }, click: $parent.selectSystem"></a>
+            </li>
+        </ul>
+        <div style="float: right; margin-right: 30px; margin-top: 10px; color:white;">
+            登录人：<span data-bind="text: user"></span>
+            <a href="#" style="color:white;" data-bind="click: logout">退出登录</a>
+        </div>
+    </nav>
+    <div class="container">
+        <div id="sidebar">
+            <ul data-bind="foreach: selectedSystem().Childs">
+                <li data-bind="css: { 'active': $parent.selectedModel().ID == ID }">
+                    <a href="#" data-bind="text: Name, click: $parent.selectModel"></a>
+                    <ul data-bind="foreach: Childs">
+                        <li data-bind="css: { 'active': $root.selectedFun().ID == ID }">
+                            <a href="#" data-bind="text: Name, click: $root.selectFun"></a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+        <div id="content">
+            <div id="content-header">
+                <ul class="nav nav-tabs" data-bind="foreach: pages">
+                    <li data-bind="css: { 'active': $root.selectedPage() == ID }">
+                        <a data-toggle="tab" data-bind="attr: { href: '#' + ID }">
+                            <span class="close" aria-hidden="true" data-bind="click: $root.closePage">&times;</span>
+                            <span data-bind="text: Name"></span>
+
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="tab-content" data-bind="foreach: pages">
+                <div class="tab-pane fade in" style="height: 100%;" data-bind="attr: { id: ID }, css: { 'active': $root.selectedPage() == ID }">
+                    <iframe frameborder="no" border="0" scrolling="yes" style="width: 100%; height: 100%;" data-bind="attr: { Name: ID, src: URL }"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

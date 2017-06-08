@@ -1,0 +1,104 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>按钮功能组处理</title>
+    <link href="../Scripts/bootStrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="../CSS/bootstrapExtend.css" rel="stylesheet" />
+    <link href="../Scripts/Flexigrid/css/flexigrid.css" rel="stylesheet" />
+    <link href="../CSS/sco.message.css" rel="stylesheet" />
+    <style>
+        .table {
+            width: 100%;
+            margin-bottom: 0px;
+        }
+        .table tbody > tr > td {
+                height: 40px;
+                vertical-align:middle;
+            }
+        body {
+          font-size: 14px;
+        }
+    </style>
+    <script src="../Scripts/jquery-1.9.1.min.js"></script>
+    <script src="../Scripts/knockout/knockout-3.0.0.js"></script>
+    <script src="../Scripts/knockout/knockout.mapping.js"></script>
+    <script src="../Scripts/bootStrap/js/bootstrap.min.js"></script>
+    <script src="../Scripts/base.js"></script>
+    <script src="../Scripts/CCSH.UI/combox.js"></script>
+    <script src="../Scripts/Flexigrid/js/flexigrid.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            var runCount = 0;//默认启动时会响应click事件，在此加状态判断。
+            var row = '';//保存当前选中行的数据
+            var viewModel = new function () {
+                var userInfo = localStorage.getItem("ERP_UserInfo");//登陆信息
+                var self = this;
+                self.menu = ko.mapping.fromJS([]);//菜单
+                //从服务器获取所有菜单信息
+                getWebJson("Login/GetMenuWap", "staffId=" + userInfo, function (data) {
+                    ko.mapping.fromJS(data, self.menu);
+                    console.info(data);
+                    runCount++;
+                });
+                self.ChangeColor = function (data) {
+                    if (runCount != 0) {
+                        //取出先前保存的行对象，并修改颜色为空
+                        $('#' + row).removeClass();
+                        //设置现在选中的行，设置颜色
+                        $('#' + data).removeClass().addClass('info');
+                        row = data;
+                        //console.info(data);
+                    } else {
+
+                    }
+                }
+            }
+            ko.applyBindings(viewModel);
+        })
+        
+    </script>
+    <style>
+        .table{cursor:pointer;}
+    </style>
+</head>
+<body>
+  <table class="row table">
+        <thead> 
+            <tr class="success">
+              <th class="col-xs-0"></th>
+              <th class="col-xs-2">序号</th>
+              <th class="col-xs-2">菜单名称</th>
+              <th class="col-xs-2">菜单链接</th>
+              <th class="col-xs-2">菜单状态</th>
+            </tr>
+        </thead>
+    </table>
+  
+  <div class="panel panel-info" data-bind="foreach: { data: menu, as: 'P' }">
+    <div class="panel-heading" role="tab">
+      <h4 class="panel-title">
+        <a class="collapsed" data-toggle="collapse" data-parent="#accordion" aria-expanded="true" data-bind="attr: { 'href': '#'+P.ID() }">
+          <span class="caret"></span><span data-bind="text: P.Name"></span>
+        </a>
+      </h4>
+    </div>
+    <div  class="panel-collapse collapse" role="tabpanel" aria-expanded="true" data-bind="attr: { 'id': P.ID() }">
+      <div class="table-responsive">
+            <table id="menu" class="row table table-hover">
+                <tbody data-bind="foreach: { data: P.Childs, as: 'S', }">
+                    <tr data-bind="attr: { 'id': P.ID().toString() + S.ID().toString() }, click: $root.ChangeColor(P.ID().toString() + S.ID().toString())">
+                       <td class="col-xs-0"></td>
+                       <td class="col-xs-2" data-bind="text: S.ID"></td>
+                       <td class="col-xs-2" data-bind="text: S.Name"></td>
+                       <td class="col-xs-2" data-bind="text: S.URL"></td>
+                       <td class="col-xs-2" data-bind="text: S.IsSuspended ?'正常':'停用'"></td>
+                    </tr>
+                </tbody>
+           </table>
+      </div>
+    </div>
+  </div>
+  
+</body>
+</html>

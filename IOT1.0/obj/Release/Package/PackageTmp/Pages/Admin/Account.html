@@ -1,0 +1,448 @@
+﻿  <!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>账号管理</title>
+    <link href="../../Scripts/bootStrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="../../CSS/bootstrapExtend.css" rel="stylesheet" />
+    <link href="../../Scripts/Flexigrid/css/flexigrid.css" rel="stylesheet" />
+    <link href="../../CSS/sco.message.css" rel="stylesheet" />
+    <link href="../../CSS/IChecked/flat/red.css" rel="stylesheet" />
+    <script src="../../Scripts/jquery-1.9.1.min.js"></script>
+    <script src="../../Scripts/knockout/knockout-3.0.0.js"></script>
+    <script src="../../Scripts/knockout/knockout.mapping.js"></script>
+    <script src="../../Scripts/bootStrap/js/bootstrap.min.js"></script>
+    <script src="../../Scripts/CCSH.UI/combox.js"></script>
+    <script src="../../Scripts/Flexigrid/js/flexigrid.js"></script>
+    <script src="../../Scripts/sco.message.js"></script>
+    <script src="../../Scripts/bootbox.min.js"></script>
+    <script src="../../Scripts/icheck.min.js"></script>
+    <!--   <script src="../../Scripts/bootstrap-validator/validator.js"></script>-->
+    <script src="../../Scripts/base.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+            //flexgrid模型
+
+            //$('input').iCheck({
+            //    checkboxClass: 'icheckbox_flat-red',
+            //    radioClass: 'iradio_flat-red'
+            //});
+
+            var _gridquery = $("#GridQuery").flexigrid({
+                url: false,
+                dataType: 'json',
+                singleSelect: true,//单选
+                method: 'POST',
+                colModel: [
+                    //{ 
+                    //    display: '账号ID',
+                    //     sortable: true,
+                    //    align: 'center',
+                    //    process: function (item) {
+                    //        $(item).text($(item).text().replace('T', ' ').substr(0, 19));
+                    //    }
+                    //}, 
+                    {
+                        display: '账号',
+                        name: 'ACC_Account',
+                        sortable: true,
+                        align: 'center'
+                    }, {
+                        display: '联系电话',
+                        name: 'ACC_MobilePhone',
+                        sortable: true,
+                        align: 'center'
+                    }, {
+                        display: 'Email',
+                        name: 'ACC_Email',
+                        sortable: true,
+                        align: 'center'
+                    }
+                ],
+                showTableToggleBtn: true,
+                rp: 50,
+                usepager: true,
+                useRp: true,
+                width: 'auto',
+                height: 'auto'
+            });
+
+            ////角色模型
+            //var Role = function () {
+            //    var _Role = this;
+            //    _Role.ROLE_Id = ko.observable(0);
+            //    _Role.ROLE_Name = ko.observable("");
+            //    _Role.ROLE_Name_En = ko.observable("");
+            //    _Role.ROLE_Level = ko.observable(0);
+            //    _Role.ROLE_Desc = ko.observable("");
+            //    _Role.ROLE_OrderIndex = ko.observable(0);
+            //    _Role.ROLE_Mark = ko.observable("");
+            //}
+
+            //按钮组模型
+            var Account = function () {
+                var _Account = this;
+                _Account.ACC_Id = ko.observable(0);
+                _Account.ACC_Account = ko.observable("");
+                _Account.ACC_Password = ko.observable("");
+                _Account.ACC_Email = ko.observable("");
+                _Account.ACC_MobilePhone = ko.observable("");
+                _Account.ACC_ActiveStatus = ko.observable("");
+
+
+                //属性离开事件
+                this.ACC_Blur = function () {
+                    postWebJson("Account/ValACCAttribute", ko.toJS(_Account), function (data) {
+                        if (data == "1") {
+                            msg.info("该账号已经存在！");
+                            _Account.ACC_Account("");
+                        }
+                    });
+                }
+
+                this.Add = function (fn_onSucess, fn_onErr) {
+                    postWebJson("Account/Add", ko.toJS(_Account), function (data) {
+                        if (fn_onSucess) {
+                            msg.info("新增成功！");
+                            fn_onSucess();
+
+                        }
+                    });
+                }
+                this.Edit = function (fn_onSucess, fn_onErr) {
+                    postWebJson("Account/Edit", ko.toJS(_Account), function (data) {
+                        if (fn_onSucess) {
+                            msg.info("保存成功！");
+                            fn_onSucess();
+                        }
+                    });
+                }
+                this.Get = function (fn_onSucess, fn_onErr) {
+                    postWebJson("Account/Get", ko.toJS(_Account), function (data) {
+                        ko.mapping.fromJS(data, {}, _Account);
+                        if (KObj.FunctionModel() == "EDIT") {
+                            KObj.Account.ACC_Password("");//密码置空
+                        }
+                    });
+                }
+                this.Delete = function (fn_onSucess, fn_onErr) {
+                    postWebJson("Account/Delete", ko.toJS(_Account), function (data) {
+                        if (fn_onSucess) {
+                            msg.info("删除成功！");
+                            fn_onSucess();
+                        }
+                    });
+                }
+            }
+
+            var KObj = new function () {
+                var self = this;
+                //查询界面数据
+                self.FunctionModel = ko.observable("");
+                self.EditModel = ko.observable("");
+                self.ACC_Account = ko.observable("");
+                self.ACC_Email = ko.observable("");
+                self.ACC_MobilePhone = ko.observable("");
+                self.ACC_Person = ko.observable("");
+                self.ACC_ID = ko.observable("");
+                self.Account = new Account();
+                //角色组
+                self.RoleArray = ko.mapping.fromJS([]);
+                //self.RoleArray = ko.observableArray([]);
+                //选中的角色组
+                self.RoleValueArray = ko.observableArray([]);
+
+                //flexgrid查询函数
+                self.SearchQuery = function () {
+                    var btn = $("#startQuery");
+                    btn.button("loading");
+                    $("#GridQuery").flexOptions({
+                        url: CCSHmobi.website + 'Account/GetJson',
+                        params: [
+                            { name: "ACC_Account", value: self.ACC_Account() },
+                            { name: "ACC_Email", value: self.ACC_Email() },
+                            { name: "ACC_MobilePhone", value: self.ACC_MobilePhone() }
+                        ],
+                        newp: 1,
+                        onError: function (XMLHttpRequest, textStatus, errorThrown) {
+                            msg.info("请求超时，可能是因为数据量过大，请填写适当的筛选条件后重试");
+                            $("#grid").flexAddData();
+                        }
+                    }).flexReload();
+                    btn.button("reset");
+                }
+
+                //新增按钮组操作
+                self.OpenModal = function () {
+                    if (self.FunctionModel() != "PERMISSION") {
+                        $("#BtnModal").modal("show");
+                    }
+                    if (self.FunctionModel() == "PERMISSION") {
+                        $("#FCModal").modal("show");
+                    }
+                }
+
+                //关闭窗口
+                self.CloseModal = function () {
+                    if (self.FunctionModel() != "PERMISSION") {
+                        $("#BtnModal").modal("hide");
+                    }
+                    if (self.FunctionModel() == "PERMISSION") {
+                        $("#FCModal").modal("hide");
+                        self.ACC_Person("");
+                    }
+                }
+
+                //点击ToolBar事件，必须确定功能模式
+                self.ExcuteBtn = function (mode) {
+                    self.FunctionModel(mode)
+                    //获取选中行的主键值
+
+                    //状态判断
+                    if (self.FunctionModel() == 'ADD') {
+                        cleanData("BtnModal");
+                        self.OpenModal();
+                    }
+                    else if (self.FunctionModel() == 'PERMISSION') {
+                        //cleanData("FCModal");
+                        try {
+                            var selectedId = $("#GridQuery").selectedItem()[0].ACC_Id;
+                            var selectedAccout = $("#GridQuery").selectedItem()[0].ACC_Account;
+                        } catch (e) {
+                            msg.info("请先选中操作的行！");
+                            return;
+                        }
+                        self.ACC_Person(selectedAccout);
+                        self.ACC_ID(selectedId);
+
+                        //获取权限列表
+                        postWebJson("Account/GetAllRoleInfo", null, function (data) {
+                            ko.mapping.fromJS(data, self.RoleArray);
+                            if (self.RoleArray().length>0) {
+                                //获取选中的信息
+                                getWebJson("Account/GetRoleChecked?accout=" + self.ACC_Person(), null, function (item) {
+                                    self.RoleValueArray(item);
+                                    self.OpenModal();
+                                });
+                            }
+                        });
+                    }
+                    else {
+                        try {
+                            var selectedId = $("#GridQuery").selectedItem()[0].ACC_Id;
+                            var selectedAccout = $("#GridQuery").selectedItem()[0].ACC_Account;
+                            self.ACC_Person(selectedAccout);
+                            self.ACC_ID(selectedId);
+                        } catch (e) {
+                            msg.info("请先选中操作的行！");
+                            return;
+                        }
+                        self.Account.ACC_Id(selectedId);
+                        self.Account.Get();
+
+                        self.OpenModal();
+                    }
+                    //确定编辑模式
+                    if (self.FunctionModel() == 'ADD' || self.FunctionModel() == 'EDIT') {
+                        self.EditModel("保存");
+                    }
+                    if (self.FunctionModel() == 'DELETE') {
+                        self.EditModel("停用");
+                    }
+                    if (self.FunctionModel() == 'PERMISSION') {
+                        self.EditModel("权限分配");
+                    }
+                }
+
+                //权限分配
+                self.Allocate = function (item) {
+                    if (self.RoleValueArray().length == 0) {
+                        alert("请至少为该角色分配一个角色权限！");
+                        return;
+                    } else {
+                        postWebJson("Account/Allocate", ko.toJSON(item), function () {
+                            alert("修改成功！");
+                            self.CloseModal();
+                        });
+                    }
+                }
+
+                //主处理Modal函数
+                self.ExcuteModal = function () {
+                    if (self.FunctionModel() == 'EDIT') { 
+                        self.Account.Edit(self.CloseModal);
+
+                    } else if (self.FunctionModel() == 'DELETE') {
+                        self.Account.Delete(self.CloseModal);
+
+                    } else if (self.FunctionModel() == 'ADD') {
+                        self.Account.Add(self.CloseModal);
+                    }
+                }
+            }();
+            ko.applyBindings(KObj);
+        })
+    </script>
+</head>
+<body>
+    <!--查询界面-->
+    <div id="QueryDiv">
+        <form role="form" class="form form-horizontal requirement_search" style="top: 50px">
+            <div class="alert alert-success" role="alert">
+                <label class="label label-default">编辑功能：</label>
+                <button class="btn glyphicon glyphicon-plus btn-primary" type="button" data-bind="click: function () { ExcuteBtn('ADD') }" data-toggle="tooltip" data-placement="top" title="新增"><em class="icon-align-left"></em></button>
+                <button class="btn glyphicon glyphicon-pencil btn-info" type="button" data-bind="click: function () { ExcuteBtn('EDIT') }" data-toggle="tooltip" data-placement="top" title="修改"><em class="icon-align-right"></em></button>
+                <button class="btn glyphicon glyphicon-remove btn-warning" type="button" data-bind="click: function () { ExcuteBtn('DELETE') }" data-toggle="tooltip" data-placement="top" title="删除"><em class="icon-align-center"></em></button>
+                <button class="btn glyphicon glyphicon-home  btn-success" type="button" data-bind="click: function () { ExcuteBtn('PERMISSION') }" data-toggle="tooltip" data-placement="top" title="功能配置"><em class="icon-align-center"></em></button>
+            </div>
+            <hr />
+            <div class="row form-group">
+                <div class="col-sm-2">
+                    <label class="control-label">账号</label>
+                </div>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control" data-bind="value: ACC_Account" required />
+                </div>
+                <div class="col-sm-2">
+                    <label class="control-label">电话</label>
+                </div>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control" data-bind="value: ACC_MobilePhone" required />
+                </div>
+            </div>
+            <div class="row form-group">
+                <div class="col-sm-2">
+                    <label class="control-label">Email</label>
+                </div>
+                <div class="col-sm-4">
+                    <input type="text" class="form-control" data-bind="value: ACC_Email" required />
+                </div>
+                <div class="col-sm-3"></div>
+                <div class="col-sm-3">
+                    <button id="startQuery" class="form-control btn btn-primary" data-loading-text="查询中..." data-bind="click: function () { SearchQuery() }">查询</button>
+                </div>
+            </div>
+            <br />
+            <div class="row form-group">
+                <div class="col-xs-8"></div>
+            </div>
+        </form>
+        <div style="padding: 0 5px;">
+            <table id="GridQuery" class="table table-condensed"></table>
+        </div>
+    </div>
+    <!--查询界面-->
+
+    <!--Modal界面-->
+    <div id="BtnModal" class="modal fade" data-keyboard="false" data-backdrop="static" role="dialog" tabindex="-1" aria-hidden="true" data-toggle="validator">
+        <div class="modal-dialog" style="width: 30%">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="H1" style="text-align: center"><b>账号管理</b></h4>
+                </div>
+                <div class="modal-body">
+                    <form data-bind="submit: ExcuteModal">
+                        <div class="control-group">
+                            <!-- Text input-->
+                            <div>
+                                <label class="control-label" for="input01">账号</label>
+                            </div>
+                            <div>
+                                <input type="number" class="form-control" data-bind="value: Account.ACC_Account, event: { 'blur': Account.ACC_Blur }, enable: FunctionModel() != 'DELETE', visible: FunctionModel() == 'ADD'" data-minlength="5" data-error="账号不可小于5位" required>
+                                <input type="number" class="form-control" data-bind="value: Account.ACC_Account, enable: FunctionModel() != 'DELETE', visible: FunctionModel() != 'ADD'" data-minlength="5" data-error="账号不可小于5位" required>
+                            </div>
+                        </div>
+                        <br />
+
+                        <div class="control-group">
+                            <!-- Text input-->
+                            <div>
+                                <label class="control-label" for="input01">密码</label>
+                            </div>
+                            <div>
+                                <input type="password" class="form-control" data-bind="value: Account.ACC_Password, enable: FunctionModel() != 'DELETE'" data-minlength="6" data-error="账号不可小于6位" required />
+                            </div>
+                            <br />
+                            <div class="control-group">
+                                <!-- Text input-->
+                                <div>
+                                    <label class="control-label" for="input01">联系电话</label>
+                                </div>
+                                <div>
+                                    <input type="number" placeholder="序号" class="form-control" data-bind="value: Account.ACC_MobilePhone, enable: FunctionModel() != 'DELETE'" required />
+                                </div>
+                            </div>
+                            <br />
+                            <div class="control-group">
+                                <!-- Text input-->
+                                <div>
+                                    <label class="control-label" for="input01">Eamil</label>
+                                </div>
+                                <div>
+                                    <input type="text" placeholder="标记" class="form-control" data-bind="value: Account.ACC_Email, event: { 'blur': Account.BG_Blur }, enable: FunctionModel() != 'DELETE'" required />
+                                </div>
+                            </div>
+                            <br />
+                            <div class="row form-group">
+                                <div class="col-xs-2"></div>
+                                <div class="col-xs-4">
+                                    <button class="btn btn-default form-control" data-bind="click: CloseModal ">关闭</button>
+                                </div>
+                                <div class="col-xs-4">
+                                    <button class="btn btn-success form-control" type="submit" data-bind="text: EditModel"></button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Modal界面-->
+
+    <!--功能配置的Modal界面-->
+    <div id="FCModal" class="modal fade" data-keyboard="false" data-backdrop="static" role="dialog" data-toggle="validator">
+        <div class="modal-dialog" style="width:30%">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="H2" style="text-align: center"><b>账号角色分配</b></h4>
+                </div>
+                <div class="modal-body">
+                  <!--自定义grid界面-->
+                <input type="checkbox">
+                <input type="checkbox" checked>
+                <input type="radio" name="iCheck">
+                <input type="radio" name="iCheck" checked>
+
+                  <div data-bind="foreach: RoleArray">
+                        <div style="margin-left:20px">
+                            <div class="checkbox">
+                                <label class="control-label">
+                                 <!--   <input type="checkbox" data-bind="id: ROLE_Id, value: ROLE_Name, checked: $root.RoleValueArray " />-->
+                                    <input type="checkbox" data-bind="value: ROLE_Name, checked: $root.RoleValueArray " checked>
+                                    <span data-bind="text: ROLE_Id, visible: false"></span>
+                                    <span data-bind="text: ROLE_Name"></span>
+                                </label>
+                            </div>
+                       </div>
+                   </div>
+                    <!--自定义grid界面-->
+                    <br />
+                    <br />
+                        <div class="row form-group">
+                           <div class="col-sm-1"></div>
+                           <div class="col-sm-5">
+                                <button class="btn btn-primary form-control" data-bind="click:Allocate">确定</button>
+                           </div>
+                           <div class="col-sm-5">
+                                <button class="btn btn-primary form-control" data-bind="click:CloseModal">取消</button>
+                           </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+    <!--功能配置的Modal界面-->
+</body>
+</html>

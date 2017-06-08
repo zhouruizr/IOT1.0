@@ -1,0 +1,55 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title></title>
+    <link href="../../bootStrap/css/bootstrap.css" rel="stylesheet" />
+    <script src="../../jquery-1.9.1.min.js"></script>
+    <script src="../../knockout/knockout-2.2.0.js"></script>
+    <script src="../../knockout/knockout.mapping.js"></script>
+    <script src="../../bootStrap/js/bootstrap.min.js"></script>
+    <script src="../../base.js"></script>
+    <script src="grid.js"></script>
+</head>
+<body>
+    <div id="grid" style="padding: 10px 10px 10px 10px;">
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            var grid = $("#grid").grid({
+                dataSource: "Test/GetAttendanceByPage",
+                columns: [
+                      {
+                          field: "EM_Name_3",
+                          title: "姓名"
+                      },
+                      {
+                          field: "EnrollNumber",
+                          title: "工号"
+                      },
+                      {
+                          field: "EnrollDateTime",
+                          title: "考勤时间",
+                          template: function (item) {
+                              if (item.EnrollDateTime) {
+                                  var date = ConvertToDate(item.EnrollDateTime);
+                                  return date.Format("yyyy-MM-dd HH:mm:ss");
+                              }
+                          }
+                      },
+                      {
+                          field: "MachineNumber",
+                          title: "考勤机"
+                      }
+                ],
+                param: {
+                    staffID: "",
+                    startDate: "",
+                    endDate: ""
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,286 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>按钮功能处理</title>
+    <link href="../../Scripts/bootStrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="../../CSS/bootstrapExtend.css" rel="stylesheet" />
+    <link href="../../Scripts/Flexigrid/css/flexigrid.css" rel="stylesheet" />
+    <link href="../../CSS/sco.message.css" rel="stylesheet" />
+    <script src="../../Scripts/jquery-1.9.1.min.js"></script>
+    <script src="../../Scripts/knockout/knockout-3.0.0.js"></script>
+    <script src="../../Scripts/knockout/knockout.mapping.js"></script>
+    <script src="../../Scripts/bootStrap/js/bootstrap.min.js"></script>
+    <script src="../../Scripts/CCSH.UI/combox.js"></script>
+    <script src="../../Scripts/Flexigrid/js/flexigrid.js"></script>
+    <script src="../../Scripts/sco.message.js"></script>
+    <script src="../../Scripts/bootbox.min.js"></script>
+    <script src="../../Scripts/Module/EButton.js"></script>
+    <script src="../../Scripts/base.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('[data-toggle="tooltip"]').tooltip()
+            //flexgrid模型
+            var _gridquery = $("#GridQuery").flexigrid({
+                url: false,
+                dataType: 'json',
+                singleSelect: true,//单选
+                method: 'POST',
+                colModel: [
+                    {
+                        display: '按钮名称',
+                        name: 'BTN_Name',
+                        sortable: true,
+                        align: 'center',
+                        //width: 200,
+                        process: function (item) {
+                            $(item).text($(item).text().replace('T', ' ').substr(0, 19));
+                        }
+                    }, {
+                        display: '按钮英文名称',
+                        name: 'BTN_Name_En',
+                        sortable: true,
+                        align: 'center'
+                    }, {
+                        display: '按钮标记',
+                        name: 'BTN_Mark',
+                        sortable: true,
+                        align: 'center'
+                    }, {
+                        display: '按钮描述',
+                        name: 'BTN_Desc',
+                        sortable: true,
+                        align: 'center'
+                    }, {
+                        display: '排序',
+                        name: 'BTN_OrderIndex',
+                        sortable: true,
+                        align: 'center'
+                    }, {
+                        display: 'ID',
+                        name: 'BTN_ID',
+                        align: 'center',
+                        hide: true
+                    }
+                ],
+                showTableToggleBtn: true,
+                rp: 50,
+                usepager: true,
+                useRp: true,
+                width: 'auto',
+                height: 'auto'
+            });
+
+
+            //按钮模型
+            
+
+            var KObj_page = new function () {
+                var _page = this;
+                var _EButton = new EButton_mod();
+                //查询界面数据
+                _EButton.BTN_Id = ko.observable(0);
+                _EButton.BTN_Name = ko.observable("");
+                _EButton.BTN_Name_En = ko.observable("");
+                _EButton.BTN_Mark = ko.observable("");
+                _EButton.BTN_Desc = ko.observable("");
+                _EButton.BTN_OrderIndex = ko.observable(0);
+                _page.BTN_Name = ko.observable("");
+                _page.BTN_Name_En = ko.observable("");
+                _page.pagemodel() = ko.observable("");//页面的模式，比如新增add，修改edit，删除del
+                _page.EditModel = ko.observable("");
+                //flexgrid查询函数
+                _page.SearchQuery = function () {
+                    var btn = $("#startQuery");
+                    btn.button("loading");
+                    $("#GridQuery").flexOptions({
+                        url: CCSHmobi.website + 'Button/GetJson',
+                        params: [
+                            { name: "BTN_Name", value: _page.BTN_Name() },
+                            { name: "BTN_Name_En", value: _page.BTN_Name_En() }
+                        ],
+                        newp: 1,
+                        onError: function (XMLHttpRequest, textStatus, errorThrown) {
+                            msg.info("请求超时，可能是因为数据量过大，请填写适当的筛选条件后重试");
+                            $("#grid").flexAddData();
+                        }
+                    }).flexReload();
+                    btn.button("reset");
+                }
+
+                //新增按钮操作
+                _page.OpenModal = function () {
+                    $("#BtnModal").modal("show");
+                }
+
+                //关闭窗口
+                _page.CloseModal = function () {
+                    $("#BtnModal").modal("hide");
+                    _page.SearchQuery();
+                }
+
+                //点击ToolBar事件，必须确定功能模式
+                _page.ExcuteBtn = function (mode) {
+                    _page.FunctionModel(mode)
+                    if (_page.pagemodel() == 'ADD') {
+                        cleanData("BtnModal");
+                        _page.OpenModal();
+                    }
+                    else {
+
+                        //取值
+                        try {
+                            var selectedId = $("#GridQuery").selectedItem()[0].BTN_Id;
+                        } catch (e) {
+                            msg.info("请先选中操作的行！");
+                            return;
+                        }
+
+                        _page._EButton.BTN_Id(selectedId);
+                        _page._EButton.Get();
+                        _page.OpenModal();
+                    }
+                    //确定编辑模式
+                    if (_page.pagemodel() == 'ADD' || _page.pagemodel() == 'EDIT') {
+                        _page.EditModel("保存");
+                    } else {
+                        _page.EditModel("停用");
+                    }
+
+                }
+
+
+
+                //主处理Modal函数
+                _page.ExcuteModal = function () {
+                    if (_page.pagemodel() == 'EDIT') {
+                        _page._EButton.Edit(_page.CloseModal);
+
+                    } else if (_page.pagemodel() == 'DELETE') {
+                        _page._EButton.Delete(_page.CloseModal);
+
+                    } else if (_page.pagemodel() == 'ADD') {
+                        _page._EButton.Add(_page.CloseModal);
+
+                    }
+
+                }
+            }();
+            ko.applyBindings(KObj_page);
+        })
+    </script>
+</head>
+<body>
+    <!--查询界面-->
+    <div id="QueryDiv">
+        <form role="form" class="form form-horizontal requirement_search" style="top: 50px">
+            <div class="alert alert-success" role="alert">
+                <label class="label label-default">编辑功能：</label>
+                <button class="btn glyphicon glyphicon-plus btn-primary" type="button" data-bind="click: function () { ExcuteBtn('ADD') }"  data-toggle="tooltip" data-placement="top" title="新增"><em class="icon-align-left"></em></button>
+                <button class="btn glyphicon glyphicon-pencil btn-info" type="button" data-bind="click: function () { ExcuteBtn('EDIT') }"  data-toggle="tooltip" data-placement="top" title="修改"><em class="icon-align-right"></em></button>
+                <button class="btn glyphicon glyphicon-remove btn-warning" type="button" data-bind ="click: function () { ExcuteBtn('DELETE') }" data-toggle="tooltip" data-placement="top" title="删除"><em class="icon-align-center"></em></button>
+              <!--  <button class="btn glyphicon glyphicon-search btn-success" type="button" data-bind="click: function () { ExcuteBtn('EDIT') }"><em class="icon-align-justify"></em></button>-->
+            </div>
+            <hr />
+            <div class="row form-group">
+                <div class ="col-sm-1 col-xs-12"><label class="control-label">按钮名称</label></div>
+                <div class="col-sm-3 col-xs-12"><input type="text" class="form-control"  data-bind="value: BTN_Name"  required/></div>
+                <div class ="col-sm-1 col-xs-12"><label class="control-label">按钮英文名称</label></div>
+                <div class="col-sm-3 col-xs-12"><input type="text" class="form-control"  data-bind="value: BTN_Name_En" required/></div>
+                <div class="col-sm-1 col-xs-12">&nbsp</div>
+                <div class="col-sm-2 col-xs-12">
+                    <button id="startQuery" class="form-control btn btn-primary" data-loading-text="查询中..." data-bind="click: function () { SearchQuery() }">查询</button>
+                </div>
+            </div>
+            <br />
+            <div class="row form-group">
+                <div class="col-xs-8"></div>
+            </div>
+        </form>
+        <div style="padding: 0 5px;">
+            <table id="GridQuery" class="table table-condensed"></table>
+        </div>
+    </div>
+    <!--查询界面-->
+
+       <!--Modal界面-->
+    <div id="BtnModal" class="modal fade" data-keyboard="false" data-backdrop="static" role="dialog" tabindex="-1" aria-hidden="true"  data-toggle="validator" >
+       <div class="modal-dialog" style="width: 30%">
+           <div class="modal-content">
+              <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="H1" style="text-align: center"><b>按钮</b></h4>
+              </div>
+               <div class ="modal-body">
+                   <form data-bind="submit: ExcuteModal">
+                  <div class="control-group">
+                      <!-- Text input-->
+                      <div>
+                          <label class="control-label" for="input01">按钮名称</label>
+                      </div>
+                      <div>
+                        <input type="text" placeholder="中文名" class="form-control" data-bind ="value: _EButton.BTN_Name, event: { 'blur': _EButton.BTN_Blur }, enable: pagemodel() != 'DELETE'"required>
+                      
+                      </div>
+                   </div>
+                   <br />
+                    
+                  <div class="control-group">
+                      <!-- Text input-->
+                      <div>
+                           <label class="control-label" for="input01">按钮英文名称</label>
+                      </div>
+                      <div>
+                        <input type="text" placeholder="英文名" class="form-control" data-bind ="value: _EButton.BTN_Name_En, event: { 'blur': _EButton.BTN_Blur }, enable: pagemodel() != 'DELETE'" required />
+                      
+                    </div>
+                   <br />
+                           <div class="control-group">
+                      <!-- Text input-->
+                      <div>
+                           <label class="control-label" for="input01">按钮序号</label>
+                      </div>
+                      <div>
+                        <input type="number" placeholder ="序号" class="form-control"  data-bind ="value: _EButton.BTN_OrderIndex, enable: pagemodel() != 'DELETE'" required />
+                      </div>
+                    </div>
+                   <br />
+                       <div class="control-group">
+                      <!-- Text input-->
+                      <div>
+                           <label class="control-label" for="input01">按钮标记</label>
+                      </div>
+                      <div>
+                          <input type="text" placeholder="标记" class="form-control" data-bind ="value: _EButton.BTN_Mark, event: { 'blur': _EButton.BTN_Blur }, enable: pagemodel() != 'DELETE'" required />
+                      </div>
+                    </div>
+                   <br />
+                    
+                 <div class="control-group">
+                      <!-- Textarea -->
+                      <label class="control-label">详细描述</label>
+                      <div class="controls">
+                        <div class="textarea">
+                           <textarea class="form-control"  data-bind ="value: _EButton.BTN_Desc, enable: pagemodel() != 'DELETE'"> </textarea>
+                        </div>
+                      </div>
+                    </div>
+                   <br />
+                   <div class="row form-group">
+                      <div class="col-xs-2"></div>
+                      <div class="col-xs-4">
+                          <button class="btn btn-default form-control" data-bind="click: CloseModal ">关闭</button>
+                      </div>
+                      <div class="col-xs-4">
+                        <button class="btn btn-success form-control" type="submit" data-bind="text: EditModel" ></button>
+                      </div>
+                    </div>
+                   </form>
+                </div>
+            </div>
+        </div>
+</div>
+    <!--Modal界面-->
+</body>
+</html>
+ 
