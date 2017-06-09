@@ -90,11 +90,15 @@
     <Compile Include="Common\ValidateCode.cs" />
     <Compile Include="Data\ButtonData.cs" />
     <Compile Include="Data\CommonData.cs" />
+    <Compile Include="Data\StudentData.cs" />
     <Compile Include="DPBase.cs" />
+    <Compile Include="Entities\Students.cs" />
     <Compile Include="Entities\SYSButton.cs" />
+    <Compile Include="Entities\vw_Students.cs" />
     <Compile Include="Implement\ExcuteModelImplement.cs" />
     <Compile Include="Interface\IExcuteModal.cs" />
     <Compile Include="Models\ButtonListViewModel.cs" />
+    <Compile Include="Models\StudentListViewModel.cs" />
     <Compile Include="NERP.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

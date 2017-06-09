@@ -5,7 +5,7 @@
 
 }
 
-@model ButtonListViewModel
+@model StudentListViewModel
 
 
 
@@ -19,40 +19,34 @@
                     <!-- 功能操作区 -->
                     @using (Html.BeginForm(null, null, FormMethod.Post, new { id = "frmQuery", @class = "form-horizontal" }))
                     {
-
-
-
+                          
                         <div class="form-group">
                             <div class="col-sm-2">
                                 <label class="control-label">姓名:</label>
                             </div>
                             <div class="col-sm-3">
-                                <input type="text" class="form-control input-sm input-sm">
+                                 @Html.TextBoxFor(t => t.search.Name, new { @class = "form-control input-sm input-sm", @type = "text", @placeholder = "请输入姓名名称" })  
                             </div>
-                            <div class="col-sm-2">
-                                <label class="control-label">绑定手机:</label>
-                            </div>
+                       
 
-                            <div class="col-sm-3">
-                                <input type="text" class="form-control input-sm input-sm">
-                            </div>
-
-                        </div>
-
-                        <div class="form-group">
-                            <div class="col-xs-2">
+                               <div class="col-xs-2">
                                 <label class="control-label">注册日期:</label>
                             </div>
 
                             <div class="col-sm-3">
                                 <div class="input-daterange input-group" id="datepicker">
-                                    <input type="text" class="input-sm form-control" name="start" value="2014-11-11">
+                                    @Html.TextBoxFor(t => t.search.CreateTime_start, new { @class = "input-sm form-control", @type = "text" , @value = DateTime.Now  })
+                                    @*<input type="text" class="input-sm form-control" name="start" value="2014-11-11">*@
                                     <span class="input-group-addon">到</span>
-                                    <input type="text" class="input-sm form-control" name="end" value="2014-11-17">
+                                    @*<input type="text" class="input-sm form-control" name="end" value="2014-11-17">*@
+                                    @Html.TextBoxFor(t => t.search.CreateTime_end, new { @class = "input-sm form-control", @type = "text", @value = DateTime.Now })
+                             
                                 </div>
                             </div>
+
                         </div>
 
+                        
 
                         <div class="form-group">
                             <div class="col-sm-4">
@@ -64,7 +58,7 @@
                                 </div>
                             </div>
                             <div class="col-sm-8 project-actions">
-                                <button type="button" class="btn btn-w-m btn-primary btn-sm">查&nbsp;&nbsp;&nbsp;&nbsp;询</button>
+                                <button type="submit" class="btn btn-w-m btn-primary btn-sm">查&nbsp;&nbsp;&nbsp;&nbsp;询</button>
                             </div>
                         </div>
 
@@ -90,118 +84,24 @@
                         </thead>
                         <!-- 循环数据 -->
                         <tbody>
-                            <!-- 测试数据 -->
-                            <tr>
-                                <td class="jz">001</td>
-                                <td>李文杰</td>
-                                <td>男</td>
-                                <td>2010-07-12</td>
-                                <td>2017-05-15</td>
-
-                                <td>1381238523</td>
                             
-                                <td>2788034234</td>
-                                <td>试听</td>
-                                <td>在读</td>
-                                <td>
-                                    <a href="javascript:modify()" class="btn btn-primary btn-xs" type="button"><i class="fa fa-edit"></i> 编辑</a>
-                                    <a href="javascript:" class="btn btn-primary btn-xs" type="button"><i class="fa fa-edit"></i> 删除</a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="jz">002</td>
-                                <td>张昊天</td>
-                                <td>男</td>
-                                <td>2010-07-12</td>
-                                <td>2017-05-15</td>
-
-
-                                <td>1381238523</td>
-
-                            
-                                <td>2342334234</td>
-                                <td>试听</td>
-                                <td>在读</td>
-
-                                <td>
-                                    <a href="javascript:modify()" class="btn btn-primary btn-xs" type="button"><i class="fa fa-edit"></i> 编辑</a>
-                                    <a href="javascript:" class="btn btn-primary btn-xs" type="button"><i class="fa fa-edit"></i> 删除</a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="jz">003</td>
-                                <td>张飞</td>
-                                <td>男</td>
-                                <td>2010-07-12</td>
-                                <td>2017-05-15</td>
-                                <td>1381238523</td>
-
-                         
-                                <td>2342334234</td>
-                                <td>网络</td>
-                                <td>在读</td>
-
-
-                                <td>
-                                    <a href="javascript:modify()" class="btn btn-primary btn-xs" type="button"><i class="fa fa-edit"></i> 编辑</a>  <a href="javascript:" class="btn btn-primary btn-xs" type="button"><i class="fa fa-edit"></i> 删除</a>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="jz">004</td>
-                                <td>貂蝉</td>
-                                <td>女</td>
-                                <td>2010-07-12</td>
-                                <td>2017-05-15</td>
-
-
-
-
-                                <td>1381238523</td>
-
-                              
-                                <td>2342334234</td>
-                                <td>网络</td>
-                                <td>在读</td>
-
-
-
-                                <td>
-                                    <a href="javascript:modify()" class="btn btn-primary btn-xs" type="button"><i class="fa fa-edit"></i> 编辑</a> <a href="javascript:" class="btn btn-primary btn-xs" type="button"><i class="fa fa-edit"></i> 删除</a>
-
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="jz">005</td>
-                                <td>关羽</td>
-                                <td>男</td>
-                                <td>2010-07-12</td>
-                                <td>2017-05-15</td>
-
-                                <td>1381238523</td>
-
-                        
-                                <td>2342334234</td>
-                                <td>网络</td>
-                                <td>结束</td>
-
-
-                                <td>
-                                    <a href="javascript:modify()" class="btn btn-primary btn-xs" type="button"><i class="fa fa-edit"></i> 编辑</a>
-                                    <a href="javascript:" class="btn btn-primary btn-xs" type="button"><i class="fa fa-edit"></i> 删除</a>
-                                </td>
-                            </tr>
-                            <!-- 测试数据 -->
-                            @if (Model != null && Model.buttonlist.Count() > 0)
+                            @if (Model != null && Model.Studentlist.Count() > 0)
                             {
-                                foreach (var m in Model.buttonlist)
+                                foreach (var m in Model.Studentlist)
                                 {
                                     <tr>
-                                        <td class="jz">@m.BTN_Id</td>
-                                        <td>@m.BTN_Name</td> @*按钮名称*@
-                                        <td>@m.BTN_OrderIndex</td>
-                                        <td>@m.BTN_Mark</td>
+                                        <td class="jz">@m.ID</td>
+                                        <td>@m.Name</td> @*按钮名称*@  
+                                         <td>@m.Sex</td>  
+                                        <td>@m.Birthday</td>
+                                         <td>@m.CreateTime</td>
+                                         <td>@m.BindPhone</td>
+                                         <td>@m.Wechart</td>
+                                         <td>@m.SourceID</td>
+                                         <td>@m.StateID</td>
+                                        
                                         <td>
-                                            <a href="javascript:modify(@m.BTN_Id);" class="btn btn-primary btn-xs" type="button"><i class="fa fa-edit"></i> 编辑</a>
+                                            <a href="javascript:modify(@m.ID);" class="btn btn-primary btn-xs" type="button"><i class="fa fa-edit"></i> 编辑</a>
 
                                         </td>
                                     </tr>
@@ -209,7 +109,7 @@
                             }
                             else
                             {
-                                @*<tr><td colspan="7" style="text-align:center; color:red;">未查询到数据,请更换查询条件试试!</td></tr>*@
+                                <tr><td colspan="7" style="text-align:center; color:red;">未查询到数据,请更换查询条件试试!</td></tr>
                             }
                         </tbody>
                         @*<tfoot>
@@ -222,13 +122,13 @@
                                 </tr>
                             </tfoot>*@
                     </table>
-                    @if (Model != null && Model.buttonlist.TotalPageCount > 0)
+                    @if (Model != null && Model.Studentlist.TotalPageCount > 0)
                     {
                         <div class="row">
-                            <div class="dataTables_info col-xs-6">每页显示 @Model.search.PageSize 条，共<span>@Model.buttonlist.TotalItemCount</span>条数据</div>
+                            <div class="dataTables_info col-xs-6">每页显示 @Model.search.PageSize 条，共<span>@Model.Studentlist.TotalItemCount</span>条数据</div>
                             <div class="col-xs-6">
 
-                                @Html.Pager(Model.buttonlist, new PagerOptions(), "", new RouteValueDictionary {
+                                @Html.Pager(Model.Studentlist, new PagerOptions(), "", new RouteValueDictionary {
                                    { "pageindex",  Model.search.CurrentPage },
                                    { "pagesize", ViewBag.PageSize }
                                }, null)
@@ -291,21 +191,37 @@
 
     function loaddetail(id, loadindex) {
         $.ajax({
-            url: '@Url.Action("GetButtonByID", "Admin")',
+            url: '@Url.Action("GetStudentByID", "Teach")',
             type: "post",
             data: { id: id },
             success: function (json) {
                 if (json.status = 200) {//成功
-                    $("#BTN_Name").val(json.data.BTN_Name);
-                    $("#BTN_Name_En").val(json.data.BTN_Name_En);
-                    $("#BTN_Desc").val(json.data.BTN_Desc);
-                    $("#BTN_OrderIndex").val(json.data.BTN_OrderIndex);
-                    $("#BTN_Mark").val(json.data.BTN_Mark);
+                    $("#Name").val(json.data.Name);
+                    $("#BindPhone").val(json.data.BindPhone);
 
-                    if (json.data.BTN_IsSuspended)//如果停用true
-                    {
-                        $("#BTN_IsSuspended").iCheck('check');//设置选中，具体可以百度icheck插件
+
+                    if (json.data.Sex==1) {
+                        $("#Sex").val(json.data.Sex);
                     }
+                    else {
+                        $("#Sex1").val(json.data.Sex);
+                    }
+    
+                    
+                   
+
+                    $("#Birthday").val(ChangeDateFormat(json.data.Birthday));
+                    $("#FatherName").val(json.data.FatherName);
+                    $("#FatherContract").val(json.data.FatherContract);
+                     
+                    $("#Wechart").val(json.data.MotherName);
+                    $("#MotherName").val(json.data.MotherName);
+                    $("#MotherContract").val(json.data.MotherContract);
+                    $("#Address").val(json.data.Address);
+                    $("#SourceID").val(json.data.SourceID);
+                    $("#Remark").val(json.data.Remark);
+
+                   
 
                     layer.close(loadindex);//关闭加载层
                 }
@@ -320,26 +236,56 @@
     function save(id) {
         var obj = new Object;
         if (id) {//有ID就是修改模式，没有就是新增模式
-            obj.BTN_Id = id;
+            obj.ID = id;
         }
-        obj.BTN_Name = $("#BTN_Name").val().trim();
-        if (!obj.BTN_Name) {
-            layer.msg("请输入按钮名称！");
+        obj.Name = $("#Name").val().trim();
+        if (!obj.Name) {
+            layer.msg("请输入姓名！");
             return false;
         }
-        obj.BTN_Name_En = $("#BTN_Name_En").val().trim();//赋值必须和数据库字段对应
-        obj.BTN_Desc = $("#BTN_Desc").val().trim();
-        obj.BTN_OrderIndex = $("#BTN_OrderIndex").val().trim();
-        obj.BTN_Mark = $("#BTN_Mark").val().trim();
-        if ($("#BTN_IsSuspended").is(':checked')) {//判断停用按钮是否选中
-            obj.BTN_IsSuspended = true;
+        obj.BindPhone = $("#BindPhone").val().trim();//赋值必须和数据库字段对应
+        if (!obj.BindPhone) {
+            layer.msg("请输入手机号码！");
+            return false;
         }
-        else { obj.BTN_IsSuspended = false; }
+
+        var pattern = /^1[34578]\d{9}$/;
+        if (!pattern.test(obj.BindPhone)) {
+            layer.msg("您输入的手机号码不正确");
+            return false;
+        }
+
+
+        var Sex_male = $("#Sex").val().trim(); 
+      
+        if (Sex_male) {
+            obj.Sex = Sex_male;
+        }
+        else {
+            obj.Sex = $("#Sex1").val().trim();
+        } 
+       
+        obj.Birthday = $("#Birthday").val().trim();
+        if (!obj.Birthday) {
+            layer.msg("请选择出生年月日！");
+            return false;
+        }
+
+        obj.FatherName = $("#FatherName").val().trim(); 
+        obj.FatherContract = $("#FatherContract").val().trim();
+        obj.MotherName = $("#MotherName").val().trim();
+        obj.MotherContract = $("#MotherContract").val().trim();
+        obj.Address = $("#Address").val().trim();
+        obj.Wechart = $("#Wechart").val().trim();
+        obj.SourceID = $("#SourceID").val().trim();
+        obj.Remark = $("#Remark").val().trim(); 
+
+   
         var action = '';
         if (id) {//有ID就是修改模式，没有就是新增模式
-            action = '@Url.Action("SaveButton", "Admin")';
+            action = '@Url.Action("SaveStudent", "Teach")';
         }
-        else { action = '@Url.Action("AddButton", "Admin")' }
+        else { action = '@Url.Action("AddStudent", "Teach")' }
         $.post(action, {
             "data": JSON.stringify(obj)//序列化对象
         }, function (json) {
@@ -374,7 +320,7 @@
             <div class="form-group ">
                 <label class="col-xs-3 control-label">姓名：</label>
                 <div class="col-xs-8">
-                    <input type="text" placeholder="姓名" class="form-control input-sm" id="BTN_Name">
+                    <input type="text" placeholder="姓名" class="form-control input-sm" id="Name">
                 </div>
  
                 @*            <label class="col-xs-2 control-label">照片：</label>
@@ -392,7 +338,7 @@
             <div class="form-group ">
                 <label class="col-xs-3 control-label">绑定手机：</label>
                 <div class="col-xs-8">
-                    <input type="text" placeholder="重要！请填写能联系到学员的手机，比如父母手机号！" class="form-control input-sm" id="BTN_OrderIndex">
+                    <input type="text" placeholder="重要！请填写能联系到学员的手机，比如父母手机号！" class="form-control input-sm" id="BindPhone">
                 </div>
             </div>
 
@@ -402,7 +348,7 @@
                 <div class="col-xs-4">
                     <div class="radio i-checks">
                         <label class="">
-                            <div class="iradio_square-green" style="position: relative;"><input type="radio" value="option1" name="a" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; border: 0px; opacity: 0; background: rgb(255, 255, 255);"></ins></div> <i></i> 男
+                        <input type="radio" checked="" id="Sex" value="1"  name="a" style="position: absolute; opacity: 0;"> 男
                         </label>
                     </div>
                 </div>
@@ -411,7 +357,7 @@
                 <div class="col-xs-4">
                     <div class="radio i-checks">
                         <label class="">
-                            <div class="iradio_square-green" style="position: relative;"><input type="radio" checked="" value="option2" name="a" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; border: 0px; opacity: 0; background: rgb(255, 255, 255);"></ins></div> <i></i> 女
+                 <input type="radio"  id="Sex1" name="a" value="2" style="position: absolute; opacity: 0;"> 女
                         </label>
                     </div>
                 </div>
@@ -425,7 +371,7 @@
 
                     <div class="DateS input-group date">
                         <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                        <input type="text" class="form-control input-sm" value="2014-11-11">
+                        <input type="text" class="form-control input-sm" id="Birthday">
                     </div>
 
                 </div>
@@ -434,44 +380,63 @@
             <div class="form-group ">
                 <label class="col-xs-3 control-label">父亲姓名：</label>
                 <div class="col-xs-8">
-                    <input type="text" placeholder="父亲姓名" class="form-control input-sm" id="BTN_OrderIndex">
+                    <input type="text" placeholder="父亲姓名" class="form-control input-sm" id="FatherName">
                 </div>
             </div>
             <div class="form-group ">
                 <label class="col-xs-3 control-label">父亲联系方式：</label>
                 <div class="col-xs-8">
-                    <input type="text" placeholder="父亲联系方式" class="form-control input-sm" id="BTN_OrderIndex">
+                    <input type="text" placeholder="父亲联系方式" class="form-control input-sm" id="FatherContract">
                 </div>
             </div>
             <div class="form-group ">
                 <label class="col-xs-3 control-label">母亲姓名：</label>
                 <div class="col-xs-8">
-                    <input type="text" placeholder="母亲姓名" class="form-control input-sm" id="BTN_OrderIndex">
+                    <input type="text" placeholder="母亲姓名" class="form-control input-sm" id="MotherName">
                 </div>
             </div>
 
             <div class="form-group ">
                 <label class="col-xs-3 control-label">母亲联系方式：</label>
                 <div class="col-xs-8">
-                    <input type="text" placeholder="母亲联系方式" class="form-control input-sm" id="BTN_OrderIndex">
+                    <input type="text" placeholder="母亲联系方式" class="form-control input-sm" id="MotherContract">
                 </div>
             </div>
             <div class="form-group ">
                 <label class="col-xs-3 control-label">家庭地址：</label>
                 <div class="col-xs-8">
-                    <input type="number" placeholder="家庭地址" class="form-control input-sm" id="BTN_OrderIndex">
+                    <input type="text" placeholder="家庭地址" class="form-control input-sm" id="Address">
                 </div>
             </div>
             <div class="form-group ">
                 <label class="col-xs-3 control-label">E-mail/QQ/微信：</label>
                 <div class="col-xs-8">
-                    <input type="text" placeholder="E-mail/QQ/微信" class="form-control input-sm" id="BTN_OrderIndex">
+                    <input type="text" placeholder="E-mail/QQ/微信" class="form-control input-sm" id="Wechart">
                 </div>
             </div>
 
             <div class="form-group ">
                 <label class="col-sm-3 control-label">来源渠道：</label>
-                <div class="checkbox i-checks col-sm-8">
+
+                 <div class="col-sm-8">
+                  
+                          @Html.DropDownListFor(t => t.search.DicItemID, Model.SourceIL, new { @class = "form-control input-sm chosen-select",@style="width:100%;height:100%;", @tabindex="4",@id="SourceID"} )
+
+                      @*  <select data-placeholder="选择宣传方式..." class=" form-control input-sm chosen-select" style="width:100%;height:100%;" tabindex="4" id="SourceID">
+                                    <option value="">请选择授课方式</option>
+                                    <option value="1" hassubinfo="true">广告</option> 
+                                    <option value="2" hassubinfo="true">宣传单页</option>   
+                                    <option value="3" hassubinfo="true">网络</option>   
+                                    <option value="4" hassubinfo="true">试听</option>   
+                                    <option value="5" hassubinfo="true">他人介绍</option>   
+                                    <option value="5" hassubinfo="true">其它</option>   
+                           </select> *@
+                </div>
+
+
+
+
+              @*     <div class="checkbox i-checks col-sm-8">
                     <label>
                         <input type="checkbox" value="" id="BTN_IsSuspended"> <i></i> 广告
                         <input type="checkbox" value="" id="BTN_IsSuspended"> <i></i> 宣传单页
@@ -480,7 +445,8 @@
                         <input type="checkbox" value="" id="BTN_IsSuspended"> <i></i> 他人介绍
                         <input type="checkbox" value="" id="BTN_IsSuspended"> <i></i> 其它
                     </label>
-                </div>
+                </div>*@
+
             </div>
 
 
@@ -489,7 +455,7 @@
                 <div class="col-xs-8">
 
 
-                    <textarea class="form-control input-sm" placeholder="备注"> </textarea>
+                    <textarea class="form-control input-sm" placeholder="备注" id="Remark"> </textarea>
                 </div>
             </div>
 
