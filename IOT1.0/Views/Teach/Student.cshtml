@@ -201,10 +201,10 @@
 
 
                     if (json.data.Sex==1) {
-                        $("#Sex").val(json.data.Sex);
+                        $("#Sex").iCheck('check');
                     }
                     else {
-                        $("#Sex1").val(json.data.Sex);
+                        $("#Sex1").iCheck('check');
                     }
     
                     
@@ -256,14 +256,14 @@
         }
 
 
-        var Sex_male = $("#Sex").val().trim(); 
-      
-        if (Sex_male) {
-            obj.Sex = Sex_male;
+        if ($("#Sex").is(':checked')) {//判断停用按钮是否选中 
+            obj.Sex = $("#Sex").val().trim(); 
         }
         else {
             obj.Sex = $("#Sex1").val().trim();
-        } 
+        }
+        
+         
        
         obj.Birthday = $("#Birthday").val().trim();
         if (!obj.Birthday) {
@@ -348,7 +348,7 @@
                 <div class="col-xs-4">
                     <div class="radio i-checks">
                         <label class="">
-                        <input type="radio" checked="" id="Sex" value="1"  name="a" style="position: absolute; opacity: 0;"> 男
+                        <input type="radio" id="Sex" checked="checked"  value="1"  name="a" style="position: absolute; opacity: 0;"> 男
                         </label>
                     </div>
                 </div>
@@ -357,7 +357,7 @@
                 <div class="col-xs-4">
                     <div class="radio i-checks">
                         <label class="">
-                 <input type="radio"  id="Sex1" name="a" value="2" style="position: absolute; opacity: 0;"> 女
+                 <input type="radio"  id="Sex1"  name="a" value="2" style="position: absolute; opacity: 0;"> 女
                         </label>
                     </div>
                 </div>
