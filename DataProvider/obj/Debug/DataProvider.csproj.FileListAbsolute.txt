@@ -81,6 +81,10 @@ D:\zr\work3\IOT\IOT1.0\DataProvider\bin\Debug\zh-Hans\EntityFramework.SqlServer.
 D:\zr\work3\IOT\IOT1.0\DataProvider\bin\Debug\zh-Hans\System.Web.Mvc.resources.dll
 D:\zr\work3\IOT\IOT1.0\DataProvider\obj\Debug\DataProvider.dll
 D:\zr\work3\IOT\IOT1.0\DataProvider\obj\Debug\DataProvider.pdb
+<<<<<<< HEAD
 D:\zr\work\IOT1.0\DataProvider\obj\Debug\DataProvider.csprojResolveAssemblyReference.cache
 D:\zr\work\IOT1.0\DataProvider\obj\Debug\DataProvider.dll
 D:\zr\work\IOT1.0\DataProvider\obj\Debug\DataProvider.pdb
+=======
+D:\zr\work3\IOT\IOT1.0\DataProvider\obj\Debug\DataProvider.csprojResolveAssemblyReference.cache
+>>>>>>> 6f4bbd77fe9c9306f46ea416dc7cf7a58a74d546
